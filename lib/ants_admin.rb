@@ -1,5 +1,7 @@
-require "ants_admin/version"
-
 module AntsAdmin
-  # Your code goes here...
+  
+  
+  
+  class Engine < Rails::Engine
+  end
 end

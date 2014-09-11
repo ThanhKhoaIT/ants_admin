@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ants Admin</title>
+  <link href="/assets/ants_admin/favicon.ico" type="image/x-icon" rel="icon">
+  <%= stylesheet_link_tag    "ants_admin/application", :media => "all" %>  
+  <%= javascript_include_tag "ants_admin/application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body id="ants_admin">
+  <div id="ants_admin_body">
+    <%= yield %>
+  </div>
+</body>
+</html>
