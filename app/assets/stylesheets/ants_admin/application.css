@@ -11,5 +11,16 @@
  *= require_self
  *= require ./reset
  *= require ./base
- *= require ./jquery-ui-1.10.4
+
+ *= require ./vendors/jquery-ui-1.10.4
+ *= require ./vendors/bootstrap.min
+ *= require ./vendors/font-awesome.min
+ *= require ./vendors/ionicons.min
+ *= require ./vendors/morris
+ *= require ./vendors/jquery-jvectormap-1.2.2
+ *= require ./vendors/datepicker3
+ *= require ./vendors/daterangepicker-bs3
+ *= require ./vendors/bootstrap3-wysihtml5.min
+
+ *= require ./AdminLTE
 */

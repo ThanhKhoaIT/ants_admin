@@ -1,4 +1,4 @@
-class AntsAdmin::BaseController < ActionController::Base
+class AntsAdminController < ActionController::Base
   def index
   end
 end
