@@ -15,3 +15,8 @@
 //= require ants_admin/base
 //= require ants_admin/bpopup
 //= require ants_admin/jquery-ui-1.10.4
+
+//= require_tree ./lte/plugins
+//= require ants_admin/lte/app
+//= require ants_admin/lte/dashboard
+//= require ants_admin/lte/demo
