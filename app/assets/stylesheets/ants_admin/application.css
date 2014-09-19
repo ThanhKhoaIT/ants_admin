@@ -22,5 +22,5 @@
  *= require ./vendors/daterangepicker-bs3
  *= require ./vendors/bootstrap3-wysihtml5.min
 
- *= require ./AdminLTE
+ *= require ./admin_lte
 */

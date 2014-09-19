@@ -12,24 +12,28 @@
 var left_side_width = 220; //Sidebar width in pixels
 
 $(function() {
-    "use strict";
+    "use strict";    
 
     //Enable sidebar toggle
     $("[data-toggle='offcanvas']").click(function(e) {
         e.preventDefault();
-
-        //If window is small enough, enable sidebar push menu
         if ($(window).width() <= 992) {
-            $('.row-offcanvas').toggleClass('active');
-            $('.left-side').removeClass("collapse-left");
-            $(".right-side").removeClass("strech");
-            $('.row-offcanvas').toggleClass("relative");
+          $('.row-offcanvas').toggleClass('active');
+          $('.left-side').removeClass("collapse-left");
+          $(".right-side").removeClass("strech");
+          $('.row-offcanvas').toggleClass("relative");
         } else {
-            //Else, enable content streching
-            $('.left-side').toggleClass("collapse-left");
-            $(".right-side").toggleClass("strech");
+          $('.left-side').toggleClass("collapse-left");
+          $(".right-side").toggleClass("strech");
+        
+          if ($('.left-side.collapse-left').length > 0) {
+            $(this).removeClass("exit");
+          } else {
+            $(this).addClass("exit");
+          }
         }
     });
+    
 
     //Add hover support for touch devices
     $('.btn').bind('touchstart', function() {
