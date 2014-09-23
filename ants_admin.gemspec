@@ -204,7 +204,10 @@ Gem::Specification.new do |s|
     "app/views/layouts/areas/_main_menu.html.erb",
     "app/views/layouts/areas/_search_box.html.erb",
     "config/routes.rb",
-    "lib/ants_admin.rb"
+    "lib/ants_admin.rb",
+    "lib/generators/ants_admin/install_generator.rb",
+    "lib/generators/ants_admin/templates/account.rb",
+    "lib/generators/ants_admin/templates/create_accounts.rb"
   ]
   s.homepage = "https://github.com/ThanhKhoaIT/ants_admin"
   s.licenses = ["MIT"]
@@ -215,14 +218,11 @@ Gem::Specification.new do |s|
     s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<devise>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, ["~> 2.0.1"])
     else
-      s.add_dependency(%q<devise>, [">= 0"])
       s.add_dependency(%q<jeweler>, ["~> 2.0.1"])
     end
   else
-    s.add_dependency(%q<devise>, [">= 0"])
     s.add_dependency(%q<jeweler>, ["~> 2.0.1"])
   end
 end
