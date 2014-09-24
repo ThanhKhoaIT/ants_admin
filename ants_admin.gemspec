@@ -206,8 +206,8 @@ Gem::Specification.new do |s|
     "config/routes.rb",
     "lib/ants_admin.rb",
     "lib/generators/ants_admin/install_generator.rb",
-    "lib/generators/ants_admin/templates/account.rb",
-    "lib/generators/ants_admin/templates/create_accounts.rb"
+    "lib/generators/templates/account.rb",
+    "lib/generators/templates/create_accounts.rb"
   ]
   s.homepage = "https://github.com/ThanhKhoaIT/ants_admin"
   s.licenses = ["MIT"]
