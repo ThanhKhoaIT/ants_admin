@@ -9,7 +9,6 @@ Gem::Specification.new do |s|
   s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
   s.date = "2014-09-24"
   s.description = "Admin panel for you"
@@ -206,11 +205,12 @@ Gem::Specification.new do |s|
     "config/routes.rb",
     "lib/ants_admin.rb",
     "lib/generators/ants_admin/install_generator.rb",
-    "lib/generators/templates/account.rb",
-    "lib/generators/templates/create_accounts.rb"
+    "lib/generators/ants_admin/templates/account.rb",
+    "lib/generators/ants_admin/templates/create_accounts.rb"
   ]
   s.homepage = "https://github.com/ThanhKhoaIT/ants_admin"
   s.licenses = ["MIT"]
+  s.require_paths = ["lib"]
   s.rubygems_version = "2.2.2"
   s.summary = "Admin panel for you"
 

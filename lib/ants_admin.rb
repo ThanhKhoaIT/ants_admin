@@ -1,4 +1,5 @@
 require 'rails'
+
 module AntsAdmin
   def self.setup
     yield self        
