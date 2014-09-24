@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
   s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
   s.date = "2014-09-24"
   s.description = "Admin panel for you"
@@ -210,7 +211,6 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "https://github.com/ThanhKhoaIT/ants_admin"
   s.licenses = ["MIT"]
-  s.require_paths = ["lib"]
   s.rubygems_version = "2.2.2"
   s.summary = "Admin panel for you"
 
