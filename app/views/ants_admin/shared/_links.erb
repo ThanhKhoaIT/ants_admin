@@ -3,11 +3,11 @@
 <% end -%>
 
 <%- if ants_admin_mapping.registerable? && controller_name != 'registrations' %>
-  <%= link_to "Sign up", "/sign_up" %><br />
+  <%= link_to "Sign up", "/#{resource_name}/sign_up" %><br />
 <% end -%>
 
 <%- if ants_admin_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-  <%= link_to "Forgot your password?", '/password/new' %><br />
+  <%= link_to "Forgot your password?", "/#{resource_name}/password/new" %><br />
 <% end -%>
 
 <%- if ants_admin_mapping.confirmable? && controller_name != 'confirmations' %>

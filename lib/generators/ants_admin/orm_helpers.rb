@@ -7,7 +7,15 @@ module AntsAdmin
   # :confirmable, :lockable, :timeoutable and :omniauthable
   ants_admin :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+  attr_accessor :login
+  def login=(login)
+    @login = login
+  end
 
+  def login
+    @login || self.username || self.email
+  end
+    
 CONTENT
         buffer += <<-CONTENT if needs_attr_accessible?
   # Setup accessible (or protected) attributes for your model

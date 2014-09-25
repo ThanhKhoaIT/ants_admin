@@ -3,14 +3,16 @@ class AntsAdminController < AntsAdmin.parent_controller.constantize
   include AntsAdmin::Controllers::ScopedViews
 
   helper AntsAdminHelper
-
+  
   helpers = %w(resource scope_name resource_name signed_in_resource
                resource_class resource_params ants_admin_mapping)
   hide_action *helpers
   helper_method *helpers
 
-  prepend_before_filter :assert_is_ants_admin_resource!
+  # prepend_before_filter :assert_is_ants_admin_resource!
   respond_to :html if mimes_for_respond_to.empty?
+
+  before_action :configure_permitted_parameters, if: :ants_admin_controller?
 
   def index
   end
@@ -175,5 +177,11 @@ MESSAGE
 
   def resource_params
     params.fetch(resource_name, {})
+  end
+  
+  def configure_permitted_parameters
+    ants_admin_parameter_sanitizer.for(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me) }
+    ants_admin_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
+    ants_admin_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   end
 end
