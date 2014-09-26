@@ -1,5 +1,10 @@
 class AntsAdminController < AntsAdmin.parent_controller.constantize
   
+  before_action :authenticate_account!
+  
+  def index
+  end
+  
   include AntsAdmin::Controllers::ScopedViews
 
   helper AntsAdminHelper
@@ -14,9 +19,6 @@ class AntsAdminController < AntsAdmin.parent_controller.constantize
 
   before_action :configure_permitted_parameters, if: :ants_admin_controller?
 
-  def index
-  end
-
   # Gets the actual resource stored in the instance variable
   def resource
     instance_variable_get(:"@#{resource_name}")
@@ -24,13 +26,13 @@ class AntsAdminController < AntsAdmin.parent_controller.constantize
 
   # Proxy to ants_admin map name
   def resource_name
-    ants_admin_mapping.name
+    ants_admin_mapping.name if ants_admin_mapping
   end
   alias :scope_name :resource_name
 
   # Proxy to ants_admin map class
   def resource_class
-    ants_admin_mapping.to
+    ants_admin_mapping.to if ants_admin_mapping
   end
 
   # Returns a signed in resource from session (if one exists)

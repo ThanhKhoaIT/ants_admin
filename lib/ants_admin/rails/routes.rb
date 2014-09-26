@@ -440,11 +440,9 @@ ERROR
         @scope[:path] = path
       end
 
-      DEVISE_SCOPE_KEYS = [:as, :path, :module, :constraints, :defaults, :options]
-
       def with_ants_admin_exclusive_scope(new_path, new_as, options) #:nodoc:
         old = {}
-        DEVISE_SCOPE_KEYS.each { |k| old[k] = @scope[k] }
+        [:as, :path, :module, :constraints, :defaults, :options].each { |k| old[k] = @scope[k] }
 
         new = { as: new_as, path: new_path, module: nil }
         new.merge!(options.slice(:constraints, :defaults, :options))
