@@ -5,7 +5,8 @@ source 'https://rubygems.org'
 
 gem "omniauth", "~> 1.0.0"
 gem "omniauth-oauth2", "~> 1.0.0"
-gem 'orm_adapter', "~> 0.5.0"
+gem "orm_adapter", "~> 0.5.0"
+gem "warden", "~> 1.2.3"
 
 group :development do
   gem "shoulda", ">= 0"
