@@ -60,7 +60,7 @@ GEM
     orm_adapter (0.5.0)
     rack (1.5.2)
     rake (10.3.2)
-    rdoc (3.12.2)
+    rdoc (4.1.2)
       json (~> 1.4)
     shoulda (3.5.0)
       shoulda-context (~> 1.0, >= 1.0.1)
@@ -86,6 +86,5 @@ DEPENDENCIES
   omniauth (~> 1.0.0)
   omniauth-oauth2 (~> 1.0.0)
   orm_adapter (~> 0.5.0)
-  rdoc (~> 3.12)
   shoulda
   simplecov
