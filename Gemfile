@@ -6,7 +6,6 @@ source 'https://rubygems.org'
 gem "omniauth", "~> 1.0.0"
 gem "omniauth-oauth2", "~> 1.0.0"
 gem 'orm_adapter', "~> 0.5.0"
-gem "rdoc", "~> 3.12"
 
 group :development do
   gem "shoulda", ">= 0"
