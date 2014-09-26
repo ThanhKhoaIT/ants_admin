@@ -199,7 +199,6 @@ Gem::Specification.new do |s|
     "app/controllers/ants_admin/sessions_controller.rb",
     "app/controllers/ants_admin/unlocks_controller.rb",
     "app/controllers/ants_admin_controller.rb",
-    "app/controllers/devise_controller.rb",
     "app/helpers/ants_admin/menu_helper.rb",
     "app/helpers/ants_admin_helper.rb",
     "app/mailers/ants_admin/mailer.rb",
@@ -295,6 +294,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<omniauth-oauth2>, ["~> 1.0.0"])
       s.add_runtime_dependency(%q<orm_adapter>, ["~> 0.5.0"])
       s.add_runtime_dependency(%q<warden>, ["~> 1.2.3"])
+      s.add_runtime_dependency(%q<bcrypt>, ["~> 3.0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 2.0.1"])
@@ -304,6 +304,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<omniauth-oauth2>, ["~> 1.0.0"])
       s.add_dependency(%q<orm_adapter>, ["~> 0.5.0"])
       s.add_dependency(%q<warden>, ["~> 1.2.3"])
+      s.add_dependency(%q<bcrypt>, ["~> 3.0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0"])
       s.add_dependency(%q<jeweler>, ["~> 2.0.1"])
@@ -314,6 +315,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<omniauth-oauth2>, ["~> 1.0.0"])
     s.add_dependency(%q<orm_adapter>, ["~> 0.5.0"])
     s.add_dependency(%q<warden>, ["~> 1.2.3"])
+    s.add_dependency(%q<bcrypt>, ["~> 3.0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0"])
     s.add_dependency(%q<jeweler>, ["~> 2.0.1"])
