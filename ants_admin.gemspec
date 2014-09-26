@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2014-09-24"
+  s.date = "2014-09-26"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -69,7 +69,6 @@ Gem::Specification.new do |s|
     "app/assets/images/ants_admin/jquery_ui/ui-icons_ffffff_256x240.png",
     "app/assets/images/ants_admin/minimal.png",
     "app/assets/images/ants_admin/minimal@2x.png",
-    "app/assets/javascript/.DS_Store",
     "app/assets/javascript/ants_admin/application.js",
     "app/assets/javascript/ants_admin/base.js",
     "app/assets/javascript/ants_admin/bpopup.js",
@@ -193,21 +192,95 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/ants_admin/vendors/jquery-jvectormap-1.2.2.css",
     "app/assets/stylesheets/ants_admin/vendors/jquery-ui-1.10.4.css",
     "app/assets/stylesheets/ants_admin/vendors/morris.css",
+    "app/controllers/ants_admin/confirmations_controller.rb",
+    "app/controllers/ants_admin/omniauth_callbacks_controller.rb",
+    "app/controllers/ants_admin/passwords_controller.rb",
+    "app/controllers/ants_admin/registrations_controller.rb",
+    "app/controllers/ants_admin/sessions_controller.rb",
+    "app/controllers/ants_admin/unlocks_controller.rb",
     "app/controllers/ants_admin_controller.rb",
+    "app/controllers/devise_controller.rb",
     "app/helpers/ants_admin/menu_helper.rb",
+    "app/helpers/ants_admin_helper.rb",
+    "app/mailers/ants_admin/mailer.rb",
     "app/views/.DS_Store",
     "app/views/ants_admin/.DS_Store",
+    "app/views/ants_admin/confirmations/new.html.erb",
     "app/views/ants_admin/index.html.erb",
+    "app/views/ants_admin/mailer/confirmation_instructions.html.erb",
+    "app/views/ants_admin/mailer/reset_password_instructions.html.erb",
+    "app/views/ants_admin/mailer/unlock_instructions.html.erb",
+    "app/views/ants_admin/passwords/edit.html.erb",
+    "app/views/ants_admin/passwords/new.html.erb",
+    "app/views/ants_admin/registrations/edit.html.erb",
+    "app/views/ants_admin/registrations/new.html.erb",
+    "app/views/ants_admin/sessions/new.html.erb",
+    "app/views/ants_admin/shared/_links.erb",
+    "app/views/ants_admin/unlocks/new.html.erb",
     "app/views/layouts/ants_admin.html.erb",
     "app/views/layouts/areas/_account_info.html.erb",
     "app/views/layouts/areas/_header.html.erb",
     "app/views/layouts/areas/_main_menu.html.erb",
     "app/views/layouts/areas/_search_box.html.erb",
+    "config/locales/en.yml",
     "config/routes.rb",
     "lib/ants_admin.rb",
+    "lib/ants_admin/controllers/helpers.rb",
+    "lib/ants_admin/controllers/rememberable.rb",
+    "lib/ants_admin/controllers/scoped_views.rb",
+    "lib/ants_admin/controllers/sign_in_out.rb",
+    "lib/ants_admin/controllers/store_location.rb",
+    "lib/ants_admin/controllers/url_helpers.rb",
+    "lib/ants_admin/delegator.rb",
+    "lib/ants_admin/failure_app.rb",
+    "lib/ants_admin/hooks/activatable.rb",
+    "lib/ants_admin/hooks/csrf_cleaner.rb",
+    "lib/ants_admin/hooks/forgetable.rb",
+    "lib/ants_admin/hooks/lockable.rb",
+    "lib/ants_admin/hooks/proxy.rb",
+    "lib/ants_admin/hooks/rememberable.rb",
+    "lib/ants_admin/hooks/timeoutable.rb",
+    "lib/ants_admin/hooks/trackable.rb",
+    "lib/ants_admin/mailers/helpers.rb",
+    "lib/ants_admin/mapping.rb",
+    "lib/ants_admin/models.rb",
+    "lib/ants_admin/models/authenticatable.rb",
+    "lib/ants_admin/models/confirmable.rb",
+    "lib/ants_admin/models/database_authenticatable.rb",
+    "lib/ants_admin/models/lockable.rb",
+    "lib/ants_admin/models/omniauthable.rb",
+    "lib/ants_admin/models/recoverable.rb",
+    "lib/ants_admin/models/registerable.rb",
+    "lib/ants_admin/models/rememberable.rb",
+    "lib/ants_admin/models/timeoutable.rb",
+    "lib/ants_admin/models/trackable.rb",
+    "lib/ants_admin/models/validatable.rb",
+    "lib/ants_admin/modules.rb",
+    "lib/ants_admin/omniauth.rb",
+    "lib/ants_admin/omniauth/config.rb",
+    "lib/ants_admin/omniauth/url_helpers.rb",
+    "lib/ants_admin/orm/active_record.rb",
+    "lib/ants_admin/orm/mongoid.rb",
+    "lib/ants_admin/parameter_filter.rb",
+    "lib/ants_admin/parameter_sanitizer.rb",
+    "lib/ants_admin/rails.rb",
+    "lib/ants_admin/rails/routes.rb",
+    "lib/ants_admin/rails/warden_compat.rb",
+    "lib/ants_admin/strategies/authenticatable.rb",
+    "lib/ants_admin/strategies/base.rb",
+    "lib/ants_admin/strategies/database_authenticatable.rb",
+    "lib/ants_admin/strategies/rememberable.rb",
+    "lib/ants_admin/test_helpers.rb",
+    "lib/ants_admin/time_inflector.rb",
+    "lib/ants_admin/token_generator.rb",
+    "lib/ants_admin/version.rb",
+    "lib/generators/active_record/ants_admin_generator.rb",
+    "lib/generators/active_record/templates/migration.rb",
+    "lib/generators/active_record/templates/migration_existing.rb",
+    "lib/generators/ants_admin/ants_admin_generator.rb",
     "lib/generators/ants_admin/install_generator.rb",
-    "lib/generators/ants_admin/templates/account.rb",
-    "lib/generators/ants_admin/templates/create_accounts.rb"
+    "lib/generators/ants_admin/orm_helpers.rb",
+    "lib/generators/templates/ants_admin.rb"
   ]
   s.homepage = "https://github.com/ThanhKhoaIT/ants_admin"
   s.licenses = ["MIT"]
@@ -218,12 +291,20 @@ Gem::Specification.new do |s|
     s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+      s.add_runtime_dependency(%q<rails>, ["~> 4.0.0"])
+      s.add_runtime_dependency(%q<omniauth>, ["~> 1.0.0"])
+      s.add_runtime_dependency(%q<omniauth-oauth2>, ["~> 1.0.0"])
+      s.add_runtime_dependency(%q<orm_adapter>, [">= 0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 2.0.1"])
       s.add_development_dependency(%q<simplecov>, [">= 0"])
     else
+      s.add_dependency(%q<rails>, ["~> 4.0.0"])
+      s.add_dependency(%q<omniauth>, ["~> 1.0.0"])
+      s.add_dependency(%q<omniauth-oauth2>, ["~> 1.0.0"])
+      s.add_dependency(%q<orm_adapter>, [">= 0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_dependency(%q<bundler>, ["~> 1.0"])
@@ -231,6 +312,10 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<simplecov>, [">= 0"])
     end
   else
+    s.add_dependency(%q<rails>, ["~> 4.0.0"])
+    s.add_dependency(%q<omniauth>, ["~> 1.0.0"])
+    s.add_dependency(%q<omniauth-oauth2>, ["~> 1.0.0"])
+    s.add_dependency(%q<orm_adapter>, [">= 0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
     s.add_dependency(%q<bundler>, ["~> 1.0"])
