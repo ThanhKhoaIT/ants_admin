@@ -12,6 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require turbolinks
+
 //= require ants_admin/base
 //= require ants_admin/bpopup
 //= require ants_admin/jquery-ui-1.10.4

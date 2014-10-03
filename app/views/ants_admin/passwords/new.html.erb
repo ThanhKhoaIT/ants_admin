@@ -1,12 +1,15 @@
-<h2>Forgot your password?</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= ants_admin_error_messages! %>
-
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email, autofocus: true %></div>
-
-  <div><%= f.submit "Send me reset password instructions" %></div>
-<% end %>
-
-<%= render "ants_admin/shared/links" %>
+<div class="form-box" id="login-box">
+    <div class="header">Forgot your password?</div>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= ants_admin_error_messages! %>
+      <div class="body bg-gray">
+        <div class="form-group">
+          <%= f.email_field :email, autofocus: true, class: "form-control", placeholder: "Email" %>
+        </div>
+      </div>
+      <div class="footer">
+          <button type="submit" class="btn bg-olive btn-block">Send me reset password instructions</button>
+          <%= render "ants_admin/shared/links" %>
+      </div>
+    <% end %>
+</div>

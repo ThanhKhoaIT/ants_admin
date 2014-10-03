@@ -1,4 +1,6 @@
 class AntsAdmin::RegistrationsController < AntsAdminController
+  layout "account"
+  
   prepend_before_filter :require_no_authentication, only: [ :new, :create, :cancel ]
   prepend_before_filter :authenticate_scope!, only: [:edit, :update, :destroy]
 
@@ -121,7 +123,6 @@ class AntsAdmin::RegistrationsController < AntsAdminController
 
   # Authenticates the current scope and gets the current resource from the session.
   def authenticate_scope!
-    puts resource_name
     send(:"authenticate_#{resource_name}!", force: true)
     self.resource = send(:"current_#{resource_name}")
   end

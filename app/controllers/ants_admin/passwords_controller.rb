@@ -1,4 +1,6 @@
 class AntsAdmin::PasswordsController < AntsAdminController
+  layout "account"
+  
   prepend_before_filter :require_no_authentication
   # Render the #edit only if coming from a reset password email link
   append_before_filter :assert_reset_token_passed, only: :edit

@@ -1,8 +1,14 @@
 class AntsAdminController < AntsAdmin.parent_controller.constantize
   
-  before_action :authenticate_account!
+  before_action :authenticate_login, only: :index
+  
+  before_action :configure_permitted_parameters, if: :ants_admin_controller?
   
   def index
+  end
+  
+  def authenticate_login
+    redirect_to "/" if !signed_in_resource.present?
   end
   
   include AntsAdmin::Controllers::ScopedViews
@@ -16,8 +22,6 @@ class AntsAdminController < AntsAdmin.parent_controller.constantize
 
   # prepend_before_filter :assert_is_ants_admin_resource!
   respond_to :html if mimes_for_respond_to.empty?
-
-  before_action :configure_permitted_parameters, if: :ants_admin_controller?
 
   # Gets the actual resource stored in the instance variable
   def resource
@@ -182,8 +186,8 @@ MESSAGE
   end
   
   def configure_permitted_parameters
-    ants_admin_parameter_sanitizer.for(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation, :remember_me) }
-    ants_admin_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
-    ants_admin_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
+    ants_admin_parameter_sanitizer.for(:sign_up) {|u|u.permit(:username, :email, :password, :password_confirmation, :remember_me)}
+    ants_admin_parameter_sanitizer.for(:sign_in) {|u|u.permit(:login, :username, :email, :password, :remember_me)}
+    ants_admin_parameter_sanitizer.for(:account_update) {|u|u.permit(:username, :email, :password, :password_confirmation, :current_password)}
   end
 end

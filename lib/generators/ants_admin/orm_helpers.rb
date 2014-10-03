@@ -5,8 +5,8 @@ module AntsAdmin
         buffer = <<-CONTENT
   # Include default ants admin modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  ants_admin :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  #ants_admin :database_authenticatable, :registerable,
+  #       :recoverable, :rememberable, :trackable, :validatable
   attr_accessor :login
   def login=(login)
     @login = login

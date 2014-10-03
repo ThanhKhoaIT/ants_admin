@@ -3621,3 +3621,22 @@ fieldset[disabled] .btn-vk.active {
   color: #587ea3;
   background-color: #ffffff;
 }
+
+
+
+#ants_admin_login {
+  position: fixed;
+  width:100%;
+  height:100%;
+  
+  .form-box form .text-center.link {
+    width:100%;
+    display:block;
+    padding: 6px 0px;
+    border-bottom: 1px solid #ddd;
+    
+    &:last-child {
+      border:none;
+    }
+  }
+}

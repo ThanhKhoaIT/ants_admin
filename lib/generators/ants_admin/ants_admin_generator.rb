@@ -12,6 +12,14 @@ module AntsAdmin
       def name
         @name = params.present? ? params[0] : "account"
       end
+      
+      class_option :routes, desc: "Generate routes", type: :boolean, default: true
+
+      def add_ants_admin_routes
+        params.each do |param|
+          # route "ants_admin_for :#{param}"
+        end
+      end
     end
   end
 end
