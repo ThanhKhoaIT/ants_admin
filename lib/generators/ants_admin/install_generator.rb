@@ -13,12 +13,8 @@ module AntsAdmin
         template "ants_admin.rb", "config/initializers/ants_admin.rb"
       end
 
-      def copy_locale
-        copy_file "../../../config/locales/en.yml", "config/locales/ants_admin.en.yml"
-      end
-
       def show_readme
-        readme "README" if behavior == :invoke
+        # readme "README" if behavior == :invoke
       end
 
       def rails_4?

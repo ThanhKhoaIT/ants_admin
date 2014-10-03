@@ -3,10 +3,6 @@ module AntsAdmin
     module OrmHelpers
       def model_contents
         buffer = <<-CONTENT
-  # Include default ants admin modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  #ants_admin :database_authenticatable, :registerable,
-  #       :recoverable, :rememberable, :trackable, :validatable
   attr_accessor :login
   def login=(login)
     @login = login
@@ -14,6 +10,23 @@ module AntsAdmin
 
   def login
     @login || self.username || self.email
+  end
+  
+  def password
+    nil
+  end
+  
+  def password=(password)
+    self.encrypted_password = Digest::MD5.hexdigest(password)
+  end
+  
+  def self.login_with_username(username, password)
+    login_by = find_by_username(username)
+    if login_by and login_by.encrypted_password = Digest::MD5.hexdigest(password)
+      return login_by
+    else
+      return false
+    end
   end
     
 CONTENT
