@@ -8,6 +8,12 @@ module AntsAdmin
   end
   
   mattr_accessor :model_security
-  @@model_security = nil
+  @@model_security = 'Account'
+  
+  mattr_accessor :registerable
+  @@registerable = true
+  
+  mattr_accessor :recoverable
+  @@recoverable = true
 
 end
