@@ -21,6 +21,7 @@
  *= require ./vendors/datepicker3
  *= require ./vendors/daterangepicker-bs3
  *= require ./vendors/bootstrap3-wysihtml5.min
+ *= require ./vendors/bootstrap-timepicker
 
  *= require ./admin_lte
 */

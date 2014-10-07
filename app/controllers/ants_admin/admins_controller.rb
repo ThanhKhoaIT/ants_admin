@@ -8,6 +8,10 @@ class AntsAdmin::AdminsController < AntsAdminController
         @model_class = urls[0].classify.constantize
         return new if @model_class.included_modules.include?(AntsAdmin::SmartModel)
         raise ActionController::RoutingError.new("No route matches [#{request.method.upcase}] \"/#{url}\"")
+      elsif url.match(/[a-z_]+$/) and request.post?
+        @model_class = url.classify.constantize
+        return create if @model_class.included_modules.include?(RubifyDashboard::StandardResource)
+        raise ActionController::RoutingError.new("No route matches [#{request.method.upcase}] \"/#{url}\"")
       end
     rescue => e
       raise e
@@ -24,17 +28,22 @@ class AntsAdmin::AdminsController < AntsAdminController
     end
   end
   
+  def create
+    params[:action] = "create"
+    if not_create_disabled
+      @object = @model_class.new
+      render template: "/ants_admin/new"
+    else
+      return render :json => {success: false, messages: "Create function is disabled!"}
+    end
+  end
+  
   
   protected
   
   def not_create_disabled
     defined?(@model_class::CREATE_DISABLED).nil? or !@model_class::CREATE_DISABLED
   end
-
-  def title
-    "asdss"
-  end
-
   
   #
   # # POST /admin/sign_in

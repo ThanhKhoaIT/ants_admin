@@ -12,4 +12,3 @@ group :development do
 end
 
 gem 'formtastic', '~> 3.0'
-gem "paperclip", "~> 4.2"

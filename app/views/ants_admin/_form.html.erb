@@ -1,19 +1,36 @@
-<%= form_for @object, :url => @object.new_record? ? "/admin/#{@object}/" : "/admin/#{@object}/#{@object.id}", :html => {role: "form"} do |form| %>
+<%= form_for @object, :url => @object.new_record? ? "/admin/#{@object.class.to_s.downcase}/" : "/admin/#{@object.class.to_s.downcase}/#{@object.id}", :html => {role: "form"} do |form| %>
   <div class="box-body">
     <% @object.class.columns.each do |col| %>
-      <% if ['id','created_at','updated_at'].index(col.name).nil? %>
-        <div class="form-group">
-          <%= form.label col.name.to_sym %>
-          <% case col.type.to_s %>
-          <% when 'string' %>
-            <%= form.text_field col.name.to_sym, class: 'form-control' %>
-          <% when 'text' %>
-            <%= form.text_area col.name.to_sym, class: 'form-control' %>
-          <% when 'boolean' %>
-            <%= form.check_box col.name.to_sym, class: 'form-control' %>
+      <% if ['id','created_at','updated_at'].index(col.name).nil? \
+              and col.name.to_s.index('_file_name').nil? \
+              and col.name.to_s.index('_content_type').nil? \
+              and col.name.to_s.index('_file_size').nil? \
+              and col.name.to_s.index('_updated_at').nil? %>
+              
+        <% case col.type.to_s %>
+        <% when 'string' %>
+          <% if @object.respond_to?("#{col.name}_file_name") %>
+            <%= file_input form, col.name %>
+          <% else %>
+            <%= text_input form, col.name %>
           <% end %>
+        <% when 'text' %>
+          <%= textarea form, col.name %>
+        <% when 'boolean' %>
+          <%= checkbox form, col.name %>
+        <% when 'time' %>
+          <%= time_input form, col.name %>
+        <% when 'integer', 'float', 'decimal' %>
+          <%= number_input form, col.name %>
+        <% when 'date' %>
+          <%= date_input form, col.name %>
+        <% else %>
+          <div class="form-group">
+            <%= form.label col.name.to_sym %>
+            <%= form.text_field col.name.to_sym, class: 'form-control' %>
+          </div>
+        <% end %>
           
-        </div>
       <% end %>
     <% end %>
   </div>
@@ -21,29 +38,3 @@
     <button class="btn btn-primary" type="submit">Submit</button>
   </div>
 <% end %>
-<form role="form">
-    <div class="box-body">
-        <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" placeholder="Enter email" id="exampleInputEmail1" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" placeholder="Password" id="exampleInputPassword1" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="exampleInputFile">File input</label>
-            <input type="file" id="exampleInputFile">
-            <p class="help-block">Example block-level help text here.</p>
-        </div>
-        <div class="checkbox">
-            <label>
-                <div class="icheckbox_minimal" style="position: relative;" aria-checked="false" aria-disabled="false"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border: 0px none; opacity: 0;"></ins></div> Check me out
-            </label>
-        </div>
-    </div><!-- /.box-body -->
-
-    <div class="box-footer">
-        <button class="btn btn-primary" type="submit">Submit</button>
-    </div>
-</form>
