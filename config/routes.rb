@@ -6,4 +6,9 @@ Rails.application.routes.draw do
     post  "/sign_in"    => "ants_admin/sessions#create"
     get   "/sign_out"   => "ants_admin/sessions#destroy"
   end
+  
+  # index, new, create, show, edit, update, destroy, search,...
+  get '/admin/*url'   => "ants_admin/admins#all_default_case"
+  post '/admin/*url'   => "ants_admin/admins#all_default_case"
+  
 end

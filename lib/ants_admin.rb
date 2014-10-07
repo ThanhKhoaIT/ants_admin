@@ -1,4 +1,5 @@
 require 'rails'
+require 'ants_admin/smart_model'
 
 module AntsAdmin
   def self.setup
