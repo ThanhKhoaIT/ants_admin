@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get "/admin" => "ants_admin#index"
+  get "/admin" => "ants_admin#dashboard"
   
   scope "admin" do
     get   "/sign_in"    => "ants_admin/sessions#new"

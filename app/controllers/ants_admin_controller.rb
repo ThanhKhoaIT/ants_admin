@@ -1,10 +1,10 @@
 class AntsAdminController < ActionController::Base
   include AntsAdmin::FormHelper
   before_action :get_current_user
-  before_action :after_signed!, only: :index
+  before_action :after_signed!, only: :dashboard
   before_action :before_signed!
   
-  def index
+  def dashboard
   end
 
   protected

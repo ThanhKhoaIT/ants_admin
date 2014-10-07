@@ -4,18 +4,28 @@ class AntsAdmin::AdminsController < AntsAdminController
     url = params[:url]
     begin
       urls = url.split("/")
-      if url.match(/[a-z_]+\/new$/) and request.get?
+      if url.match(/[a-z_]+$/) and request.get?
+        @model_class = urls[0].classify.constantize
+        return index if @model_class.included_modules.include?(AntsAdmin::SmartModel)
+        raise ActionController::RoutingError.new("No route matches [#{request.method.upcase}] \"/#{url}\"")
+      elsif url.match(/[a-z_]+\/new$/) and request.get?
         @model_class = urls[0].classify.constantize
         return new if @model_class.included_modules.include?(AntsAdmin::SmartModel)
         raise ActionController::RoutingError.new("No route matches [#{request.method.upcase}] \"/#{url}\"")
       elsif url.match(/[a-z_]+$/) and request.post?
-        @model_class = url.classify.constantize
-        return create if @model_class.included_modules.include?(RubifyDashboard::StandardResource)
+        @model_class = urls[0].classify.constantize
+        return create if @model_class.included_modules.include?(AntsAdmin::SmartModel)
         raise ActionController::RoutingError.new("No route matches [#{request.method.upcase}] \"/#{url}\"")
       end
     rescue => e
       raise e
     end
+  end
+ 
+  def index
+    params[:action] = "index"
+    @objects = @model_class.all
+    render template: "/ants_admin/index"
   end
   
   def new
@@ -31,8 +41,12 @@ class AntsAdmin::AdminsController < AntsAdminController
   def create
     params[:action] = "create"
     if not_create_disabled
-      @object = @model_class.new
-      render template: "/ants_admin/new"
+      @object = @model_class.new(params[@model_class.to_s.downcase])
+      if @object.save
+        redirect_to "/admin/#{@model_class.to_s.downcase}/"
+      else
+        render template: "/ants_admin/new"
+      end
     else
       return render :json => {success: false, messages: "Create function is disabled!"}
     end
