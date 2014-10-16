@@ -52,3 +52,11 @@ function openInNewTab(url) {
   var win = window.open(url, '_blank');
   win.focus();
 }
+
+var check_back_action = function () {
+  setTimeout(function() {
+    if (window.location.pathname != "/admin") $("#back_action").fadeIn();
+  }, 100);
+}
+$(document).ready(check_back_action);
+$(document).on("page:receive", check_back_action);

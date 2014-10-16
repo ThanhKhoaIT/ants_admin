@@ -7,8 +7,9 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </a>
+    <a class="fa fa-arrow-left action-page" id="back_action" onclick="window.history.back()"></a>
     <% if @model_string and create_enabled(@model_class) %>
-      <a class="fa fa-plus add-new-item" href="/admin/<%= @model_string %>/new"></a>
+      <a class="fa fa-plus action-page" id="add_action" href="/admin/<%= @model_string %>/new"></a>
     <% end %>
     <%= render :partial => "/layouts/areas/account_info" %>
   </nav>

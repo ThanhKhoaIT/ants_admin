@@ -1,4 +1,6 @@
 class AntsAdmin::AdminsController < AntsAdminController
+  before_action :get_current_user
+  before_action :after_signed!
   
   def all_default_case
     url = params[:url]
@@ -12,6 +14,9 @@ class AntsAdmin::AdminsController < AntsAdminController
         return index if request.get?
         return create if request.post?
       elsif urls.count == 2
+        respond_to do |format|
+          format.json {return json if request.get? and urls[1] == 'all'}
+        end
         return new if request.get? and urls[1] == 'new'
       elsif urls.count == 3
         return edit if request.get? and urls[2] == 'edit'
@@ -27,6 +32,13 @@ class AntsAdmin::AdminsController < AntsAdminController
     render template: "/ants_admin/index"
   end
   
+  def json
+    params[:action] = "json"
+    @objects = @model_class.all
+    render json: {data: @objects}
+  end
+
+  
   def new
     params[:action] = "new"
     if not_create_disabled
@@ -39,8 +51,8 @@ class AntsAdmin::AdminsController < AntsAdminController
   
   def create
     params[:action] = "create"
-    if create_enabled(@model_class)
-      @object = @model_class.new(params[@model_class.to_s.downcase])
+    if not_create_disabled
+      @object = @model_class.new(params_permit)
       if @object.save
         redirect_to "/admin/#{@model_class.to_s.downcase}/"
       else
@@ -51,7 +63,11 @@ class AntsAdmin::AdminsController < AntsAdminController
     end
   end
   
-  
+  private
+  def params_permit
+    params.require(@model_string).permit!
+  end
+    
   protected
   
   def not_create_disabled

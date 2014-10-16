@@ -15,15 +15,15 @@ $(function() {
     "use strict";    
 
     //Enable sidebar toggle
-    $("[data-toggle='offcanvas']").click(function(e) {
-        e.preventDefault();
-        $(this).toggleClass("exit");
-        $("body").toggleClass("left-side-hidde");
-        if ($(window).width() <= 992){
-          $('.row-offcanvas').toggleClass('active');
-          $('.row-offcanvas').toggleClass("relative");
-        }
-    });
+    $(document).delegate("[data-toggle='offcanvas']", "click", function(e) {
+      e.preventDefault();
+      $(this).toggleClass("exit");
+      $("body").toggleClass("left-side-hidde");
+      if ($(window).width() <= 992){
+        $('.row-offcanvas').toggleClass('active');
+        $('.row-offcanvas').toggleClass("relative");
+      }
+    })
     
 
     //Add hover support for touch devices
@@ -39,7 +39,7 @@ $(function() {
     /*     
      * Add collapse and remove events to boxes
      */
-    $("[data-widget='collapse']").click(function() {
+    $(document).delegate("[data-widget='collapse']", "click", function(e) {
         //Find the box parent        
         var box = $(this).parents(".box").first();
         //Find the body and the footer
@@ -71,20 +71,17 @@ $(function() {
      * INITIALIZE BUTTON TOGGLE
      * ------------------------
      */
-    $('.btn-group[data-toggle="btn-toggle"]').each(function() {
-        var group = $(this);
-        $(this).find(".btn").click(function(e) {
-            group.find(".btn.active").removeClass("active");
-            $(this).addClass("active");
-            e.preventDefault();
-        });
-
-    });
-
-    $("[data-widget='remove']").click(function() {
-        //Find the box parent        
-        var box = $(this).parents(".box").first();
-        box.slideUp();
+    
+    $(document).delegate('.btn-group[data-toggle="btn-toggle"] .btn', "click", function(e) {
+      var group = $($(e.currentTarget).parent('.btn-group[data-toggle="btn-toggle"]'));
+      group.find(".btn.active").removeClass("active");
+      $(e.currentTarget).addClass("active");
+      e.preventDefault();
+    })
+    
+    $(document).delegate("[data-widget='remove']", "click", function(e) {
+      var box = $(this).parents(".box").first();
+      box.slideUp();
     });
 
     /* Sidebar tree view */
@@ -586,7 +583,7 @@ $(window).load(function() {
                 btn.children(".fa-angle-left").first().removeClass("fa-angle-left").addClass("fa-angle-down");
             }
             //Slide open or close the menu on link click
-            btn.click(function(e) {
+            $(document).delegate("li.treeview > a", 'click', function(e) {
                 e.preventDefault();
                 if (isActive) {
                     //Slide up to close menu

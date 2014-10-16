@@ -1,8 +1,55 @@
-.add-new-item {
+.action-page {
+  border-left:1px solid #ededed;
+  float:left;
   font-size: 24px;
-  margin: 13px 8px;
+  padding: 13px 12px;
   color:#666;
+  cursor:pointer;
   &:hover {
     color:#555;
   };
+  
+  &#back_action {
+    display:none;
+  }
+}
+
+.dataTables_filter > label {
+  float:right;
+  & > input {
+    border:1px solid #adadad;
+    border-radius: 4px;
+    padding: 5px 8px;
+    width: 150px;
+    transition:width 0.3s;
+    -o-transition:width 0.3s;
+    -ms-transition:width 0.3s;
+    -moz-transition:width 0.3s;
+    -webkit-transition:width 0.3s;
+    &:focus {
+      width: 220px;
+      box-shadow:0px 0px 2px #999;
+    };
+  }
+}
+.dataTables_info {
+  margin-top:20px;
+}
+.dataTables_length > label, .dataTables_filter > label {
+  font-weight:normal;
+}
+.dataTables_paginate.paging_bootstrap {
+  float:right; 
+  .pagination > li:nth-child(1):nth-last-child(3), .pagination > li:nth-child(2):nth-last-child(2), .pagination > li:nth-child(3):nth-last-child(1) {
+    display:none;
+  }
+}
+
+.table.table-bordered.table-striped.dataTable{
+  tr th{
+    font-weight:bold;
+  }
+  tfoot {
+    display:none;
+  }
 }
