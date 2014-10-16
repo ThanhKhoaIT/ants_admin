@@ -130,14 +130,14 @@ body > .header {
     top: 50px;
   }
   /*Right side strech mode*/
-  .right-side.strech {
+  body.left-side-hidde .right-side {
     margin-left: 0;
   }
-  .right-side.strech > .content-header {
+  body.left-side-hidde .right-side > .content-header {
     margin-top: 0px;
   }
   /* Left side collapse */
-  .left-side.collapse-left {
+  body.left-side-hidde .left-side {
     left: -220px;
   }
 }
@@ -804,10 +804,13 @@ body > .header .logo .icon {
  * --------------------------------------------------
  *  Gives us the push menu effect
  */
+
+
 @media screen and (max-width: 992px) {
   .relative {
     position: relative;
   }
+  
   .row-offcanvas-right .sidebar-offcanvas {
     right: -220px;
   }
@@ -833,6 +836,30 @@ body > .header .logo .icon {
   }
   body.fixed .row-offcanvas-left.active .sidebar-offcanvas {
     left: 0px;
+  }
+  
+  body > .header .navbar .sidebar-toggle.exit .icon-bar {
+    height:4px;
+    &:nth-child(2){
+      -webkit-transform: none;
+      -moz-transform: none;
+      -o-transform: none;
+      -ms-transform: none;
+      transform: none;
+      margin-top: -4px;
+    }
+    &:nth-child(3){
+      display:block;
+      margin-top: 5px;
+    }
+    &:nth-child(4){
+      margin-top: 5px;
+      -webkit-transform: none;
+      -moz-transform: none;
+      -o-transform: none;
+      -ms-transform: none;
+      transform: none;
+    }
   }
 }
 /* 

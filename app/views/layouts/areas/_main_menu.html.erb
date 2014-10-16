@@ -14,21 +14,21 @@
         </div>
         
         <% render partial: '/layouts/areas/search_box' %>
-        
         <%= main_menu_ants_admin([{
           text: 'Dashboard',
-          url: '/',
-          active: true,
+          url: '/admin',
+          active: "ants_admin#dashboard",
           icon: 'dashboard'
         },{
           text: 'Item',
-          url: '/admin/item/new',
-          icon: 'dashboard'
+          url: '/admin/item',
+          active: "item",
+          icon: 'th'
         },{
           text: 'Widgets',
           url: '/',
           active: false,
-          icon: 'th',
+          icon: 'leaf',
           note: {
             text: "new",
             color: 'green'

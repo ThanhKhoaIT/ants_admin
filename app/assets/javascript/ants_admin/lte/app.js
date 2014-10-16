@@ -17,20 +17,11 @@ $(function() {
     //Enable sidebar toggle
     $("[data-toggle='offcanvas']").click(function(e) {
         e.preventDefault();
-        if ($(window).width() <= 992) {
+        $(this).toggleClass("exit");
+        $("body").toggleClass("left-side-hidde");
+        if ($(window).width() <= 992){
           $('.row-offcanvas').toggleClass('active');
-          $('.left-side').removeClass("collapse-left");
-          $(".right-side").removeClass("strech");
           $('.row-offcanvas').toggleClass("relative");
-        } else {
-          $('.left-side').toggleClass("collapse-left");
-          $(".right-side").toggleClass("strech");
-        
-          if ($('.left-side.collapse-left').length > 0) {
-            $(this).removeClass("exit");
-          } else {
-            $(this).addClass("exit");
-          }
         }
     });
     

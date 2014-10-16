@@ -18,7 +18,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Icons
+http://fortawesome.github.io/Font-Awesome/icons/
+
+### Config model
+  * 1. Disable for create page
+    ```CREATE_DISABLED = true```
+    
+  * 2. Set title page for model
+    ```TITLE = "Item management"```
 
 ## Contributing
 

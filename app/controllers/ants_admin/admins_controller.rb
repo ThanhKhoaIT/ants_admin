@@ -4,18 +4,17 @@ class AntsAdmin::AdminsController < AntsAdminController
     url = params[:url]
     begin
       urls = url.split("/")
-      if url.match(/[a-z_]+$/) and request.get?
-        @model_class = urls[0].classify.constantize
-        return index if @model_class.included_modules.include?(AntsAdmin::SmartModel)
-        raise ActionController::RoutingError.new("No route matches [#{request.method.upcase}] \"/#{url}\"")
-      elsif url.match(/[a-z_]+\/new$/) and request.get?
-        @model_class = urls[0].classify.constantize
-        return new if @model_class.included_modules.include?(AntsAdmin::SmartModel)
-        raise ActionController::RoutingError.new("No route matches [#{request.method.upcase}] \"/#{url}\"")
-      elsif url.match(/[a-z_]+$/) and request.post?
-        @model_class = urls[0].classify.constantize
-        return create if @model_class.included_modules.include?(AntsAdmin::SmartModel)
-        raise ActionController::RoutingError.new("No route matches [#{request.method.upcase}] \"/#{url}\"")
+      @model_string = urls[0]
+      @model_class = @model_string.classify.constantize
+      params[:controller] = @model_string
+      return raise ActionController::RoutingError.new("No route matches [#{request.method.upcase}] \"/#{url}\"") if !@model_class.included_modules.include?(AntsAdmin::SmartModel)
+      if urls.count == 1
+        return index if request.get?
+        return create if request.post?
+      elsif urls.count == 2
+        return new if request.get? and urls[1] == 'new'
+      elsif urls.count == 3
+        return edit if request.get? and urls[2] == 'edit'
       end
     rescue => e
       raise e
@@ -40,7 +39,7 @@ class AntsAdmin::AdminsController < AntsAdminController
   
   def create
     params[:action] = "create"
-    if not_create_disabled
+    if create_enabled(@model_class)
       @object = @model_class.new(params[@model_class.to_s.downcase])
       if @object.save
         redirect_to "/admin/#{@model_class.to_s.downcase}/"
