@@ -16,8 +16,8 @@ class AntsAdmin::AdminsController < AntsAdminController
       elsif urls.count == 2
         respond_to do |format|
           format.json {return json if request.get? and urls[1] == 'all'}
+          format.html {return new if request.get? and urls[1] == 'new'}
         end
-        return new if request.get? and urls[1] == 'new'
       elsif urls.count == 3
         return edit if request.get? and urls[2] == 'edit'
       end
@@ -34,8 +34,29 @@ class AntsAdmin::AdminsController < AntsAdminController
   
   def json
     params[:action] = "json"
-    @objects = @model_class.all
-    render json: {data: @objects}
+    page = (params[:page] || 1).to_i
+    page = page > 0 ? page : 1
+    perPage = (params[:perPage] || 1).to_i
+    perPage = perPage > 0 ? perPage : 1
+    search = params[:queries] ? params[:queries][:search] : nil
+    sorts = params[:sorts] || []
+    
+    if search
+      like_string = []
+      @model_class::SEARCH_FOR.each do |attr, index|
+        like_string << "#{attr} like '%#{search}%'"
+      end
+      @objects = @model_class.where(like_string.join(" or "))
+    else
+      @objects = @model_class.all
+    end
+    
+    sorts.each do |a, index|
+      @objects = @objects.order(sorts[a].to_i > 0 ? "#{a} desc" : "#{a} asc")
+    end
+    
+    records = @objects[perPage*(page-1)..perPage*page].collect{|record| record.as_json.merge!({action: defined?(record.actions) ? record.actions : ""})}
+    render json: {records: records, queryRecordCount: @objects.count, totalRecordCount: @objects.count}
   end
 
   

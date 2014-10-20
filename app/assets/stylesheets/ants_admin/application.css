@@ -22,6 +22,8 @@
  *= require ./vendors/daterangepicker-bs3
  *= require ./vendors/bootstrap3-wysihtml5.min
  *= require ./vendors/bootstrap-timepicker
+ *= require ./vendors/jquery.dynatable
+
 
  *= require ./admin_lte
 */

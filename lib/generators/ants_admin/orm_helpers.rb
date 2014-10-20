@@ -19,9 +19,9 @@ module AntsAdmin
   def add_token
     token = SecureRandom.urlsafe_base64
     while self.to_s[self.to_s.index('<')+1..self.to_s.index(':')-1].constantize.login_token(token).present?  do
-       token = SecureRandom.urlsafe_base64
+      token = SecureRandom.urlsafe_base64
     end
-    self.tokens = only_device ? token : "\#{tokens},\#{token}"
+    self.tokens = only_device ? token : tokens.split(',').last(5).push(token).join(',')
     save ? token : false
   end
 
@@ -36,7 +36,7 @@ module AntsAdmin
   end
 
   def self.login_token(token)
-    return where("tokens LIKE '%\#{token}%'").first if token and token.length > 10
+    return where("tokens LIKE '%#{token}%'").first if token and token.length > 10
     nil
   end
     

@@ -53,10 +53,33 @@ function openInNewTab(url) {
   win.focus();
 }
 
-var check_back_action = function () {
+var checkBackAction = function () {
   setTimeout(function() {
     if (window.location.pathname != "/admin") $("#back_action").fadeIn();
   }, 100);
 }
-$(document).ready(check_back_action);
-$(document).on("page:receive", check_back_action);
+$(document).ready(checkBackAction);
+$(document).on("page:receive", function() {
+  checkBackAction();
+});
+
+var checkTableAction = function (_this, event) {
+  var actions = $(event.currentTarget).find("action");
+  actions.each(function(index, action) {  
+    var $action = $(action);
+    var btn_group = $action.parent("td").find(".btn-group").length > 0 ? $action.parent("td").find(".btn-group") : $("<div/>").addClass('btn-group');
+    $action.parent("td").append(btn_group);
+    
+    var action_a = $("<a/>").addClass('btn btn-sm')
+    switch ($action.attr('type')) {
+    case "edit":
+      action_a.attr("href", "/" + $action.data('id')).addClass("btn-warning").html('<i class="fa fa-pencil-square-o"></i>')
+      break;
+    case "delete":
+      action_a.attr("href", "/" + $action.data('id')).addClass("btn-danger").html('<i class="fa fa-trash-o"></i>');
+      break;
+    }
+    action_a.appendTo(btn_group);
+  });
+  actions.remove();
+}

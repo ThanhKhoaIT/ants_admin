@@ -16,12 +16,12 @@
           <table id="<%= title(@model_string) %>_table" class="table table-bordered table-striped">
             <thead>
               <tr>
-                <th>title</th>
-                <th>description</th>
-                <th>category</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th style="min-width:100px">Action</th>
               </tr>
             </thead>
-            
             <tbody></tbody>
           </table>
           
@@ -32,18 +32,16 @@
 </section>
 
 <script type="text/javascript">
-$(function() {$("#<%= title(@model_string) %>_table").dataTable({
-  aoColumns: [
-		{'mDataProp': 'title'},
-    {'mDataProp': 'description'},
-    {'mDataProp': 'category'}
-	],
-  sAjaxDataProp: "data",
-  sAjaxSource:'/admin/item/all.json',
-  oLanguage: {
-    sLengthMenu: "_MENU_ <%= title(@model_string) %> per page",
-    sInfoEmpty: "No <%= title(@model_string) %> available",
-    sInfoFiltered: "(filtered from _MAX_ total <%= title(@model_string) %>)"
-  }
-})});
+$(function() {
+  $("#<%= title(@model_string) %>_table").dynatable({
+    dataset: {
+      ajax: true,
+      ajaxUrl: '/admin/<%= @model_string %>/all.json',
+      ajaxOnLoad: true,
+      records: []
+    }
+  }).bind('dynatable:afterUpdate', function(event) {
+    checkTableAction(this, event);
+  });
+})
 </script>

@@ -28,6 +28,17 @@ http://fortawesome.github.io/Font-Awesome/icons/
   * 2. Set title page for model
     ```TITLE = "Item management"```
 
+  * 3. Select attributes for search on model
+    ```SEARCH_FOR = "title", "description"```
+    
+  * 4. Config for action in table
+    ```
+    def actions
+      ["<action type='edit'>Edit</action>",
+      "<action type='delete'>Remove</action>"].join()
+    end
+    ```
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/ants_admin/fork )
