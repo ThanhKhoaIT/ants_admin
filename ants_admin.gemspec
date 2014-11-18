@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2014-10-07"
+  s.date = "2014-11-18"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -69,7 +69,6 @@ Gem::Specification.new do |s|
     "app/assets/images/ants_admin/jquery_ui/ui-icons_ffffff_256x240.png",
     "app/assets/images/ants_admin/minimal.png",
     "app/assets/images/ants_admin/minimal@2x.png",
-    "app/assets/javascript/.DS_Store",
     "app/assets/javascript/ants_admin/application.js",
     "app/assets/javascript/ants_admin/base.js",
     "app/assets/javascript/ants_admin/bpopup.js",
@@ -178,12 +177,18 @@ Gem::Specification.new do |s|
     "app/assets/javascript/ants_admin/lte/plugins/slimScroll/slimScroll.jquery.json",
     "app/assets/javascript/ants_admin/lte/plugins/sparkline/jquery.sparkline.js",
     "app/assets/javascript/ants_admin/lte/plugins/timepicker/bootstrap-timepicker.js",
+    "app/assets/javascript/ants_admin/vendors/jquery.dynatable.js",
+    "app/assets/javascript/ants_admin/vendors/jquery.popup.js",
+    "app/assets/javascript/ants_admin/vendors/queue.js",
     "app/assets/stylesheets/.DS_Store",
     "app/assets/stylesheets/ants_admin/.DS_Store",
     "app/assets/stylesheets/ants_admin/admin_lte.scss",
     "app/assets/stylesheets/ants_admin/application.css",
     "app/assets/stylesheets/ants_admin/base.scss",
+    "app/assets/stylesheets/ants_admin/blur.svg",
     "app/assets/stylesheets/ants_admin/reset.css",
+    "app/assets/stylesheets/ants_admin/styles.scss",
+    "app/assets/stylesheets/ants_admin/vendors/bootstrap-timepicker.css",
     "app/assets/stylesheets/ants_admin/vendors/bootstrap.min.css",
     "app/assets/stylesheets/ants_admin/vendors/bootstrap3-wysihtml5.min.css",
     "app/assets/stylesheets/ants_admin/vendors/datepicker3.css",
@@ -192,6 +197,8 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/ants_admin/vendors/ionicons.min.css",
     "app/assets/stylesheets/ants_admin/vendors/jquery-jvectormap-1.2.2.css",
     "app/assets/stylesheets/ants_admin/vendors/jquery-ui-1.10.4.css",
+    "app/assets/stylesheets/ants_admin/vendors/jquery.dynatable.css",
+    "app/assets/stylesheets/ants_admin/vendors/jquery.popup.scss",
     "app/assets/stylesheets/ants_admin/vendors/morris.css",
     "app/controllers/ants_admin/admins_controller.rb",
     "app/controllers/ants_admin/confirmations_controller.rb",
@@ -200,12 +207,16 @@ Gem::Specification.new do |s|
     "app/controllers/ants_admin/sessions_controller.rb",
     "app/controllers/ants_admin_controller.rb",
     "app/helpers/ants_admin/form_helper.rb",
+    "app/helpers/ants_admin/input_helper.rb",
     "app/helpers/ants_admin/menu_helper.rb",
+    "app/helpers/ants_admin/page_helper.rb",
     "app/mailers/ants_admin/mailer.rb",
     "app/views/.DS_Store",
     "app/views/ants_admin/.DS_Store",
     "app/views/ants_admin/_form.html.erb",
     "app/views/ants_admin/confirmations/new.html.erb",
+    "app/views/ants_admin/dashboard.html.erb",
+    "app/views/ants_admin/edit.html.erb",
     "app/views/ants_admin/index.html.erb",
     "app/views/ants_admin/mailer/confirmation_instructions.html.erb",
     "app/views/ants_admin/mailer/reset_password_instructions.html.erb",
@@ -246,7 +257,6 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<orm_adapter>, ["~> 0.5.0"])
       s.add_runtime_dependency(%q<formtastic>, ["~> 3.0"])
-      s.add_runtime_dependency(%q<paperclip>, ["~> 4.2"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 2.0.1"])
@@ -254,7 +264,6 @@ Gem::Specification.new do |s|
     else
       s.add_dependency(%q<orm_adapter>, ["~> 0.5.0"])
       s.add_dependency(%q<formtastic>, ["~> 3.0"])
-      s.add_dependency(%q<paperclip>, ["~> 4.2"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0"])
       s.add_dependency(%q<jeweler>, ["~> 2.0.1"])
@@ -263,7 +272,6 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<orm_adapter>, ["~> 0.5.0"])
     s.add_dependency(%q<formtastic>, ["~> 3.0"])
-    s.add_dependency(%q<paperclip>, ["~> 4.2"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0"])
     s.add_dependency(%q<jeweler>, ["~> 2.0.1"])
