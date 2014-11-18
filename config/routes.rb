@@ -5,6 +5,9 @@ Rails.application.routes.draw do
     get   "/sign_in"    => "ants_admin/sessions#new"
     post  "/sign_in"    => "ants_admin/sessions#create"
     get   "/sign_out"   => "ants_admin/sessions#destroy"
+    
+    get   "/sign_up"    => "ants_admin/registrations#new"
+    post  "/sign_up"    => "ants_admin/registrations#create"
   end
   
   # index, new, create, show, edit, update, destroy, search,...

@@ -1,3 +1,0 @@
-<%= link_to "Sign in", "/admin/sign_in", class: "text-center bg-gray link" if controller_name != 'sessions' %>
-<%= link_to "Sign up", "/admin/sign_up", class: "text-center bg-gray link" if registerable? && controller_name != 'registrations' %>
-<%= link_to "Forgot your password?", "/admin/password/new", class: "text-center bg-gray link" if recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>

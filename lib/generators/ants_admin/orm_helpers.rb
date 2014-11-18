@@ -36,7 +36,7 @@ module AntsAdmin
   end
 
   def self.login_token(token)
-    return where("tokens LIKE '%#{token}%'").first if token and token.length > 10
+    return where("tokens LIKE '%\#{token}%'").first if token and token.length > 10
     nil
   end
     
