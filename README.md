@@ -18,6 +18,8 @@ And then execute:
 http://fortawesome.github.io/Font-Awesome/icons/
 
 ### Config model
+  Apply smart model: ```include AntsAdmin::SmartModel```
+
   * 1. Disable for create page
     ```CREATE_DISABLED = true```
     

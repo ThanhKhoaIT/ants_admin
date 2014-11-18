@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ants Admin</title>
+  <link href="/assets/ants_admin/favicon.ico" type="image/x-icon" rel="icon">
+  <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+  <%= stylesheet_link_tag    "ants_admin/application", :media => "all" %>  
+  <%= javascript_include_tag "ants_admin/application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body id="ants_admin" class="skin-black fixed">
+  <div class="wrapper row-offcanvas row-offcanvas-left blur_content">
+    <aside class="right-side">
+      <% if flash[:notice] %>
+        <div class="alert alert-success alert-dismissable" style="display:none">
+          <i class="fa fa-check"></i>
+          <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+          <%= flash[:notice] %>
+        </div>
+        <script>
+          $(".alert").fadeIn();
+          setTimeout(function(){$(".alert").fadeOut()}, 5000);
+        </script>
+      <% end %>
+    
+      <%= yield %>        
+    </aside>
+  </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+-
+  text: 'Dashboard'
+  url: '/admin'
+  active: "ants_admin#dashboard"
+  icon: 'dashboard'
+-
+  text: 'Item'
+  url: '/admin/item'
+  active: "item"
+  icon: 'th'
+-
+  text: 'Widgets'
+  url: '/'
+  active: false
+  icon: 'leaf'
+  note:
+    text: "new"
+    color: 'green'
+-
+  text: 'Charts'
+  url: '/'
+  active: false
+  icon: 'bar-chart-o'
+  submenu:
+    -
+      text: "Morris"
+      url: "/"
+    -
+      text: "Flot"
+      url: "/"
+    -
+      text: "Inline charts"
+      url: "/"

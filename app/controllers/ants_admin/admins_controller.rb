@@ -1,7 +1,4 @@
-class AntsAdmin::AdminsController < AntsAdminController
-  before_action :get_current_user
-  before_action :after_signed!
-  
+class AntsAdmin::AdminsController < AntsAdminController  
   def all_default_case
     url = params[:url]
     begin

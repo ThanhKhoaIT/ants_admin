@@ -12,6 +12,10 @@ module AntsAdmin
       def copy_initializer
         template "ants_admin.rb", "config/initializers/ants_admin.rb"
       end
+      
+      def copy_menu_config_file
+        template "ants_admin_menu.yml", "config/ants_admin_menu.yml"
+      end
 
       def show_readme
         # readme "README" if behavior == :invoke

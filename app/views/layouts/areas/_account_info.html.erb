@@ -192,14 +192,14 @@
         <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="glyphicon glyphicon-user"></i>
-                <span><%= @current_user.username %> <i class="caret"></i></span>
+                <span><%= @current_user.to_s %> <i class="caret"></i></span>
             </a>
             <ul class="dropdown-menu">
                 <!-- User image -->
                 <li class="user-header bg-light-blue">
                     <img src="/assets/ants_admin/avatar.png" class="img-circle" alt="User Image" />
                     <p>
-                        <%= @current_user.username %> - <%= @current_user.email %>
+                        <%= @current_user.to_s %> - <%= @current_user.email %>
                         <small>Member since Nov. 2012</small>
                     </p>
                 </li>
