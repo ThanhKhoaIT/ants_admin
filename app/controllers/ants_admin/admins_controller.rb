@@ -16,10 +16,14 @@ class AntsAdmin::AdminsController < AntsAdminController
       elsif urls.count == 2
         respond_to do |format|
           format.json {return json if request.get? and urls[1] == 'all'}
-          format.html {return new if request.get? and urls[1] == 'new'}
+          format.html {
+            return new if request.get? and urls[1] == 'new'
+            return update(urls[1]) if request.patch?
+            return delete(urls[1]) if request.delete?
+          }
         end
       elsif urls.count == 3
-        return edit if request.get? and urls[2] == 'edit'
+        return edit(urls[1]) if request.get? and urls[2] == 'edit'
       end
     rescue => e
       raise e
@@ -55,10 +59,9 @@ class AntsAdmin::AdminsController < AntsAdminController
       @objects = @objects.order(sorts[a].to_i > 0 ? "#{a} desc" : "#{a} asc")
     end
     
-    records = @objects[perPage*(page-1)..perPage*page].collect{|record| record.as_json.merge!({action: defined?(record.actions) ? record.actions : ""})}
+    records = @objects[perPage*(page-1)..perPage*page].collect{|record| record.as_json.merge!({actions: defined?(record.actions) ? record.actions : ""})}
     render json: {records: records, queryRecordCount: @objects.count, totalRecordCount: @objects.count}
   end
-
   
   def new
     params[:action] = "new"
@@ -66,7 +69,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       @object = @model_class.new
       render template: "/ants_admin/new"
     else
-      return render :json => {success: false, messages: "Create function is disabled!"}
+      return render :text => "Create function is disabled!"
     end
   end
   
@@ -75,12 +78,55 @@ class AntsAdmin::AdminsController < AntsAdminController
     if not_create_disabled
       @object = @model_class.new(params_permit)
       if @object.save
-        redirect_to "/admin/#{@model_class.to_s.downcase}/"
+        flash[:notice] = "Create is successful!"
+        redirect_to "/admin/#{@model_class.to_s.downcase}"
       else
         render template: "/ants_admin/new"
       end
     else
-      return render :json => {success: false, messages: "Create function is disabled!"}
+      return render :text => "Create function is disabled!"
+    end
+  end
+  
+  def edit(id)
+    params[:action] = "edit"
+    params[:id] = id
+    if not_edit_disabled
+      @object = @model_class.find id
+      render template: "/ants_admin/edit"
+    else
+      return render :text => "Edit function is disabled!"
+    end
+  end
+  
+  def update(id)
+    params[:action] = "update"
+    params[:id] = id
+    if not_edit_disabled
+      @object = @model_class.find id
+      if @object.update(params_permit)
+        flash[:notice] = "Update is successful!"
+        redirect_to "/admin/#{@model_string}"
+      else
+        render template: "/ants_admin/edit"
+      end
+    else
+      return render :text => "Edit function is disabled!"
+    end
+  end
+  
+  def delete(id)
+    params[:action] = "delete"
+    params[:id] = id
+    if not_delete_disabled
+      @object = @model_class.find id
+      if @object
+        @object.destroy
+        flash[:notice] = "#{@model_string} is removed!"
+      end
+      redirect_to "/admin/#{@model_string}"
+    else
+      return render :text => "Edit function is disabled!"
     end
   end
   
@@ -95,21 +141,11 @@ class AntsAdmin::AdminsController < AntsAdminController
     defined?(@model_class::CREATE_DISABLED).nil? or !@model_class::CREATE_DISABLED
   end
   
-  #
-  # # POST /admin/sign_in
-  # def create
-  #  @token = resource_name.constantize.login_with(params[resource_name][:login], params[resource_name][:password])
-  #  if @token
-  #    cookies[:token] = @token
-  #    redirect_to '/admin'
-  #  else
-  #    redirect_to '/admin/sign_in'
-  #  end
-  # end
-  #
-  # # DELETE /admin/sign_out
-  # def destroy
-  #   cookies[:token] = nil
-  #   redirect_to '/admin/sign_in'
-  # end
+  def not_edit_disabled
+    defined?(@model_class::EDIT_DISABLED).nil? or !@model_class::EDIT_DISABLED
+  end
+  
+  def not_delete_disabled
+    defined?(@model_class::DELETE_DISABLED).nil? or !@model_class::DELETE_DISABLED
+  end
 end

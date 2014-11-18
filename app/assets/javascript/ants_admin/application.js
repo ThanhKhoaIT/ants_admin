@@ -24,3 +24,4 @@
 //= require ants_admin/lte/dashboard
 
 //= require ants_admin/vendors/jquery.dynatable
+//= require ants_admin/vendors/jquery.popup

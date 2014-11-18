@@ -16,10 +16,10 @@
           <table id="<%= title(@model_string) %>_table" class="table table-bordered table-striped">
             <thead>
               <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th style="min-width:100px">Action</th>
+                <% table_title(@model_class).each do |column| %>
+                  <th><%= column %></th>
+                <% end %>
+                <th style="min-width:100px">Actions</th>
               </tr>
             </thead>
             <tbody></tbody>
@@ -41,7 +41,8 @@ $(function() {
       records: []
     }
   }).bind('dynatable:afterUpdate', function(event) {
-    checkTableAction(this, event);
+    checkTableAction("<%= @model_string %>", this, event);
+    reloadEvents();
   });
 })
 </script>

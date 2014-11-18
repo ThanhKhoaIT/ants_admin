@@ -23,7 +23,9 @@
  *= require ./vendors/bootstrap3-wysihtml5.min
  *= require ./vendors/bootstrap-timepicker
  *= require ./vendors/jquery.dynatable
-
+ *= require ./vendors/jquery.popup
 
  *= require ./admin_lte
+
+ *= require ./styles.scss
 */

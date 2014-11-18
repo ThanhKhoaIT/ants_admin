@@ -10,11 +10,23 @@
 </head>
 <body id="ants_admin" class="skin-black fixed">
   <%= render :partial => "/layouts/areas/header" %>
-  <div class="wrapper row-offcanvas row-offcanvas-left">
-      <%= render :partial => "/layouts/areas/main_menu" %>
-      <aside class="right-side">
-        <%= yield %>        
-      </aside>
+  <div class="wrapper row-offcanvas row-offcanvas-left blur_content">
+    <%= render :partial => "/layouts/areas/main_menu" %>
+    <aside class="right-side">
+      <% if flash[:notice] %>
+        <div class="alert alert-success alert-dismissable" style="display:none">
+          <i class="fa fa-check"></i>
+          <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+          <%= flash[:notice] %>
+        </div>
+        <script>
+          $(".alert").fadeIn();
+          setTimeout(function(){$(".alert").fadeOut()}, 5000);
+        </script>
+      <% end %>
+    
+      <%= yield %>        
+    </aside>
   </div>
 </body>
 </html>

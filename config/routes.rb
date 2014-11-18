@@ -10,5 +10,7 @@ Rails.application.routes.draw do
   # index, new, create, show, edit, update, destroy, search,...
   get '/admin/*url'   => "ants_admin/admins#all_default_case"
   post '/admin/*url'   => "ants_admin/admins#all_default_case"
+  patch '/admin/*url'   => "ants_admin/admins#all_default_case"
+  delete '/admin/*url'   => "ants_admin/admins#all_default_case"
   
 end

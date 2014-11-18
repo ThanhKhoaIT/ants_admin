@@ -1,3 +1,34 @@
+.layout_1 {z-index: 10;}
+.layout_2 {z-index: 150;}
+.layout_3 {z-index: 300;}
+.layout_4 {z-index: 450;}
+.layout_5 {z-index: 600;}
+
+.blur-bg {
+  display:none;
+}
+
+body.blur{
+  .blur_content {
+    filter: blur(5px);  
+    -o-filter: blur(5px); 
+    -ms-filter: blur(5px);
+    -moz-filter: blur(5px);
+    -webkit-filter: blur(2px);
+    filter: url(/assets/ants_admin/blur.svg#blur);
+    filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='5');
+  }
+  .blur-bg {
+    display:block;
+    width:100%;
+    height:100%;
+    top:0px;
+    left:0px;
+    position:fixed;
+  }
+}
+
+
 .action-page {
   border-left:1px solid #ededed;
   float:left;
