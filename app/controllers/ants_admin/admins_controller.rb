@@ -1,4 +1,5 @@
-class AntsAdmin::AdminsController < AntsAdminController  
+class AntsAdmin::AdminsController < AntsAdminController
+  
   def all_default_case
     url = params[:url]
     begin
@@ -29,7 +30,6 @@ class AntsAdmin::AdminsController < AntsAdminController
  
   def index
     params[:action] = "index"
-    @objects = @model_class.all
     render template: "/ants_admin/index"
   end
   
@@ -56,7 +56,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       @objects = @objects.order(sorts[a].to_i > 0 ? "#{a} desc" : "#{a} asc")
     end
     
-    records = @objects[perPage*(page-1)..perPage*page].collect{|record| record.as_json.merge!({actions: defined?(record.actions) ? record.actions : ""})}
+    records = @objects[perPage*(page-1)..perPage*page].collect{|record| record.as_json.merge!({actions: actions_link(record)})}
     render json: {records: records, queryRecordCount: @objects.count, totalRecordCount: @objects.count}
   end
   

@@ -1,3 +1,5 @@
+window.AntsAdmin = window.AntsAdmin || {histories: []};
+
 function setRlangCookie(cname, cvalue, days) {
   var d = new Date();
   if (typeof(days) == "undefined") {
@@ -53,6 +55,16 @@ function openInNewTab(url) {
   win.focus();
 }
 
+function blur(is_blur) {
+  if (is_blur) {
+    if ($("blur-bg").length == 0) $("body").append('<div class="blur-bg layout_2"></div>');
+    $("body").addClass("blur");
+  } else {
+    $("body").removeClass("blur");
+  }
+}
+
+
 var checkBackAction = function() {
   setTimeout(function() {
     if (window.location.pathname != "/admin") $("#back_action").fadeIn();
@@ -77,33 +89,22 @@ var eventActionClick = function() {
 
 var reloadEvents = function () {
   checkBackAction();
-  eventActionClick();
-  console.log(1);
 };
+
+function backupStatus() {
+  window.AntsAdmin.histories.push(window.location.href);
+}
+
+function loadScripts(){
+  // $(document).delegate("#back_action", "click", function(event) {
+//     Turbolinks.visit(window.AntsAdmin.histories[window.AntsAdmin.histories.length - 1]);
+//     window.AntsAdmin.histories.pop(1);
+//     return false;
+//   })
+}
+
+
 $(document).ready(reloadEvents);
+$(document).ready(loadScripts);
 $(document).on("page:receive",reloadEvents);
-
-var checkTableAction = function (model, _this, event) {
-  var actions = $(event.currentTarget).find("action");
-  actions.each(function(index, action) {
-    var $action = $(action);
-    var btn_group = $action.parent("td").find(".btn-group").length > 0 ? $action.parent("td").find(".btn-group") : $("<div/>").addClass('btn-group');
-    $action.parent("td").append(btn_group);
-    if(typeof($action.attr("edit")) != "undefined") {
-      $("<a/>").addClass('btn btn-sm').attr("href", ["/admin", model, $action.attr('id'),"edit"].join("/")).addClass("btn-warning").html('<i class="fa fa-pencil-square-o"></i>').appendTo(btn_group);
-    }
-    if(typeof($action.attr("remove")) != "undefined") {
-      $("<a/>").addClass('btn btn-sm').attr("href", ["/admin", model, $action.attr('id')].join("/")).attr('data-method','delete').attr("confirm", "Are you sure?").addClass("btn-danger").html('<i class="fa fa-trash-o"></i>').appendTo(btn_group);
-    }
-  });
-  actions.remove();
-}
-
-function blur(is_blur) {
-  if (is_blur) {
-    if ($("blur-bg").length == 0) $("body").append('<div class="blur-bg layout_2"></div>');
-    $("body").addClass("blur");
-  } else {
-    $("body").removeClass("blur");
-  }
-}
+$(document).on("page:fetch", backupStatus);

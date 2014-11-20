@@ -1,5 +1,10 @@
 class AntsAdminController < ApplicationController
+  include ActionView::Helpers::TagHelper
+  include ActionView::Context
   include AntsAdmin::FormHelper
+  include AntsAdmin::PageHelper
+  include AntsAdmin::IndexHelper
+  
   before_action :get_current_logined
   before_action :security_controller, except: [:errors]
   # before_action :after_signed!, only: :dashboard

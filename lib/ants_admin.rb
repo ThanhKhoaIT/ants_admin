@@ -8,8 +8,8 @@ module AntsAdmin
   class Engine < Rails::Engine
   end
   
-  mattr_accessor :model_security
-  @@model_security = 'Account'
+  mattr_accessor :name_show
+  @@name_show = 'Ants Admin'
   
   mattr_accessor :registerable
   @@registerable = true

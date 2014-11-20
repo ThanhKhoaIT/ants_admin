@@ -10,7 +10,7 @@
 <section class="content">
   <div class="row">
     <div class="col-xs-12">
-      <div class="box">
+      <div class="box default-hidden">
         <div class="box-body table-responsive">
           
           <table id="<%= title(@model_string) %>_table" class="table table-bordered table-striped">
@@ -25,6 +25,11 @@
             <tbody></tbody>
           </table>
           
+          <span id="no-items">No items</span>
+          <% if !(defined?(@model_class::CREATE_DISABLED) and @model_class::CREATE_DISABLED) %>
+            <a class="add-big-center"><i class="fa fa-plus action-page"></i></a>
+          <% end %>
+          
         </div>
       </div>
     </div>
@@ -33,16 +38,31 @@
 
 <script type="text/javascript">
 $(function() {
+  
+  // SEARCH_FOR
   $("#<%= title(@model_string) %>_table").dynatable({
+    features: {
+      search: <%= (defined?(@model_class::SEARCH_FOR) and @model_class::SEARCH_FOR and @model_class.count > 3) ? "true" : "false" %>,
+      recordCount: <%= @model_class.count > 10 ? "true" : "false" %>,
+      paginate: <%= @model_class.count > 10 ? "true" : "false" %>,
+    },
     dataset: {
       ajax: true,
       ajaxUrl: '/admin/<%= @model_string %>/all.json',
       ajaxOnLoad: true,
       records: []
     }
-  }).bind('dynatable:afterUpdate', function(event) {
-    checkTableAction("<%= @model_string %>", this, event);
-    reloadEvents();
+  }).bind('dynatable:afterUpdate', function(event, content) {
+    if (content == "") {
+      $("#no-items").show();
+      $("table#<%= title(@model_string) %>_table").hide();
+    } else {
+      $("#no-items").hide();
+      $("table#<%= title(@model_string) %>_table").show();
+    }
+    $(".box.default-hidden").show();
+  }).bind('dynatable:beforeUpdate', function(event) {
+    $(".box.default-hidden").hide();
   });
 })
 </script>

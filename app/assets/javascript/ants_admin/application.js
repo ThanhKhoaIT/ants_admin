@@ -10,6 +10,7 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
+//= require ants_admin/vendors/json2
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
@@ -25,3 +26,5 @@
 
 //= require ants_admin/vendors/jquery.dynatable
 //= require ants_admin/vendors/jquery.popup
+
+//= require ants_admin/vendors/jstorage

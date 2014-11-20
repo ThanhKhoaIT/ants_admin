@@ -11,11 +11,21 @@ Add this line to your application's Gemfile:
 And then execute:
 
     ```$ bundle```
+    
+## Vendors
+1. Store
+  jStorage (http://www.jstorage.info)
+  
+2. Popup
+  bPopup (http://dinbror.dk/bpopup)
 
+3. Table
+  Dynatable (http://www.dynatable.com)
+  
 ## Usage
 
 ### Icons
-http://fortawesome.github.io/Font-Awesome/icons/
+http://fortawesome.github.io/Font-Awesome/icons
 
 ### Config model
   Apply smart model: ```include AntsAdmin::SmartModel```
@@ -33,8 +43,4 @@ http://fortawesome.github.io/Font-Awesome/icons/
     ```SEARCH_FOR = "title", "description"```
     
   * 5. Config for action in table
-    ```
-    def actions
-      "<action edit remove id=#{self.id}/>"
-    end
-    ```
+    ```ACCTIONS = "edit", "remove"```

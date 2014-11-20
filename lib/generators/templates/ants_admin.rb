@@ -1,6 +1,6 @@
 AntsAdmin.setup do |config|
-  # Main model for login
-  config.model_security = "Account"  
+  # Name of dashboard
+  config.name_show = "Ants Admin"  
   
   # Allow for register
   config.registerable = true

@@ -94,7 +94,37 @@ ul.dynatable-pagination-links {
 table.table th {
   background:#333;
 }
-td.btn-group, td.btn-group-vertical {
+.btn-group, .btn-group-vertical {
   display:inline;
   position:static;
+  float:right;
+}
+tr th.dynatable-head {
+  border:1px solid #555 !important;
+  border-bottom:3px solid #111 !important;
+  border-top:none !important;
+  
+  
+  &:first-child {
+    border-top-left-radius:3px;
+    border-left:none !important;
+  }
+  
+  &:last-child {
+    border-top-right-radius:3px;
+    border-right:none !important;
+  }
+}
+table.table-bordered {
+  border:none;
+}
+
+.default-hidden {
+  display:none;
+}
+
+#no-items {
+  width:100%;
+  text-align:center;
+  display:block;
 }

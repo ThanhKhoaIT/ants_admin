@@ -12,6 +12,11 @@ module AntsAdmin
       titles = defined?(model_class::TABLE_SHOW) ? model_class::TABLE_SHOW : ["id"]
       titles.collect{|column| (column.slice(0,1).capitalize + column.slice(1..-1))}
     end
+    
+    def name_show
+      AntsAdmin.name_show
+    end
+
 
   end
 end
