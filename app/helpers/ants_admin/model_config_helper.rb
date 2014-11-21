@@ -31,9 +31,9 @@ module AntsAdmin
     
     def self.actions
       defaults = ['edit','active','remove']
-      if defined?(@model_string::ACCTIONS)
-        return [] if @model_string::ACCTIONS.is_a?(FalseClass)
-        actions = @model_string::ACCTIONS.is_a?(TrueClass) ? defaults : @model_string::ACCTIONS
+      if defined?(@model_string::ACTIONS)
+        return [] if @model_string::ACTIONS.is_a?(FalseClass)
+        actions = @model_string::ACTIONS.is_a?(TrueClass) ? defaults : @model_string::ACTIONS
       else
         actions = defaults
       end

@@ -43,4 +43,4 @@ http://fortawesome.github.io/Font-Awesome/icons
     ```SEARCH_FOR = "title", "description"```
     
   * 5. Config for action in table
-    ```ACCTIONS = "edit", "remove"```
+    ```ACTIONS = "edit", "remove"```
