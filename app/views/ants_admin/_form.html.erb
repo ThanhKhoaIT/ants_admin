@@ -6,7 +6,7 @@
               and col.name.to_s.index('_content_type').nil? \
               and col.name.to_s.index('_file_size').nil? \
               and col.name.to_s.index('_updated_at').nil? %>
-              
+
         <% case col.type.to_s %>
         <% when 'string' %>
           <% if @object.respond_to?("#{col.name}_file_name") %>
@@ -21,7 +21,13 @@
         <% when 'time' %>
           <%= time_input form, col.name %>
         <% when 'integer', 'float', 'decimal' %>
-          <%= number_input form, col.name %>
+        
+          <% if col.name[-3,3] == "_id" %>
+            <%= select_input form, col.name %>
+          <% else %>
+            <%= number_input form, col.name %>
+          <% end %>
+          
         <% when 'date' %>
           <%= date_input form, col.name %>
         <% else %>

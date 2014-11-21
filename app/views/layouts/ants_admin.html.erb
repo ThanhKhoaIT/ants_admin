@@ -20,6 +20,7 @@
           <%= flash[:notice] %>
         </div>
         <script>
+          window.AntsAdmin.last_object_id = <%= flash[:id] %>;          
           $(".alert").fadeIn();
           setTimeout(function(){$(".alert").fadeOut()}, 5000);
         </script>

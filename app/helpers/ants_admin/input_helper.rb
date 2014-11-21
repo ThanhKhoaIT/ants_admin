@@ -43,5 +43,17 @@ module AntsAdmin
     def checkbox(form, name)
       content_tag(:div, [(form.label name.to_sym),(form.check_box name.to_sym, class: 'form-control')].join().html_safe, class: "form-group")
     end
+    
+    def select_input(form, name)
+      class_model = name[0..-4]
+      collection = class_model.singularize.classify.constantize.all.collect{|item| [item.to_s, item.id]}
+      
+      content_tag(:div, [
+        (form.label name.to_sym),
+        (form.select name, collection, {}, {class: 'form-control'})
+      ].join().html_safe, class: "form-group")
+      
+    end
+
   end
 end

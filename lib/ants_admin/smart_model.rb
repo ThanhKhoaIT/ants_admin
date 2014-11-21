@@ -1,13 +1,11 @@
 module AntsAdmin
   module SmartModel
-        
-    def self.karl
-      p self
-      "Karl Nguyen"
-    end
-
-    # def inputs_form(opts=[])
-#       puts opts
+    # def self.initialize(model_string)
+#       @model_string = model_string
+#     end
+#
+#     def apply_admin?
+#       defined?(@model_string::APPLY_ADMIN)
 #     end
 
   end

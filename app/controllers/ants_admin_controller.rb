@@ -4,6 +4,7 @@ class AntsAdminController < ApplicationController
   include AntsAdmin::FormHelper
   include AntsAdmin::PageHelper
   include AntsAdmin::IndexHelper
+  include AntsAdmin::ModelConfigHelper
   
   before_action :get_current_logined
   before_action :security_controller, except: [:errors]

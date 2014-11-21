@@ -8,7 +8,7 @@
       <span class="icon-bar"></span>
     </a>
     <a class="fa fa-arrow-left action-page" id="back_action"></a>
-    <% if @model_string and create_enabled(@model_class) %>
+    <% if @model_config and !@model_config.create_disabled? %>
       <a class="fa fa-plus action-page" id="add_action" href="/admin/<%= @model_string %>/new"></a>
     <% end %>
     <%= render :partial => "/layouts/areas/account_info" %>

@@ -96,6 +96,63 @@ function backupStatus() {
 }
 
 function loadScripts(){
+  
+  var cursorPosition = { x: -1, y: -1 };
+  $(document).mousemove(function(event) {
+      cursorPosition.x = event.pageX;
+      cursorPosition.y = event.pageY;
+  });
+  
+  $(document).delegate("td .show-btn-list", "click", function(event) {return false})
+  $(document).delegate("td .show-btn-list", "mouseenter", function(event) {
+    $("td .btn-list").hide();
+    var ul = $(event.currentTarget).parent("td").find(".btn-list");
+    ul.css({
+      top: cursorPosition.y,
+      left: cursorPosition.x
+    })
+    ul.fadeIn();
+    return false;
+  })
+  
+  $(document).delegate("td .show-btn-list", "mouseleave", function(event) {
+    $(event.currentTarget).parent("td").find(".btn-list").hide();
+    return false;
+  })
+  
+  $(document).delegate("a.active-link", "click", function(event) {
+    var statusShow = function(status) {
+      _this.removeClass("btn-primary btn-warning actived waiting");
+      if (status=="actived") {
+        _this.addClass("btn-primary actived");
+      } else if (status=="deactived") {
+        _this.addClass("btn-warning");
+      } else if (status=="waiting") {
+        _this.addClass("waiting");
+      }
+    }
+    
+    var _this = $(event.currentTarget);
+    statusShow("waiting");
+    $.ajax({
+      type: "POST",
+      url: _this.attr("href"),
+      success: function (data) {
+        if (data.success) {
+          if (data.actived) {
+            statusShow("actived");
+          } else {
+            statusShow("deactived");
+          }
+        }
+      },
+      error: function () {
+        statusShow("error");
+      }
+    })
+    return false;
+  })
+  
   // $(document).delegate("#back_action", "click", function(event) {
 //     Turbolinks.visit(window.AntsAdmin.histories[window.AntsAdmin.histories.length - 1]);
 //     window.AntsAdmin.histories.pop(1);
