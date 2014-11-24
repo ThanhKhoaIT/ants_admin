@@ -13,11 +13,15 @@ class AntsAdmin::AdminsController < AntsAdminController
         return create if request.post?
       elsif urls.count == 2
         respond_to do |format|
-          format.json {return json if request.get? and urls[1] == 'all'}
+          format.json {
+            return json if request.get? and urls[1] == 'all'
+            return select_box if request.get? and urls[1] == 'select_box'
+          }
           format.html {
             return new if request.get? and urls[1] == 'new'
             return update(urls[1]) if request.patch?
             return delete(urls[1]) if request.delete?
+            return add if request.get? and urls[1] == 'add'
           }
         end
       elsif urls.count == 3
@@ -57,10 +61,24 @@ class AntsAdmin::AdminsController < AntsAdminController
       @objects = @objects.order(sorts[a].to_i > 0 ? "#{a} desc" : "#{a} asc")
     end
     
-    records = @objects[perPage*(page-1)..perPage*page].collect{|record| @model_config.as_json(record).merge!(@model_config.actions.length > 0 ? {actions: actions_link(record)} : {})}
+    records = @objects[perPage*(page-1)..perPage*page].collect{|record| @model_config.as_json(record).merge!(@model_config.actions_link.length > 0 ? {actions: actions_link(record)} : {})}
     render json: {records: records, queryRecordCount: @objects.count, totalRecordCount: @objects.count}
   end
   
+  def select_box
+    if defined?(@model_class.select_box)
+      all = @model_class.select_box(params) rescue @model_class.select_box
+    else
+      all = @model_class.all.collect{|item| {
+              id: item.id,
+              text: represent_text(item)
+            }}
+      all = all.sort_by {|item| item[:text]}
+    end
+    
+    render json: {all: all}
+  end
+
   def new
     params[:action] = "new"
     if @model_config.create_disabled?
@@ -68,6 +86,16 @@ class AntsAdmin::AdminsController < AntsAdminController
     else
       @object = @model_class.new
       render template: "/ants_admin/new"
+    end
+  end
+  
+  def add
+    params[:action] = "add"
+    if @model_config.create_disabled?
+      return render :text => "Create function is disabled!"
+    else
+      @object = @model_class.new
+      render template: "/ants_admin/add", layout: false
     end
   end
   
@@ -98,7 +126,7 @@ class AntsAdmin::AdminsController < AntsAdminController
     end
   end
   
-  def active(id)    
+  def active(id)
     params[:action] = "active"
     params[:id] = id
     @object = @model_class.find id

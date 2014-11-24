@@ -13,6 +13,10 @@ module AntsAdmin
         template "ants_admin.rb", "config/initializers/ants_admin.rb"
       end
       
+      def copy_dashboard_html
+        template "dashboard.html.erb", "app/views/ants_admin/dashboard.html.erb"
+      end
+      
       def copy_menu_config_file
         template "ants_admin_menu.yml", "config/ants_admin_menu.yml"
       end

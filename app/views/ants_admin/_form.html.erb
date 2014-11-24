@@ -1,4 +1,4 @@
-<%= form_for @object, :url => @object.new_record? ? "/admin/#{@object.class.to_s.downcase}/" : "/admin/#{@object.class.to_s.downcase}/#{@object.id}", :html => {role: "form"} do |form| %>
+<%= form_for @object, :url => @object.new_record? ? "/admin/#{@model_string.downcase}/" : "/admin/#{@model_string.downcase}/#{@object.id}", :html => {role: "form"} do |form| %>
   <div class="box-body">
     <% @object.class.columns.each do |col| %>
       <% if ['id','created_at','updated_at'].index(col.name).nil? \

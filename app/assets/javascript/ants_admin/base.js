@@ -1,4 +1,4 @@
-window.AntsAdmin = window.AntsAdmin || {histories: []};
+window.AntsAdmin = window.AntsAdmin || {};
 
 function setRlangCookie(cname, cvalue, days) {
   var d = new Date();
@@ -18,6 +18,16 @@ function getRlangCookie(cname) {
     if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
   }
   return "";
+}
+
+function executeFunctionByName(functionName, context, args) {
+  var args = [].slice.call(arguments).splice(2);
+  var namespaces = functionName.split(".");
+  var func = namespaces.pop();
+  for(var i = 0; i < namespaces.length; i++) {
+    context = context[namespaces[i]];
+  }
+  return context[func].apply(this, args);
 }
 
 window.notification = function (text, success) {
@@ -57,17 +67,60 @@ function openInNewTab(url) {
 
 function blur(is_blur) {
   if (is_blur) {
-    if ($("blur-bg").length == 0) $("body").append('<div class="blur-bg layout_2"></div>');
+    if ($("blur-bg").length == 0) $("body").append('<div class="blur-bg layer_3"></div>');
     $("body").addClass("blur");
   } else {
     $("body").removeClass("blur");
   }
 }
 
+function waiting(is_waiting) {
+  blur(is_waiting);
+  if (is_waiting) {
+    var html = '<div class="waiting_spinner"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>';
+    
+    if ($(".waiting_spinner").length == 0) $("body").append(html);//'<div class="waiting_spinner layer_4"></div>');
+    
+  } else {
+    $(".waiting_spinner").remove();
+  }
+}
+
+function updateSelectBox(link, arr) {
+  var el    = arr[0];
+  var model = arr[1];
+  
+  var right_side = $(".right-side");
+  window.blur(true);
+  var iframe = $("<iframe/>").attr('src', link).addClass('add_ajax layer_4').appendTo("body");
+  
+  iframe.on("load",function(){
+    iframe.contents().find("form").submit(function(event) {
+      window.waiting(true);
+      iframe.addClass('layer_2 blur_content');
+      iframe.removeClass('layer_4');
+      iframe.css("opacity", 0);
+    })
+    if (iframe.contents().find('.alert.alert-success.alert-dismissable').length > 0) {
+      iframe.remove();
+      window.waiting(false);
+      $.ajax({
+        url: ['/admin',model,"select_box.json"].join("/"),
+        success: function (data) {
+          $(el + " option").remove();
+          $.each(data.all, function(index, item) {
+            $("<option/>").attr('value', item.id).html(item.text).appendTo($(el));
+          })
+          window.blur(false);
+        }
+      })
+    }
+  })
+}
 
 var checkBackAction = function() {
   setTimeout(function() {
-    if (window.location.pathname != "/admin") $("#back_action").fadeIn();
+    if (parseInt($.jStorage.get('back_level', '1')) > 1) $("#back_action").fadeIn();
   }, 100);
 };
 var eventActionClick = function() {
@@ -75,15 +128,6 @@ var eventActionClick = function() {
   $("a[confirm]").click(function(event){
     var message = $(event.curentTarget).attr("confirm");
     return window.confirm(message);
-    // window.waitForPopup = true;
-//     var isSayYes = false;
-//     window.popup({
-//       message: $(event.curentTarget).attr("confirm"),
-//       yesClick: function(event_click) {isSayYes=true; window.waitForPopup=false},
-//       noClick: function(event_click) {window.waitForPopup=false}
-//     });
-//     while(window.waitForPopup){setTimeout(function(){},300)};
-//     return isSayYes;
   })
 };
 
@@ -91,35 +135,22 @@ var reloadEvents = function () {
   checkBackAction();
 };
 
-function backupStatus() {
-  window.AntsAdmin.histories.push(window.location.href);
-}
-
 function loadScripts(){
-  
   var cursorPosition = { x: -1, y: -1 };
   $(document).mousemove(function(event) {
       cursorPosition.x = event.pageX;
       cursorPosition.y = event.pageY;
   });
-  
-  $(document).delegate("td .show-btn-list", "click", function(event) {return false})
-  $(document).delegate("td .show-btn-list", "mouseenter", function(event) {
-    $("td .btn-list").hide();
-    var ul = $(event.currentTarget).parent("td").find(".btn-list");
-    ul.css({
-      top: cursorPosition.y,
-      left: cursorPosition.x
-    })
-    ul.fadeIn();
+
+  $(document).delegate("td .show-btn-list", "click", function(event) {
+    $(event.currentTarget).parents("td").addClass("show_list");
     return false;
-  })
-  
-  $(document).delegate("td .show-btn-list", "mouseleave", function(event) {
-    $(event.currentTarget).parent("td").find(".btn-list").hide();
+  });
+  $(document).delegate("td ul a.close_list", "click", function(event) {
+    $(event.currentTarget).parents("td").removeClass("show_list");
     return false;
-  })
-  
+  });
+
   $(document).delegate("a.active-link", "click", function(event) {
     var statusShow = function(status) {
       _this.removeClass("btn-primary btn-warning actived waiting");
@@ -131,7 +162,7 @@ function loadScripts(){
         _this.addClass("waiting");
       }
     }
-    
+
     var _this = $(event.currentTarget);
     statusShow("waiting");
     $.ajax({
@@ -152,7 +183,17 @@ function loadScripts(){
     })
     return false;
   })
+
+  $(document).delegate("a[iframe_link]", "click", function(event) {
+    var _this = $(event.currentTarget),
+        link = _this.attr('iframe_link'),
+        call = _this.attr('iframe_callback'),
+        params = _this.attr('iframe_params');
+    executeFunctionByName(call, window, link, params.split(','));
+    return false;
+  })
   
+
   // $(document).delegate("#back_action", "click", function(event) {
 //     Turbolinks.visit(window.AntsAdmin.histories[window.AntsAdmin.histories.length - 1]);
 //     window.AntsAdmin.histories.pop(1);
@@ -164,4 +205,3 @@ function loadScripts(){
 $(document).ready(reloadEvents);
 $(document).ready(loadScripts);
 $(document).on("page:receive",reloadEvents);
-$(document).on("page:fetch", backupStatus);

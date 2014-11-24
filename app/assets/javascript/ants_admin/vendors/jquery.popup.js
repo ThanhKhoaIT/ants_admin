@@ -5,7 +5,7 @@ window.popup = function(opts) {
     noClick: function(){}
   }, opts);
   
-  var yes_or_no = '<div class="popup-ants-admin layout_3"><span class="message">Are you sure?</span><div class="popup-footer"><button class="btn btn-success btn-sm">Yes</button><button class="btn btn-warning btn-sm">No</button></div></div>';
+  var yes_or_no = '<div class="popup-ants-admin layer_3"><span class="message">Are you sure?</span><div class="popup-footer"><button class="btn btn-success btn-sm">Yes</button><button class="btn btn-warning btn-sm">No</button></div></div>';
   
   window.clearPopup = function() {
     blur(false);

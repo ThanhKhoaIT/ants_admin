@@ -45,13 +45,15 @@ module AntsAdmin
     end
     
     def select_input(form, name)
+      select_box_class = (0...8).map{(65+rand(26)).chr}.join
       class_model = name[0..-4]
-      collection = class_model.singularize.classify.constantize.all.collect{|item| [item.to_s, item.id]}
-      
+      collection = class_model.singularize.classify.constantize.all.collect{|item| [represent_text(item) , item.id]}
+      collection = collection.sort_by{|item| item[0]}
       content_tag(:div, [
-        (form.label name.to_sym),
-        (form.select name, collection, {}, {class: 'form-control'})
-      ].join().html_safe, class: "form-group")
+        (form.label name.to_sym, class: 'label_with_ajax_add'),
+        (form.select name, collection, {}, {class: "form-control with_ajax_add select_#{select_box_class}"}),
+        content_tag(:a, '', href: '#', iframe_link: "/admin/#{class_model}/add", iframe_callback: 'updateSelectBox', iframe_params: ".select_#{select_box_class},#{class_model}", class: 'fa fa-plus add_btn_ajax_select_box')
+      ].join().html_safe, class: "form-group with_ajax_add")
       
     end
 

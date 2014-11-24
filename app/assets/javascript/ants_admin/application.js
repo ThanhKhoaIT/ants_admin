@@ -22,9 +22,11 @@
 //= require_tree ./lte/plugins
 //= require ants_admin/lte/bootstrap
 //= require ants_admin/lte/app
-//= require ants_admin/lte/dashboard
+//                                        require ants_admin/lte/dashboard
 
 //= require ants_admin/vendors/jquery.dynatable
 //= require ants_admin/vendors/jquery.popup
 
 //= require ants_admin/vendors/jstorage
+
+//= require ants_admin/back_action

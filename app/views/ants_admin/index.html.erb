@@ -1,10 +1,9 @@
 <section class="content-header">
 <h1><%= @model_config.title %></h1>
-<!-- <ol class="breadcrumb">
-  <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-  <li><a href="#">Tables</a></li>
-  <li class="active">Data tables</li>
-</ol> -->
+<ol class="breadcrumb">
+  <li><a href="/admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+  <li class="active"><%= @model_config.title %></li>
+</ol>
 </section>
 
 <section class="content">
@@ -19,7 +18,7 @@
                 <% @model_config.table_show.each do |column| %>
                   <th data-dynatable-column="<%= column[:key] %>"><%= column[:value] %></th>
                 <% end %>
-                <% if @model_config.actions.length > 0 %>
+                <% if @model_config.actions_link.length > 0 %>
                   <th style="min-width:100px" class="actions_column" data-dynatable-no-sort="true">Actions</th>
                 <% end %>
               </tr>
@@ -28,8 +27,12 @@
           </table>
           
           <span id="no-items">No items</span>
-          <% if !@model_config.create_disabled? %>
-            <a class="add-big-center"><i class="fa fa-plus action-page"></i></a>
+          <% if !@model_config.create_disabled? and @model_class.count == 0 %>
+            <div class="add-big-center">
+              <div class="btn-box">
+                <a class="fa fa-plus" href="/admin/<%= @model_string %>/new" back-level='2' back-href='/admin/<%= @model_string %>'></a>
+              </div>
+            </div>
           <% end %>
           
         </div>
@@ -63,8 +66,7 @@ $(function() {
       $("table#<%= @model_string %>_table").show();
     }
     $(".box.default-hidden").show();
-    
-    if (window.AntsAdmin.last_object_id != "") {
+    if (typeof(window.AntsAdmin.last_object_id) != 'undefined' & window.AntsAdmin.last_object_id != "") {
       $.each($("table.table tbody tr td:first-child"), function(index, cell) {
         if ($(cell).text() == window.AntsAdmin.last_object_id) {
           setTimeout(function(){$(cell).parents("tr").addClass("hightline")}, 500);
@@ -72,6 +74,10 @@ $(function() {
         }
       })
     }
+    
+    $.each($(".btn-list"), function(index, cell) {
+      $(cell).parents("td").addClass('cell-list');
+    })
     
   }).bind('dynatable:beforeUpdate', function(event) {
     $(".box.default-hidden").hide();

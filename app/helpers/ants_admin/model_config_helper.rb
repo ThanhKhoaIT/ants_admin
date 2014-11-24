@@ -29,18 +29,17 @@ module AntsAdmin
       defined?(@model_string::SEARCH_FOR) ? @model_string::SEARCH_FOR : []
     end
     
-    def self.actions
+    def self.actions_link
       defaults = ['edit','active','remove']
-      if defined?(@model_string::ACTIONS)
-        return [] if @model_string::ACTIONS.is_a?(FalseClass)
-        actions = @model_string::ACTIONS.is_a?(TrueClass) ? defaults : @model_string::ACTIONS
+      if defined?(@model_string::ACTIONS_LINK)
+        return [] if @model_string::ACTIONS_LINK.is_a?(FalseClass)
+        actions = @model_string::ACTIONS_LINK.is_a?(TrueClass) ? defaults : @model_string::ACTIONS_LINK
       else
         actions = defaults
       end
-      
       actions = [actions]     if !actions.is_a?(Array)
       actions -= ['edit']     if edit_disabled?
-      actions -= ['active']   if active_disabled? or defined?(@model_string.new.active).nil?
+      actions -= ['active']   if active_disabled?
       actions -= ['remove']   if delete_disabled?
       return actions
     end
@@ -86,7 +85,7 @@ module AntsAdmin
     end
     
     def self.active_disabled?
-      defined?(@model_string::ACTIVE_DISABLED) and @model_string::ACTIVE_DISABLED
+      (defined?(@model_string::ACTIVE_DISABLED) and @model_string::ACTIVE_DISABLED) or defined?(@model_string.new.active).nil?
     end
     
     # TEXT
@@ -105,9 +104,9 @@ module AntsAdmin
         if hash[key].class.to_s.index("ActiveRecord_Associations_CollectionProxy")
           list = []
           hash[key].each do |item|
-            list << "<li>#{defined?(item.show) ? item.show : item.to_s}</li>"
+            list << "<li><a href='/admin/#{item.class.name.downcase}/#{item.id}/edit' back-href='/admin/#{obj.class.name.downcase}' back-level='2'>#{defined?(item.represent_text) ? item.represent_text : item.to_s}</a></li>"
           end
-          hash[key] = "<a class='fa fa-list show-btn-list btn btn-sm btn-primary #{list.length == 0 ? "disabled" : ""}' href='#'></a><ul class='btn-list'>#{list.join()}</ul>"
+          hash[key] = html_show_list_with_has_many(list)
         else
           hash[key] = hash[key].to_s
         end
@@ -134,6 +133,13 @@ module AntsAdmin
     def self.html_button_deactivated
       (defined?(@model_string::HTML_BUTTON_DEACTIVATED) ? @model_string::HTML_BUTTON_DEACTIVATED : '<i class="fa fa-lock"></i>').html_safe
     end
-
+    
+    private
+    
+    def self.html_show_list_with_has_many(list)
+      disabled = list.length == 0 ? "disabled" : ""
+      html =  "<a class='fa fa-list show-btn-list btn btn-sm btn-primary #{disabled}' href='#'></a><ul class='btn-list'>#{list.join}<a class='close_list fa fa-times'></a></ul>"
+    end
+    
   end
 end

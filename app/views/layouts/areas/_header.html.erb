@@ -9,7 +9,7 @@
     </a>
     <a class="fa fa-arrow-left action-page" id="back_action"></a>
     <% if @model_config and !@model_config.create_disabled? %>
-      <a class="fa fa-plus action-page" id="add_action" href="/admin/<%= @model_string %>/new"></a>
+      <a class="fa fa-plus action-page" id="add_action" href="/admin/<%= @model_string %>/new" back-level='2' back-href='/admin/<%= @model_string %>' ></a>
     <% end %>
     <%= render :partial => "/layouts/areas/account_info" %>
   </nav>
