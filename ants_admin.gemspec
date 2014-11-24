@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2014-11-18"
+  s.date = "2014-11-24"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -71,6 +71,7 @@ Gem::Specification.new do |s|
     "app/assets/images/ants_admin/minimal.png",
     "app/assets/images/ants_admin/minimal@2x.png",
     "app/assets/javascript/ants_admin/application.js",
+    "app/assets/javascript/ants_admin/back_action.js",
     "app/assets/javascript/ants_admin/base.js",
     "app/assets/javascript/ants_admin/bpopup.js",
     "app/assets/javascript/ants_admin/jquery-ui-1.10.4.js",
@@ -180,6 +181,8 @@ Gem::Specification.new do |s|
     "app/assets/javascript/ants_admin/lte/plugins/timepicker/bootstrap-timepicker.js",
     "app/assets/javascript/ants_admin/vendors/jquery.dynatable.js",
     "app/assets/javascript/ants_admin/vendors/jquery.popup.js",
+    "app/assets/javascript/ants_admin/vendors/json2.js",
+    "app/assets/javascript/ants_admin/vendors/jstorage.js",
     "app/assets/javascript/ants_admin/vendors/queue.js",
     "app/assets/stylesheets/.DS_Store",
     "app/assets/stylesheets/ants_admin/.DS_Store",
@@ -204,15 +207,20 @@ Gem::Specification.new do |s|
     "app/controllers/ants_admin/admins_controller.rb",
     "app/controllers/ants_admin_controller.rb",
     "app/helpers/ants_admin/form_helper.rb",
+    "app/helpers/ants_admin/index_helper.rb",
     "app/helpers/ants_admin/input_helper.rb",
     "app/helpers/ants_admin/menu_helper.rb",
+    "app/helpers/ants_admin/model_config_helper.rb",
     "app/helpers/ants_admin/page_helper.rb",
     "app/mailers/ants_admin/mailer.rb",
     "app/views/.DS_Store",
     "app/views/ants_admin/.DS_Store",
+    "app/views/ants_admin/_dashboard_ants_admin.html.erb",
     "app/views/ants_admin/_form.html.erb",
+    "app/views/ants_admin/add.html.erb",
     "app/views/ants_admin/dashboard.html.erb",
     "app/views/ants_admin/edit.html.erb",
+    "app/views/ants_admin/errors.html.erb",
     "app/views/ants_admin/index.html.erb",
     "app/views/ants_admin/mailer/confirmation_instructions.html.erb",
     "app/views/ants_admin/mailer/reset_password_instructions.html.erb",
@@ -220,6 +228,7 @@ Gem::Specification.new do |s|
     "app/views/ants_admin/new.html.erb",
     "app/views/ants_admin/unlocks/new.html.erb",
     "app/views/layouts/ants_admin.html.erb",
+    "app/views/layouts/ants_admin_blank.html.erb",
     "app/views/layouts/ants_admin_login.html.erb",
     "app/views/layouts/areas/_account_info.html.erb",
     "app/views/layouts/areas/_header.html.erb",
@@ -234,7 +243,9 @@ Gem::Specification.new do |s|
     "lib/generators/ants_admin/ants_admin_generator.rb",
     "lib/generators/ants_admin/install_generator.rb",
     "lib/generators/ants_admin/orm_helpers.rb",
-    "lib/generators/templates/ants_admin.rb"
+    "lib/generators/templates/ants_admin.rb",
+    "lib/generators/templates/ants_admin_menu.yml",
+    "lib/generators/templates/dashboard.html.erb"
   ]
   s.homepage = "https://github.com/ThanhKhoaIT/ants_admin"
   s.licenses = ["MIT"]
