@@ -10,11 +10,13 @@ module AntsAdmin
     def self.table_show
       titles = defined?(@model_string::TABLE_SHOW) ? @model_string::TABLE_SHOW : @model_string.new.attributes.select{|attr_name, value| !(["created_at","updated_at","active"]).include?(attr_name) and attr_name[-3,3] != "_id"}.collect{|attr_name, value| attr_name}
       titles += belongs_to_list + has_many_list
-      titles = titles.collect{|title| title.is_a?(Hash) ? title : {
+      titles = titles.collect{|title| title.is_a?(Hash) ? {sort:true}.merge(title) : {
         key: title,
-        value: [title.slice(0, 1).capitalize, title.slice(1..-1)].join()
+        label: [title.slice(0, 1).capitalize, title.slice(1..-1)].join(),
+        sort: true
       }}
-      titles = titles.select{|title| !table_show_skip.include?(title[:value])}
+      titles.uniq!{|t| t[:key]}
+      titles = titles.select{|title| !table_show_skip.include?(title[:label])}
       return titles
     end
     
@@ -49,7 +51,8 @@ module AntsAdmin
       @model_string.reflections.select do |assoc_name, ref|
         list << {
           key: "#{assoc_name.to_s}_id",
-          value: [assoc_name.to_s.slice(0, 1).capitalize, assoc_name.to_s.slice(1..-1)].join()
+          label: [assoc_name.to_s.slice(0, 1).capitalize, assoc_name.to_s.slice(1..-1)].join(),
+          sort: true
         } if ref.macro.to_s == "belongs_to"
       end
       return list
@@ -60,7 +63,8 @@ module AntsAdmin
       @model_string.reflections.select do |assoc_name, ref|
         list << {
           key: "#{assoc_name.to_s}_id",
-          value: [assoc_name.to_s.slice(0, 1).capitalize, assoc_name.to_s.slice(1..-1)].join()
+          label: [assoc_name.to_s.slice(0, 1).capitalize, assoc_name.to_s.slice(1..-1)].join(),
+          sort: true
         } if ref.macro.to_s == "has_many"
       end
       return list
@@ -99,7 +103,7 @@ module AntsAdmin
       hash = {}
       table_show.each do |title|
         key = title[:key]
-        value = title[:value]
+        value = title[:label]
         hash[key] = key[-3,3] != "_id" ? obj[key] : obj.send(value.downcase)
         if hash[key].class.to_s.index("ActiveRecord_Associations_CollectionProxy")
           list = []

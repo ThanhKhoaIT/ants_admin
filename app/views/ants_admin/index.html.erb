@@ -16,7 +16,7 @@
             <thead>
               <tr>
                 <% @model_config.table_show.each do |column| %>
-                  <th data-dynatable-column="<%= column[:key] %>"><%= column[:value] %></th>
+                  <th data-dynatable-column="<%= column[:key] %>" data-dynatable-no-sort="<%= !column[:sort] %>"><%= column[:label] %></th>
                 <% end %>
                 <% if @model_config.actions_link.length > 0 %>
                   <th style="min-width:100px" class="actions_column" data-dynatable-no-sort="true">Actions</th>
