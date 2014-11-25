@@ -94,7 +94,7 @@
       recordCountText: 'Showing',
       recordCountTextTemplate: '{text} {pageTemplate} {totalTemplate} {filteredTemplate}',
       recordCountTemplate: '<span id="dynatable-record-count-{elementId}" class="dynatable-record-count">{textTemplate}</span>',
-      processingText: 'Processing...'
+      processingText: ''
     },
     dataset: {
       ajax: false,
@@ -776,7 +776,8 @@
 
     this.create = function() {
       var $processing = $('<div></div>', {
-            html: '<span>' + settings.inputs.processingText + '</span>',
+            // html: '<span>' + settings.inputs.processingText + '</span>',
+            html: '<div class="loading_table"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>',
             id: 'dynatable-processing-' + obj.element.id,
             'class': 'dynatable-processing',
             style: 'position: absolute; display: none;'
@@ -1245,6 +1246,7 @@
     this.create = function() {
       var $search = $('<input />', {
             type: 'search',
+            placeholder: 'Search',
             id: 'dynatable-query-search-' + obj.element.id,
             'data-dynatable-query': 'search',
             value: settings.dataset.queries.search

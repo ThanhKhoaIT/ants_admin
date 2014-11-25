@@ -27,6 +27,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       elsif urls.count == 3
         return edit(urls[1]) if request.get? and urls[2] == 'edit'
         return active(urls[1]) if request.post? and urls[2] == 'active'
+        return update_belongs_to(urls[1]) if request.post? and urls[2] == 'select'
       end
     rescue => e
       raise e
@@ -47,14 +48,16 @@ class AntsAdmin::AdminsController < AntsAdminController
     search = params[:queries] ? params[:queries][:search] : nil
     sorts = params[:sorts] || []
     
+    includes = (@model_config.has_many_list + @model_config.belongs_to_list).collect{|i|i[:label].downcase}
+    
     if search
       like_string = []
       @model_config.search_for.each do |attr, index|
         like_string << "#{attr} like '%#{search}%'"
       end
-      @objects = @model_class.where(like_string.join(" or "))
+      @objects = @model_class.includes(includes).where(like_string.join(" or "))
     else
-      @objects = @model_class.all
+      @objects = @model_class.includes(includes).all
     end
     
     sorts.each do |a, index|
@@ -152,6 +155,22 @@ class AntsAdmin::AdminsController < AntsAdminController
         redirect_to "/admin/#{@model_string}"
       else
         render template: "/ants_admin/edit"
+      end
+    end
+  end
+  
+  def update_belongs_to(id)
+    params[:action] = "update_belongs_to"
+    params[:id] = id
+    if @model_config.edit_disabled?
+      return render json: {success: false, messages: "Edit function is disabled!"} 
+    else
+      @object = @model_class.find id
+      @object["#{params[:type]}_id"] = params[:value]
+      if @object.save
+        render json: {success: true, messages: "Update is successful!"}
+      else
+        render json: {success: false, messages: "Update is failed!"}
       end
     end
   end

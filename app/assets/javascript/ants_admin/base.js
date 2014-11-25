@@ -120,7 +120,9 @@ function updateSelectBox(link, arr) {
 
 var checkBackAction = function() {
   setTimeout(function() {
-    if (parseInt($.jStorage.get('back_level', '1')) > 1) $("#back_action").fadeIn();
+    var level = parseInt($.jStorage.get('back_level', '1'));
+    if (level > 1) $("#back_action").fadeIn();
+    if ($.jStorage.get('back_'+level+'_href') == window.location.pathname) $("#back_action").hide();
   }, 100);
 };
 var eventActionClick = function() {
@@ -193,7 +195,67 @@ function loadScripts(){
     return false;
   })
   
-
+  $(document).delegate("td .select_edit a.fa.fa-cog", "click", function(event) {
+    var _this = $(event.currentTarget).parents("td"),
+        data = _this.find('data'),
+        select_edit = _this.find(".select_edit"),
+        text_show = select_edit.find("span"),
+        type = data.attr('type'),
+        id = data.attr('obj-id'),
+        value = data.attr('value'),
+        model = data.attr('model');
+    
+    _this.addClass("update_select");
+    var selectbox = $("<select/>").appendTo(select_edit);
+    var done = $("<a/>").addClass("fa fa-check btn btn-default disabled").appendTo(select_edit);
+    var close_link = $("<a/>").addClass("fa fa-times").attr("href","#").appendTo(select_edit);
+    
+    var cancel = function () {
+      selectbox.remove();
+      done.remove();
+      close_link.remove();
+      text_show.show();
+      _this.removeClass("update_select");
+    }    
+    
+    $.ajax({
+      url: ["/admin",type,"select_box.json"].join("/"),
+      success: function (data) {
+        text_show.hide();
+        $.each(data.all, function(index, item) {
+          selectbox.append($("<option/>").attr("value", item.id).html(item.text));
+        })
+        
+        selectbox.val(value);
+        selectbox.change(function(event) {
+          if (selectbox.val() == value) {
+            done.addClass("disabled");
+          } else {
+            done.removeClass("disabled");
+          }
+        })
+        close_link.click(function(event) {cancel()});
+        done.click(function(event) {
+          $.ajax({
+            url: ["","admin",model,id,"select"].join("/"),
+            type: 'POST',
+            data: {
+              type: type,
+              value: selectbox.val()
+            },
+            success: function (data) {
+              if (data.success) {
+                text_show.html(selectbox.find("option[value='"+selectbox.val()+"']").text());
+              }
+              cancel();
+            }
+          })
+        })
+      }
+    })
+    return false;
+  })
+  
   // $(document).delegate("#back_action", "click", function(event) {
 //     Turbolinks.visit(window.AntsAdmin.histories[window.AntsAdmin.histories.length - 1]);
 //     window.AntsAdmin.histories.pop(1);

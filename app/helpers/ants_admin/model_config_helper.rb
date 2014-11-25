@@ -104,15 +104,29 @@ module AntsAdmin
       table_show.each do |title|
         key = title[:key]
         value = title[:label]
-        hash[key] = key[-3,3] != "_id" ? obj[key] : obj.send(value.downcase)
+        add_update_tool = false
+        
+        if key[-3,3] != "_id"
+          hash[key] = self.json_with_file(obj, key) rescue obj[key]
+        else
+          add_update_tool = true
+          hash[key] = obj.send(value.downcase)
+        end
+        
         if hash[key].class.to_s.index("ActiveRecord_Associations_CollectionProxy")
+          add_update_tool = false
           list = []
           hash[key].each do |item|
-            list << "<li><a href='/admin/#{item.class.name.downcase}/#{item.id}/edit' back-href='/admin/#{obj.class.name.downcase}' back-level='2'>#{defined?(item.represent_text) ? item.represent_text : item.to_s}</a></li>"
+            text = defined?(item.represent_text) ? item.represent_text : item.to_s
+            model_string = item.class.name.downcase
+            list << "<li><a href='/admin/#{model_string}/#{item.id}/edit' back-href='/admin/#{obj.class.name.downcase}' back-level='2'>#{text}</a></li>"
           end
           hash[key] = html_show_list_with_has_many(list)
         else
           hash[key] = hash[key].to_s
+        end
+        if add_update_tool
+          hash[key] = ["<div class='select_edit'>","<span>#{hash[key]}</span>","<a class='fa fa-cog' href='#'></a>","<data type='#{key[0..-4]}' value='#{obj.send(value.downcase).id}' obj-id='#{obj.id}' model='#{obj.class.name.downcase}'/>","</div>"].join
         end
       end
       return hash
@@ -141,9 +155,31 @@ module AntsAdmin
     private
     
     def self.html_show_list_with_has_many(list)
-      disabled = list.length == 0 ? "disabled" : ""
-      html =  "<a class='fa fa-list show-btn-list btn btn-sm btn-primary #{disabled}' href='#'></a><ul class='btn-list'>#{list.join}<a class='close_list fa fa-times'></a></ul>"
+      html = list.length > 0 ? "<a class='fa fa-list show-btn-list btn btn-sm btn-default' href='#'></a><ul class='btn-list'>#{list.join}<a class='close_list fa fa-times'></a></ul>" : ""
     end
     
+    def self.json_with_file(obj, key)
+      type = obj.send("#{key}_content_type")
+      url = obj.send(key).url
+      file_name = obj.send("#{key}_file_name")
+      file_types = {
+        'image/jpeg'=> 'image',
+        'image/png'=> 'image',
+        'application/pdf'=> 'file-pdf-o',
+        'text/plain'=> 'file-text',
+        'text/csv'=> 'file-text-o',
+        'application/msword'=> 'file-word-o',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'=> 'file-word-o',
+        'application/vnd.ms-excel'=> 'file-excel-o',
+        'application/vnd.ms-powerpoint'=> 'file-powerpoint-o',
+        'application/zip'=> 'file-zip-o',
+        'application/x-rar-compressed'=> 'file-zip-o',
+        'application/x-photoshop'=> 'file-photo-o'
+      }
+      icon = file_types[type] || 'paperclip'
+      
+      return  type ? (icon == 'image' ? "<img src='#{url}' class='cover file' title='#{file_name}'/>" : "<a href='#{obj.send("#{key}").url}' target='_blank' class='btn btn-default file fa fa-#{icon}' title='#{file_name}'></a>") : ""
+    end
+
   end
 end

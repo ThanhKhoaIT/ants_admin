@@ -79,6 +79,10 @@ $(function() {
       $(cell).parents("td").addClass('cell-list');
     })
     
+    $.each($("td .file"), function(index, cell) {
+      $(cell).parents("td").addClass('col-file');
+    })
+    
   }).bind('dynatable:beforeUpdate', function(event) {
     $(".box.default-hidden").hide();
   });
