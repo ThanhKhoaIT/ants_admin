@@ -24,8 +24,10 @@
  *= require ./vendors/bootstrap-timepicker
  *= require ./vendors/jquery.dynatable
  *= require ./vendors/jquery.popup
-
+ *= require_tree ./vendors/fancybox/
  *= require ./admin_lte
 
  *= require ./styles.scss
+
+
 */

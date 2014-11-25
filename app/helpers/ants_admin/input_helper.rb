@@ -5,7 +5,22 @@ module AntsAdmin
     end
     
     def file_input(form, name)
-      content_tag(:div, [(form.label name.to_sym),(form.file_field name.to_sym)].join().html_safe, class: "form-group")
+      type = form.object["#{name}_content_type"]
+      type = file_type(type) if type
+      if type == "image"
+        image = image_tag(form.object.send(name).url, class: 'cover-file-form')
+        html = link_to(image.html_safe, form.object.send(name).url, class: 'review_image', title: "#{form.object.send("#{name}_file_name")}")
+      else
+        html = content_tag(:i, "", class: "cover-file-form fa fa-#{type}")
+      end
+      
+      html += content_tag(:span, form.object.send("#{name}_file_name"))
+      
+      upload_button = content_tag(:span, ["Upload", (form.file_field name.to_sym)].join.html_safe, class: 'btn btn-default')
+      
+      thumb = type ? content_tag(:div, html.html_safe, class: "thumb") : ""
+      
+      content_tag(:div, [(form.label name.to_sym),thumb,upload_button].join().html_safe, class: "form-group file-upload")
     end
     
     def time_input(form, name)
@@ -55,6 +70,26 @@ module AntsAdmin
         content_tag(:a, '', href: '#', iframe_link: "/admin/#{class_model}/add", iframe_callback: 'updateSelectBox', iframe_params: ".select_#{select_box_class},#{class_model}", class: 'fa fa-plus add_btn_ajax_select_box')
       ].join().html_safe, class: "form-group with_ajax_add")
       
+    end
+
+    protected
+    
+    def file_type(type)
+      types = {
+        'image/jpeg'=> 'image',
+        'image/png'=> 'image',
+        'application/pdf'=> 'file-pdf-o',
+        'text/plain'=> 'file-text',
+        'text/csv'=> 'file-text-o',
+        'application/msword'=> 'file-word-o',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'=> 'file-word-o',
+        'application/vnd.ms-excel'=> 'file-excel-o',
+        'application/vnd.ms-powerpoint'=> 'file-powerpoint-o',
+        'application/zip'=> 'file-zip-o',
+        'application/x-rar-compressed'=> 'file-zip-o',
+        'application/x-photoshop'=> 'file-photo-o'
+      }
+      return types[type] || 'paperclip'
     end
 
   end

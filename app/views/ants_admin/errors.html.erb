@@ -1,1 +1,1 @@
-<%= params[:code] %>
+<%= render :partial => "/ants_admin/errors/page_#{params[:code]}" rescue params[:code] %>

@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 #   end
   
   get '/admin/errors/:code'   => "ants_admin#errors"
+  delete '/admin/errors/:code'   => "ants_admin#errors"
   
   # index, new, create, show, edit, update, destroy, search,...
   get '/admin/*url'   => "ants_admin/admins#all_default_case"

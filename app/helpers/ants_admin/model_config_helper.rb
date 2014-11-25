@@ -27,6 +27,13 @@ module AntsAdmin
       return config_list
     end
     
+    def self.form_input_skip
+      config_list = []
+      config_list = @model_string::FORM_INPUT_SKIP if defined?(@model_string::FORM_INPUT_SKIP)
+      return [config_list] if !config_list.is_a?(Array)
+      return config_list
+    end
+    
     def self.search_for
       defined?(@model_string::SEARCH_FOR) ? @model_string::SEARCH_FOR : []
     end
@@ -107,7 +114,7 @@ module AntsAdmin
         add_update_tool = false
         
         if key[-3,3] != "_id"
-          hash[key] = self.json_with_file(obj, key) rescue obj[key]
+          hash[key] = self.json_with_file(obj, key) rescue attribute_show(obj, key)
         else
           add_update_tool = true
           hash[key] = obj.send(value.downcase)
@@ -177,8 +184,11 @@ module AntsAdmin
         'application/x-photoshop'=> 'file-photo-o'
       }
       icon = file_types[type] || 'paperclip'
-      
       return  type ? (icon == 'image' ? "<img src='#{url}' class='cover file' title='#{file_name}'/>" : "<a href='#{obj.send("#{key}").url}' target='_blank' class='btn btn-default file fa fa-#{icon}' title='#{file_name}'></a>") : ""
+    end
+    
+    def self.attribute_show(obj, attr_name)
+      return obj.send("#{attr_name}_show") rescue obj.send(attr_name)
     end
 
   end

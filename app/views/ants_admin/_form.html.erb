@@ -1,7 +1,7 @@
 <%= form_for @object, :url => @object.new_record? ? "/admin/#{@model_string.downcase}/" : "/admin/#{@model_string.downcase}/#{@object.id}", :html => {role: "form"} do |form| %>
   <div class="box-body">
     <% @object.class.columns.each do |col| %>
-      <% if ['id','created_at','updated_at'].index(col.name).nil? \
+      <% if !(['id','created_at','updated_at'] + @model_config.form_input_skip).include?(col.name) \
               and col.name.to_s.index('_file_name').nil? \
               and col.name.to_s.index('_content_type').nil? \
               and col.name.to_s.index('_file_size').nil? \
@@ -44,3 +44,16 @@
     <button class="btn btn-primary" type="submit">Submit</button>
   </div>
 <% end %>
+
+<script>
+  $(".review_image").fancybox({
+      parent: "body",
+    	openEffect	: 'elastic',
+    	closeEffect	: 'elastic',
+    	helpers : {
+    		title : {
+    			type : 'inside'
+    		}
+    	}
+    });
+</script>

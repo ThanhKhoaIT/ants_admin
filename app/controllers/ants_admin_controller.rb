@@ -22,12 +22,14 @@ class AntsAdminController < ApplicationController
 
   def get_current_logined
     @current_user = defined?(current_logined) ? current_logined : nil
+    @sign_out_link = defined?(sign_out_link) ? sign_out_link : "/admin/errors/not_config_sign_out_link"
+    
     @is_signed = @current_user.present?
   end
 
   def security_controller
     current_logined if defined?(current_logined)
-    redirect_to "/admin/errors/401" if !@is_signed
+    redirect_to "/admin/errors/not_config_current_logined" if !@is_signed
   end
 
   # def after_signed!

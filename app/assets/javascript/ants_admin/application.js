@@ -30,3 +30,5 @@
 //= require ants_admin/vendors/jstorage
 
 //= require ants_admin/back_action
+
+//= require_tree ./vendors/fancybox

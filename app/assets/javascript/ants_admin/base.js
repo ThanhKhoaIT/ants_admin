@@ -93,16 +93,23 @@ function updateSelectBox(link, arr) {
   var right_side = $(".right-side");
   window.blur(true);
   var iframe = $("<iframe/>").attr('src', link).addClass('add_ajax layer_4').appendTo("body");
-  
+  var close_iframe = $("<button/>").addClass('fa fa-times layer_4 close-iframe').appendTo("body");
+  close_iframe.click(function() {
+    window.blur(false);
+    iframe.remove();
+    close_iframe.remove();
+  })
   iframe.on("load",function(){
     iframe.contents().find("form").submit(function(event) {
       window.waiting(true);
       iframe.addClass('layer_2 blur_content');
       iframe.removeClass('layer_4');
+      close_iframe.remove();
       iframe.css("opacity", 0);
     })
     if (iframe.contents().find('.alert.alert-success.alert-dismissable').length > 0) {
       iframe.remove();
+      close_iframe.remove();
       window.waiting(false);
       $.ajax({
         url: ['/admin',model,"select_box.json"].join("/"),
@@ -255,6 +262,18 @@ function loadScripts(){
     })
     return false;
   })
+  
+  $(document).delegate("table.table tr", "click", function(event) {
+    $('table.table tr').removeAttr('class');
+    $(event.currentTarget).addClass('focus');
+  })
+    
+  // $(document).delegate("img.cover-file-form", "click", function(event) {
+ //    var bg = $("<div/>").addClass('layer_4 bg_viewer').appendTo($("body"));
+ //    var img = $("<img/>").attr('src', $(event.currentTarget).attr('src')).appendTo(bg);
+ //    window.blur(true);
+ //  })
+    
   
   // $(document).delegate("#back_action", "click", function(event) {
 //     Turbolinks.visit(window.AntsAdmin.histories[window.AntsAdmin.histories.length - 1]);
