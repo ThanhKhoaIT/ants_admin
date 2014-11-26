@@ -83,6 +83,17 @@ $(function() {
       $(cell).parents("td").addClass('col-file');
     })
     
+    $(".review_image").fancybox({
+      parent: "body",
+    	openEffect	: 'elastic',
+    	closeEffect	: 'elastic',
+    	helpers : {
+    		title : {
+    			type : 'inside'
+    		}
+    	}
+    });
+    
   }).bind('dynatable:beforeUpdate', function(event) {
     $(".box.default-hidden").hide();
   });

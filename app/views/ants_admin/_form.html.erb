@@ -46,7 +46,8 @@
 <% end %>
 
 <script>
-  $(".review_image").fancybox({
+  if (typeof($) != 'undefined') {
+    $(".review_image").fancybox({
       parent: "body",
     	openEffect	: 'elastic',
     	closeEffect	: 'elastic',
@@ -56,4 +57,5 @@
     		}
     	}
     });
+  }
 </script>

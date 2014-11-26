@@ -95,7 +95,7 @@ body > .header {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1030;
+  z-index: 80;
 }
 /* Define 2 column template */
 .right-side,
@@ -520,7 +520,7 @@ Gradient Background colors
 body > .header {
   position: relative;
   max-height: 100px;
-  z-index: 1030;
+  z-index: 70;
 }
 body > .header .navbar {
   height: 50px;
@@ -709,7 +709,7 @@ body > .header .logo .icon {
   }
   body.fixed > .wrapper,
   body.fixed .sidebar-offcanvas {
-    margin-top: 100px!important;
+    margin-top: 100px !important;
   }
 }
 /*
@@ -871,7 +871,7 @@ body > .header .logo .icon {
   -webkit-box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
-  z-index: 2300;
+  z-index: 90;
 }
 .dropdown-menu > li > a > .glyphicon,
 .dropdown-menu > li > a > .fa,
@@ -1871,14 +1871,14 @@ body > .header .logo .icon {
   height: 100%;
 }
 .box > .overlay {
-  z-index: 1010;
+  z-index: 70;
   background: rgba(255, 255, 255, 0.7);
 }
 .box > .overlay.dark {
   background: rgba(0, 0, 0, 0.5);
 }
 .box > .loading-img {
-  z-index: 1020;
+  z-index: 75;
   background: transparent url('/assets/ants_admin/ajax-loader1.gif') 50% 50% no-repeat;
 }
 /*

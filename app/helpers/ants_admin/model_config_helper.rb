@@ -184,7 +184,7 @@ module AntsAdmin
         'application/x-photoshop'=> 'file-photo-o'
       }
       icon = file_types[type] || 'paperclip'
-      return  type ? (icon == 'image' ? "<img src='#{url}' class='cover file' title='#{file_name}'/>" : "<a href='#{obj.send("#{key}").url}' target='_blank' class='btn btn-default file fa fa-#{icon}' title='#{file_name}'></a>") : ""
+      return  type ? (icon == 'image' ? "<a href='#{url}' class='review_image'><img src='#{url}' class='cover file' title='#{file_name}'/></a>" : "<a href='#{obj.send("#{key}").url}' target='_blank' class='btn btn-default file fa fa-#{icon}' title='#{file_name}'></a>") : ""
     end
     
     def self.attribute_show(obj, attr_name)

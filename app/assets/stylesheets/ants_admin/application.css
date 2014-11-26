@@ -24,6 +24,7 @@
  *= require ./vendors/bootstrap-timepicker
  *= require ./vendors/jquery.dynatable
  *= require ./vendors/jquery.popup
+ *= require ./vendors/animate
  *= require_tree ./vendors/fancybox/
  *= require ./admin_lte
 

@@ -67,7 +67,7 @@ function openInNewTab(url) {
 
 function blur(is_blur) {
   if (is_blur) {
-    if ($("blur-bg").length == 0) $("body").append('<div class="blur-bg layer_3"></div>');
+    if ($(".blur-bg").length == 0) $("body").append('<div class="blur-bg layer_3"></div>');
     $("body").addClass("blur");
   } else {
     $("body").removeClass("blur");
@@ -92,21 +92,37 @@ function updateSelectBox(link, arr) {
   
   var right_side = $(".right-side");
   window.blur(true);
-  var iframe = $("<iframe/>").attr('src', link).addClass('add_ajax layer_4').appendTo("body");
-  var close_iframe = $("<button/>").addClass('fa fa-times layer_4 close-iframe').appendTo("body");
+  var iframe = $("<iframe/>").attr('src', link).addClass('add_ajax layer_4').appendTo("body").hide();
+  var close_iframe = $("<button/>").addClass('fa fa-times layer_4 close-iframe').appendTo("body").hide();
+  setTimeout(function() {
+    iframe.show().addClass('flipInX animated');
+    close_iframe.fadeIn(1000);
+  }, 300);
+  
   close_iframe.click(function() {
     window.blur(false);
     iframe.remove();
     close_iframe.remove();
   })
-  iframe.on("load",function(){
-    iframe.contents().find("form").submit(function(event) {
-      window.waiting(true);
-      iframe.addClass('layer_2 blur_content');
-      iframe.removeClass('layer_4');
-      close_iframe.remove();
-      iframe.css("opacity", 0);
-    })
+  iframe.on("load",function(event){
+    var form = iframe.contents().find("form");
+    if (form.length > 0) {
+      if (form.height() < 500) {
+        iframe.height(form.height() + 81);
+        iframe.contents().find('.add_popup').height(form.height() + 80);
+      } else {
+        iframe.height(500);
+      }
+      iframe.css('margin-top', -(iframe.height()/2))
+      close_iframe.css('margin-top', -(iframe.height()/2) - 20)
+      form.submit(function(event) {
+        window.waiting(true);
+        iframe.addClass('layer_2 blur_content');
+        iframe.removeClass('layer_4');
+        close_iframe.remove();
+        iframe.css("opacity", 0);
+      })
+    }
     if (iframe.contents().find('.alert.alert-success.alert-dismissable').length > 0) {
       iframe.remove();
       close_iframe.remove();
@@ -266,6 +282,14 @@ function loadScripts(){
   $(document).delegate("table.table tr", "click", function(event) {
     $('table.table tr').removeAttr('class');
     $(event.currentTarget).addClass('focus');
+  })
+  
+  $(document).delegate(".blur-bg", "click", function(event) {
+    $(".add_ajax.layer_4").removeClass("pulse animated flipInX");
+    
+    setTimeout(function() {
+      $(".add_ajax.layer_4").addClass("pulse animated");
+    }, 50);
   })
     
   // $(document).delegate("img.cover-file-form", "click", function(event) {
