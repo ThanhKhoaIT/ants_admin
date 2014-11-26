@@ -105,8 +105,13 @@ function updateSelectBox(link, arr) {
     close_iframe.remove();
   })
   iframe.on("load",function(event){
+    iframe.contents().find('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
+      checkboxClass: 'icheckbox_flat-blue',
+      radioClass: 'iradio_flat-blue'
+    }); 
+    
     var form = iframe.contents().find("form");
-    if (form.length > 0) {
+    if (form.length > 0) {   
       if (form.height() < 500) {
         iframe.height(form.height() + 81);
         iframe.contents().find('.add_popup').height(form.height() + 80);
@@ -115,6 +120,7 @@ function updateSelectBox(link, arr) {
       }
       iframe.css('margin-top', -(iframe.height()/2))
       close_iframe.css('margin-top', -(iframe.height()/2) - 20)
+      
       form.submit(function(event) {
         window.waiting(true);
         iframe.addClass('layer_2 blur_content');
@@ -290,6 +296,11 @@ function loadScripts(){
     setTimeout(function() {
       $(".add_ajax.layer_4").addClass("pulse animated");
     }, 50);
+  })
+  
+  $(document).delegate("#save_action", "click", function(event) {
+    $(".content form").submit();
+    return false;
   })
     
   // $(document).delegate("img.cover-file-form", "click", function(event) {

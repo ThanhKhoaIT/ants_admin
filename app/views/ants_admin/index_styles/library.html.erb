@@ -1,0 +1,23 @@
+<section class="content-header">
+<h1><%= @model_config.title %></h1>
+<ol class="breadcrumb">
+  <li><a href="/admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+  <li class="active"><%= @model_config.title %></li>
+</ol>
+</section>
+
+<section class="content">
+  <% @objects = @model_class.all %>
+  <div class="row">
+    <% image_attribute = @model_config.image_attribute %>
+    <% @objects.each do |object| %>
+      <div class="col-lg-3 col-xs-6">
+        <%= image_tag(object.send(image_attribute).url(@model_config.image_style_medium)) %>
+      </div>
+    <% end if image_attribute %>
+    
+  </div>
+  
+</section>
+
+  <!-- ajaxUrl: '/admin/<%= @model_string %>/all.json', -->

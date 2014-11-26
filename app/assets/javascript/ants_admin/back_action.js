@@ -9,7 +9,7 @@ $(document).ready(function() {
   })
   
   $(document).delegate("#back_action", "click", function(event) {
-    var level = parseInt($.jStorage.get('back-level', '1'));
+    var level = parseInt($.jStorage.get('back_level', '1'));
         href = $.jStorage.get('back_'+level+'_href', "/admin");
     if (level <= 1) {
       $.jStorage.deleteKey('back_level');

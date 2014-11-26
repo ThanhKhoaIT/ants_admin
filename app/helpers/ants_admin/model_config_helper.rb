@@ -103,7 +103,31 @@ module AntsAdmin
     def self.title
       defined?(@model_string::TITLE) ? @model_string::TITLE : @model_string.to_s
     end
+    
+    def self.layout_index_style
+      default = 'table'
+      style = defined?(@model_string::LAYOUT_INDEX_STYLE) ? @model_string::LAYOUT_INDEX_STYLE : default
+      [default,'library'].include?(style) ? style : default
+    end
 
+    def self.image_attribute
+      config = defined?(@model_string::IMAGE_ATTRIBUTE) ? @model_string::IMAGE_ATTRIBUTE : nil
+      if config.nil?
+        @model_string.new.attributes.each do |attr, value|
+          return attr[0..-11] if attr[-9..-1] == 'file_name'
+        end
+      end
+      return config
+    end
+    
+    def self.image_style_thumb
+      defined?(@model_string::IMAGE_STYLE_THUMB) ? @model_string::IMAGE_STYLE_THUMB : 'original'
+    end
+      
+    def self.image_style_medium
+      defined?(@model_string::IMAGE_STYLE_MEDIUM) ? @model_string::IMAGE_STYLE_MEDIUM : 'original'
+    end
+    
     # HASH
     
     def self.as_json(obj)
@@ -167,7 +191,10 @@ module AntsAdmin
     
     def self.json_with_file(obj, key)
       type = obj.send("#{key}_content_type")
-      url = obj.send(key).url
+      url = obj.send(key).url(image_style_thumb)
+      p obj.send(key).styles.styles
+      p image_style_thumb
+      p "========="
       file_name = obj.send("#{key}_file_name")
       file_types = {
         'image/jpeg'=> 'image',

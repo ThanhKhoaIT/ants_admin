@@ -35,8 +35,9 @@ class AntsAdmin::AdminsController < AntsAdminController
   end
  
   def index
+    layout_index_style = @model_config.layout_index_style
     params[:action] = "index"
-    render template: "/ants_admin/index"
+    render template: "/ants_admin/index_styles/#{layout_index_style}"
   end
   
   def json

@@ -16,11 +16,11 @@ module AntsAdmin
       
       html += content_tag(:span, form.object.send("#{name}_file_name"))
       
-      upload_button = content_tag(:span, ["Upload", (form.file_field name.to_sym)].join.html_safe, class: 'btn btn-default')
+      upload_button = content_tag(:span, ["<i class='fa fa-cloud-upload'></i>", (form.file_field name.to_sym)].join.html_safe, class: 'btn btn-default btn-file')
       
       thumb = type ? content_tag(:div, html.html_safe, class: "thumb") : ""
       
-      content_tag(:div, [(form.label name.to_sym),thumb,upload_button].join().html_safe, class: "form-group file-upload")
+      content_tag(:div, [(form.label name.to_sym, for: false),thumb,upload_button].join().html_safe, class: "form-group file-upload")
     end
     
     def time_input(form, name)
@@ -56,7 +56,7 @@ module AntsAdmin
     end
     
     def checkbox(form, name)
-      content_tag(:div, [(form.label name.to_sym),(form.check_box name.to_sym, class: 'form-control')].join().html_safe, class: "form-group")
+      content_tag(:div, [(form.label name.to_sym, class: 'label_select'),(form.check_box name.to_sym, class: 'form-control flat-blue')].join().html_safe, class: "form-group")
     end
     
     def select_input(form, name)
