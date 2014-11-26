@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2014-11-24"
+  s.date = "2014-11-26"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -32,6 +32,13 @@ Gem::Specification.new do |s|
     "app/assets/images/ants_admin/ajax-loader1.gif",
     "app/assets/images/ants_admin/avatar.png",
     "app/assets/images/ants_admin/blur-background09.jpg",
+    "app/assets/images/ants_admin/fancybox/blank.gif",
+    "app/assets/images/ants_admin/fancybox/fancybox_buttons.png",
+    "app/assets/images/ants_admin/fancybox/fancybox_loading.gif",
+    "app/assets/images/ants_admin/fancybox/fancybox_loading@2x.gif",
+    "app/assets/images/ants_admin/fancybox/fancybox_overlay.png",
+    "app/assets/images/ants_admin/fancybox/fancybox_sprite.png",
+    "app/assets/images/ants_admin/fancybox/fancybox_sprite@2x.png",
     "app/assets/images/ants_admin/fonts/FontAwesome.otf",
     "app/assets/images/ants_admin/fonts/M2Jd71oPJhLKp0zdtTvoM_bce-VcyLJMRR1FC9qWbU8.woff",
     "app/assets/images/ants_admin/fonts/ODelI1aHBYDBqgeIAH2zlNHq-FFgoDNV3GTKpHwuvtI.woff",
@@ -179,6 +186,11 @@ Gem::Specification.new do |s|
     "app/assets/javascript/ants_admin/lte/plugins/slimScroll/slimScroll.jquery.json",
     "app/assets/javascript/ants_admin/lte/plugins/sparkline/jquery.sparkline.js",
     "app/assets/javascript/ants_admin/lte/plugins/timepicker/bootstrap-timepicker.js",
+    "app/assets/javascript/ants_admin/vendors/fancybox/1_jquery.mousewheel-3.0.6.pack.js",
+    "app/assets/javascript/ants_admin/vendors/fancybox/2_jquery.fancybox.js",
+    "app/assets/javascript/ants_admin/vendors/fancybox/3_jquery.fancybox-buttons.js",
+    "app/assets/javascript/ants_admin/vendors/fancybox/4_jquery.fancybox-media.js",
+    "app/assets/javascript/ants_admin/vendors/fancybox/5_jquery.fancybox-thumbs.js",
     "app/assets/javascript/ants_admin/vendors/jquery.dynatable.js",
     "app/assets/javascript/ants_admin/vendors/jquery.popup.js",
     "app/assets/javascript/ants_admin/vendors/json2.js",
@@ -197,6 +209,10 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/ants_admin/vendors/bootstrap3-wysihtml5.min.css",
     "app/assets/stylesheets/ants_admin/vendors/datepicker3.css",
     "app/assets/stylesheets/ants_admin/vendors/daterangepicker-bs3.css",
+    "app/assets/stylesheets/ants_admin/vendors/fancybox/jquery.fancybox-buttons.css",
+    "app/assets/stylesheets/ants_admin/vendors/fancybox/jquery.fancybox-thumbs.css",
+    "app/assets/stylesheets/ants_admin/vendors/fancybox/jquery.fancybox.css",
+    "app/assets/stylesheets/ants_admin/vendors/font-awesome.css",
     "app/assets/stylesheets/ants_admin/vendors/font-awesome.min.css",
     "app/assets/stylesheets/ants_admin/vendors/ionicons.min.css",
     "app/assets/stylesheets/ants_admin/vendors/jquery-jvectormap-1.2.2.css",
@@ -221,12 +237,10 @@ Gem::Specification.new do |s|
     "app/views/ants_admin/dashboard.html.erb",
     "app/views/ants_admin/edit.html.erb",
     "app/views/ants_admin/errors.html.erb",
+    "app/views/ants_admin/errors/_page_not_config_current_logined.html.erb",
+    "app/views/ants_admin/errors/_page_not_config_sign_out_link.html.erb",
     "app/views/ants_admin/index.html.erb",
-    "app/views/ants_admin/mailer/confirmation_instructions.html.erb",
-    "app/views/ants_admin/mailer/reset_password_instructions.html.erb",
-    "app/views/ants_admin/mailer/unlock_instructions.html.erb",
     "app/views/ants_admin/new.html.erb",
-    "app/views/ants_admin/unlocks/new.html.erb",
     "app/views/layouts/ants_admin.html.erb",
     "app/views/layouts/ants_admin_blank.html.erb",
     "app/views/layouts/ants_admin_login.html.erb",
