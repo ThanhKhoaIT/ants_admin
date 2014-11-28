@@ -6,7 +6,14 @@
 </ol>
 </section>
 
-<section class="content">
+<section class="content" id="drop_files">
+  <div id="bg-upload">
+    <img src="" id="drag_drop_review">
+    <div class="actions_drag_drop">
+      <a href="#" class="action_drag_drop_upload btn btn-success btn-flat">Upload</a>
+      <a href="#" class="action_drag_drop_cancel btn btn-danger btn-flat">Cancel</a>
+    </div>
+  </div>
   <% @objects = @model_class.all %>
   <div class="row">
     <% image_attribute = @model_config.image_attribute %>
@@ -45,4 +52,36 @@ $(".review_image").fancybox({
   	}
 	}
 });
+
+
+var obj = $("#drop_files");
+
+obj.on('dragenter', function (e) {
+  e.stopPropagation();
+  e.preventDefault();
+});
+
+obj.on('dragleave', function (e) {
+  $(this).removeClass("drag");
+})
+
+obj.on('dragover', function (e) {
+  $(this).addClass("drag");
+  e.stopPropagation();
+  e.preventDefault();
+});
+
+obj.on('drop', function (e) {
+  e.preventDefault();
+  AntsAdmin.uploadFiles = e.originalEvent.dataTransfer.files;
+  
+  var reader = new FileReader();
+  reader.onload = function (e) {
+    var img = $('img#drag_drop_review');
+    img.attr('src', e.target.result);
+  }
+  reader.readAsDataURL(files[0]);
+
+});
+
 </script>

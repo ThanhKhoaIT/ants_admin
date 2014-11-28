@@ -154,6 +154,7 @@ function loadReviewImage(files) {
     var img = $('#review_upload_image img');
     img.attr('src', e.target.result);
     var review = $("#review_upload_image_group");
+    $("#review_upload_image_arrow").css('left',$("#library_image").offset().left + 15)
     if (!review.hasClass('fadeInUp')) {
       review.removeAttr('class');
       setTimeout(function() {
@@ -164,14 +165,31 @@ function loadReviewImage(files) {
   reader.readAsDataURL(files[0]);
 }
 
-var checkBackAction = function() {
+function checkBackAction() {
   setTimeout(function() {
-    var level = parseInt($.jStorage.get('back_level', '1'));
-    if (level > 1) $("#back_action").fadeIn();
-    if ($.jStorage.get('back_'+level+'_href') == window.location.pathname) $("#back_action").hide();
+    var href = $(".breadcrumb li:nth-last-child(2) a").attr("href"),
+        back_action = $("#back_action");
+    back_action.removeClass("fa-refresh fa-tachometer fa-arrow-left");
+    
+      if (typeof(href) == "undefined") {    
+        $("#back_action").addClass("fa-refresh");
+        back_action.attr("href", "/admin");
+      } else {
+        if (href == "/admin") {
+          $("#back_action").addClass("fa-tachometer");
+        } else {
+          $("#back_action").addClass("fa-arrow-left");
+        }
+        back_action.attr("href", href);
+      }
+    // var level = parseInt($.jStorage.get('back_level', '1'));
+//     if (level > 1) $("#back_action").fadeIn();
+//     if ($.jStorage.get('back_'+level+'_href') == window.location.pathname) $("#back_action").hide();
+    
+
   }, 100);
 };
-var eventActionClick = function() {
+function eventActionClick() {
   $("a[confirm]").unbind("click");
   $("a[confirm]").click(function(event){
     var message = $(event.curentTarget).attr("confirm");
@@ -179,7 +197,7 @@ var eventActionClick = function() {
   })
 };
 
-var reloadEvents = function () {
+function reloadEvents() {
   checkBackAction();
 };
 
@@ -334,6 +352,55 @@ function loadScripts(){
   $(document).delegate(".btn.btn-sm.btn-danger[data-method='delete']", "click", function(event) {
     window.waiting(true);
   })
+  
+  $(document).delegate(".action_drag_drop_cancel", "click", function(event) {
+    $("#drop_files.content.drag").removeClass("drag");
+    return false;
+  })
+  
+  $(document).delegate(".action_drag_drop_upload", "click", function(event) {
+    var fd = new FormData();
+    fd.append('file', AntsAdmin.uploadFiles[i]);
+    
+    var uploadURL ="/admin"; //Upload URL
+    var extraData ={}; //Extra Data.
+    var jqXHR=$.ajax({
+      xhr: function() {
+        var xhrobj = $.ajaxSettings.xhr();
+        if (xhrobj.upload) {
+          xhrobj.upload.addEventListener('progress', function(event) {
+            var percent = 0;
+            var position = event.loaded || event.position;
+            var total = event.total;
+            if (event.lengthComputable) {
+              percent = Math.ceil(position / total * 100);
+            }
+            //Set progress
+            status.setProgress(percent);
+          }, false);
+        }
+        return xhrobj;
+      },
+      url: uploadURL,
+      type: "POST",
+      contentType:false,
+      processData: false,
+      cache: false,
+      data: formData,
+      success: function(data){
+        status.setProgress(100);
+
+        //$("#status1").append("File upload Done<br>");          
+      }
+    });
+
+    status.setAbort(jqXHR);
+    
+    AntsAdmin.uploadFiles = "";
+    return false;
+  })
+  
+  
 }
 
 
