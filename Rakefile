@@ -14,7 +14,7 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
   gem.name = "ants_admin"
-  gem.homepage = "https://github.com/ThanhKhoaIT/ants_admin"
+  gem.homepage = "https://antsadmin.wordpress.com"
   gem.license = "MIT"
   gem.summary = %Q{Admin panel for you}
   gem.description = %Q{Admin panel for you}

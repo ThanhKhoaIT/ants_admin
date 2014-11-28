@@ -23,6 +23,11 @@ module AntsAdmin
       content_tag(:div, [(form.label name.to_sym, for: false),thumb,upload_button].join().html_safe, class: "form-group file-upload")
     end
     
+    def file_input_upload_only(form, name)
+      content_tag(:div, (form.file_field name.to_sym), class: 'fa fa-cloud-upload action-page', id: 'add_upload')
+    end
+
+    
     def time_input(form, name)
       id = "id_#{Random.rand(500) + 10}"
       contents = ['<div class="form-group">', 
@@ -62,7 +67,9 @@ module AntsAdmin
     def select_input(form, name)
       select_box_class = (0...8).map{(65+rand(26)).chr}.join
       class_model = name[0..-4]
-      collection = class_model.singularize.classify.constantize.all.collect{|item| [represent_text(item) , item.id]}
+      model_class = class_model.singularize.classify.constantize
+      all = model_class.load_select_box rescue model_class.all
+      collection = all.collect{|item| [represent_text(item) , item.id]}
       collection = collection.sort_by{|item| item[0]}
       content_tag(:div, [
         (form.label name.to_sym, class: 'label_with_ajax_add'),

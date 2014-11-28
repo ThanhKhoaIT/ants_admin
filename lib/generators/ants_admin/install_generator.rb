@@ -16,10 +16,6 @@ module AntsAdmin
       def copy_dashboard_html
         template "dashboard.html.erb", "app/views/ants_admin/dashboard.html.erb"
       end
-      
-      def copy_menu_config_file
-        template "ants_admin_menu.yml", "config/ants_admin_menu.yml"
-      end
 
       def show_readme
         # readme "README" if behavior == :invoke

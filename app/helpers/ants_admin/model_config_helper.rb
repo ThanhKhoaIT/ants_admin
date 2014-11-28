@@ -9,6 +9,7 @@ module AntsAdmin
     # LIST
     def self.table_show
       titles = defined?(@model_string::TABLE_SHOW) ? @model_string::TABLE_SHOW : @model_string.new.attributes.select{|attr_name, value| !(["created_at","updated_at","active"]).include?(attr_name) and attr_name[-3,3] != "_id"}.collect{|attr_name, value| attr_name}
+      titles = [titles] if titles.is_a?(String)
       titles += belongs_to_list + has_many_list
       titles = titles.collect{|title| title.is_a?(Hash) ? {sort:true}.merge(title) : {
         key: title,
@@ -70,7 +71,7 @@ module AntsAdmin
       @model_string.reflections.select do |assoc_name, ref|
         list << {
           key: "#{assoc_name.to_s}_id",
-          label: [assoc_name.to_s.slice(0, 1).capitalize, assoc_name.to_s.slice(1..-1)].join(),
+          label: [assoc_name.to_s.pluralize.slice(0, 1).capitalize, assoc_name.to_s.pluralize.slice(1..-1)].join(),
           sort: true
         } if ref.macro.to_s == "has_many"
       end
@@ -101,12 +102,18 @@ module AntsAdmin
     
     # TEXT
     def self.title
-      defined?(@model_string::TITLE) ? @model_string::TITLE : @model_string.to_s
+      defined?(@model_string::TITLE) ? @model_string::TITLE : @model_string.to_s.pluralize
     end
     
     def self.layout_index_style
-      default = 'table'
+      default = model_style
       style = defined?(@model_string::LAYOUT_INDEX_STYLE) ? @model_string::LAYOUT_INDEX_STYLE : default
+      ['table','library'].include?(style) ? style : default
+    end
+    
+    def self.model_style
+      default = 'table'
+      style = defined?(@model_string::MODEL_STYLE) ? @model_string::MODEL_STYLE : default
       [default,'library'].include?(style) ? style : default
     end
 
@@ -154,7 +161,7 @@ module AntsAdmin
           end
           hash[key] = html_show_list_with_has_many(list)
         else
-          hash[key] = hash[key].to_s
+          hash[key] = defined?(hash[key].represent_text) ? hash[key].represent_text : hash[key].to_s
         end
         if add_update_tool
           hash[key] = ["<div class='select_edit'>","<span>#{hash[key]}</span>","<a class='fa fa-cog' href='#'></a>","<data type='#{key[0..-4]}' value='#{obj.send(value.downcase).id}' obj-id='#{obj.id}' model='#{obj.class.name.downcase}'/>","</div>"].join
@@ -191,10 +198,8 @@ module AntsAdmin
     
     def self.json_with_file(obj, key)
       type = obj.send("#{key}_content_type")
-      url = obj.send(key).url(image_style_thumb)
-      p obj.send(key).styles.styles
-      p image_style_thumb
-      p "========="
+      style = obj.send(key).styles.present? ? image_style_thumb : 'original'
+      url = obj.send(key).url(style)
       file_name = obj.send("#{key}_file_name")
       file_types = {
         'image/jpeg'=> 'image',
@@ -211,7 +216,7 @@ module AntsAdmin
         'application/x-photoshop'=> 'file-photo-o'
       }
       icon = file_types[type] || 'paperclip'
-      return  type ? (icon == 'image' ? "<a href='#{url}' class='review_image'><img src='#{url}' class='cover file' title='#{file_name}'/></a>" : "<a href='#{obj.send("#{key}").url}' target='_blank' class='btn btn-default file fa fa-#{icon}' title='#{file_name}'></a>") : ""
+      return  type ? (icon == 'image' ? "<a href='#{obj.send(key).url}' class='review_image'><img src='#{url}' class='cover file' title='#{file_name}'/></a>" : "<a href='#{obj.send("#{key}").url}' target='_blank' class='btn btn-default file fa fa-#{icon}' title='#{file_name}'></a>") : ""
     end
     
     def self.attribute_show(obj, attr_name)

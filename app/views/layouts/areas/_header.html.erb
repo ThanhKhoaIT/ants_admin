@@ -9,7 +9,12 @@
     </a>
     <a class="fa fa-arrow-left action-page" id="back_action"></a>
     <% if @model_config and !@model_config.create_disabled? and params[:action] != 'new' %>
-      <a class="fa fa-plus action-page" id="add_action" href="/admin/<%= @model_string %>/new" back-level='2' back-href='/admin/<%= @model_string %>' ></a>
+      <% if @model_config.model_style == "library" %>
+        <% @object = @model_class.new %>
+        <%= render partial: 'ants_admin/form_upload' %>
+      <% else %>
+        <a class="fa fa-plus action-page" id="add_action" href="/admin/<%= @model_string %>/new" back-level='2' back-href='/admin/<%= @model_string %>' ></a>
+      <% end %>      
     <% end %>
     <% if @model_config and ['new','edit'].include?(params[:action]) %>
       <a class="fa fa-save action-page" id="save_action" href="#"></a>

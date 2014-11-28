@@ -6,7 +6,7 @@ class AntsAdminController < ApplicationController
   include AntsAdmin::IndexHelper
   include AntsAdmin::ModelConfigHelper
   
-  before_action :get_current_logined
+  before_action :initialize_ants_admin_controller
   before_action :security_controller, except: [:errors]
   # before_action :after_signed!, only: :dashboard
 #   before_action :before_signed!
@@ -20,10 +20,13 @@ class AntsAdminController < ApplicationController
 
   protected
 
-  def get_current_logined
+  def initialize_ants_admin_controller
     @current_user = defined?(current_logined) ? current_logined : nil
     @sign_out_link = defined?(sign_out_link) ? sign_out_link : "/admin/errors/not_config_sign_out_link"
-    
+    @main_menu =  defined?(ants_admin_main_menu) ? ants_admin_main_menu : [{'text'=> 'Dashboard',
+       'active'=> "ants_admin#dashboard",
+       "icon"=>"dashboard",
+       "url"=>"/admin"}]
     @is_signed = @current_user.present?
   end
 

@@ -11,8 +11,11 @@
   <div class="row">
     <% image_attribute = @model_config.image_attribute %>
     <% @objects.each do |object| %>
-      <div class="col-lg-3 col-xs-6">
-        <%= image_tag(object.send(image_attribute).url(@model_config.image_style_medium)) %>
+      <div class="col-lg-3 col-sm-4 col-xs-6 library_item">
+        <%= actions_link(object) %>
+        <a href='<%= object.send(image_attribute).url %>' class='review_image' rel="fancybox-thumb" title="<%= object.send("#{image_attribute}_file_name") %>">
+          <%= image_tag(object.send(image_attribute).url(@model_config.image_style_medium), class: 'library_index') %>
+        </a>
       </div>
     <% end if image_attribute %>
     
@@ -20,4 +23,26 @@
   
 </section>
 
-  <!-- ajaxUrl: '/admin/<%= @model_string %>/all.json', -->
+<script>
+$(".library_index").hide();
+$(".library_index").fadeIn();
+
+$(".row").isotope({
+  itemSelector: '.col-lg-3.col-sm-4.col-xs-6.library_item',
+  layoutMode: 'masonry'
+})
+
+$(".review_image").fancybox({
+  parent: "body",
+	openEffect	: 'elastic',
+	closeEffect	: 'elastic',
+	helpers : {
+		media : {},
+    type : 'inside',
+    thumbs	: {
+  		width	: 50,
+  		height	: 50
+  	}
+	}
+});
+</script>

@@ -28,6 +28,7 @@
 //= require ants_admin/vendors/jquery.popup
 
 //= require ants_admin/vendors/jstorage
+//= require ants_admin/vendors/isotope.pkgd
 
 //= require ants_admin/back_action
 

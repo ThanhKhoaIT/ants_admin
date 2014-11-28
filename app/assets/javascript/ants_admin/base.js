@@ -147,6 +147,23 @@ function updateSelectBox(link, arr) {
   })
 }
 
+function loadReviewImage(files) {
+  //$('#new_<%= @model_string.downcase %>').submit();
+  var reader = new FileReader();
+  reader.onload = function (e) {
+    var img = $('#review_upload_image img');
+    img.attr('src', e.target.result);
+    var review = $("#review_upload_image_group");
+    if (!review.hasClass('fadeInUp')) {
+      review.removeAttr('class');
+      setTimeout(function() {
+        review.addClass("animated fadeInUp");
+      }, 50)
+    }
+  }
+  reader.readAsDataURL(files[0]);
+}
+
 var checkBackAction = function() {
   setTimeout(function() {
     var level = parseInt($.jStorage.get('back_level', '1'));
@@ -302,19 +319,21 @@ function loadScripts(){
     $(".content form").submit();
     return false;
   })
-    
-  // $(document).delegate("img.cover-file-form", "click", function(event) {
- //    var bg = $("<div/>").addClass('layer_4 bg_viewer').appendTo($("body"));
- //    var img = $("<img/>").attr('src', $(event.currentTarget).attr('src')).appendTo(bg);
- //    window.blur(true);
- //  })
-    
   
-  // $(document).delegate("#back_action", "click", function(event) {
-//     Turbolinks.visit(window.AntsAdmin.histories[window.AntsAdmin.histories.length - 1]);
-//     window.AntsAdmin.histories.pop(1);
-//     return false;
-//   })
+  $(document).delegate("#review_upload_image .btn-sm.btn-danger", "click", function(event) {
+    $("#review_upload_image_group").removeClass("fadeInUp").addClass('fadeOutDown');
+    return false;
+  })
+  
+  $(document).delegate("#review_upload_image .btn-sm.btn-success", "click", function(event) {
+    $("#review_upload_image_group").hide().parents("form").submit();
+    window.waiting(true);
+    return false;
+  })
+  
+  $(document).delegate(".btn.btn-sm.btn-danger[data-method='delete']", "click", function(event) {
+    window.waiting(true);
+  })
 }
 
 

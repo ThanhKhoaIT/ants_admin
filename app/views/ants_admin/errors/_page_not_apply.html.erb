@@ -1,0 +1,12 @@
+<h1>You need add "APPLY_ADMIN = true" to <%= params[:model] %>.rb file</h1>
+<a href='/'>View solution</a>
+<div class="row">
+  <span class='file_name'>file: <i><%= params[:model].downcase %>.rb</i></span>
+  <code>
+    <ul>
+      <li class='tab0'><span class='class'>class</span> <span class='class_name'><%= params[:model].classify %></span> <span class='default'>< ActiveRecord::Base</span></li>
+      <li class='tab1'><span class='key'>APPLY_ADMIN</span> = true</li>
+      <li class='tab0'><span class='end'>end</span></li>
+    </ul>
+  </code>
+</div>

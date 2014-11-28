@@ -672,3 +672,103 @@ form .form-group textarea {
     margin-top:1px;
   }
 }
+
+img.library_index {
+  margin-bottom:30px;
+  width:100%;
+  max-height: 240px;
+}
+
+#fancybox-thumbs ul li a img {
+  left:0px !important;
+}
+#add_upload {
+  position:relative;
+  input {
+    position:absolute;
+    top:0px;
+    left:0px;
+    opacity:0;
+    width:100%;
+    height:100%;
+  }
+}
+
+#review_upload_image_group {
+  display:none;
+  &.animated {
+    display:inline;
+  }
+}
+
+#review_upload_image_arrow {
+  width: 20px;
+  height:20px;
+  border-left:1px solid #ccc;
+  border-top:1px solid #ccc;
+  background:#fff;
+  top:40px;
+  left:280px;
+  position:fixed;
+  z-index:40;
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+#review_upload_image {
+  background:#fff;
+  width: 180px;
+  position:fixed;
+  border:1px solid #ccc;
+  box-shadow:2px 2px 5px #999;
+  border-radius:3px;
+  top: 50px;
+  left: 230px;
+  img {
+    z-index:45;
+    width:90%;
+    margin: 5%;
+    float:left;
+    max-height:300px;
+    position:relative;
+  }
+  .footer_review_upload_image {
+    float:left;
+    width:100%;
+    bottom:0px;
+    height:35px;
+    background:#eee;
+    button {
+      float:left;
+      position:absolute;
+      left:5%;
+      width: 50%;
+      line-height:15px;
+      margin-top:5px;
+      &.btn-danger {
+        float:right;
+        right:5%;
+        left:auto;
+        width:35%;
+      }
+    }
+  }
+}
+
+.library_item {
+  position:relative;
+  &:hover {
+    .tool_library {
+      display:block;
+    }
+  }
+  .tool_library {
+    display:none;
+    position:absolute;
+    right: 25px;
+    top: 10px;
+  }
+}

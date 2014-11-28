@@ -3,11 +3,15 @@ class AntsAdmin::AdminsController < AntsAdminController
     url = params[:url]
     begin
       urls = url.split("/")
-      @model_string = urls[0]
-      @model_class = @model_string.classify.constantize
+      @model_string = urls[0].singularize
+      begin
+        @model_class = @model_string.classify.constantize
+      rescue
+        return redirect_to "/admin/errors/not_model?model=#{@model_string}"
+      end
       @model_config = AntsAdmin::ModelConfigHelper.new(@model_class)
       params[:controller] = @model_string
-      return raise ActionController::RoutingError.new("No route matches [#{request.method.upcase}] \"/#{url}\"") if  !@model_config.apply_admin?
+      return redirect_to "/admin/errors/not_apply?model=#{@model_string}" if !@model_config.apply_admin?
       if urls.count == 1
         return index if request.get?
         return create if request.post?
@@ -25,7 +29,7 @@ class AntsAdmin::AdminsController < AntsAdminController
           }
         end
       elsif urls.count == 3
-        return edit(urls[1]) if request.get? and urls[2] == 'edit'
+        return urls[2] == 'edit' ? edit(urls[1]) : modify_link(urls[1], urls[2]) if request.get?
         return active(urls[1]) if request.post? and urls[2] == 'active'
         return update_belongs_to(urls[1]) if request.post? and urls[2] == 'select'
       end
@@ -35,8 +39,8 @@ class AntsAdmin::AdminsController < AntsAdminController
   end
  
   def index
-    layout_index_style = @model_config.layout_index_style
     params[:action] = "index"
+    layout_index_style = @model_config.layout_index_style
     render template: "/ants_admin/index_styles/#{layout_index_style}"
   end
   
@@ -56,13 +60,13 @@ class AntsAdmin::AdminsController < AntsAdminController
       @model_config.search_for.each do |attr, index|
         like_string << "#{attr} like '%#{search}%'"
       end
-      @objects = @model_class.includes(includes).where(like_string.join(" or "))
+      @objects = load_data.includes(includes).where(like_string.join(" or "))
     else
-      @objects = @model_class.includes(includes).all
+      @objects = load_data.includes(includes)
     end
     
-    sorts.each do |a, index|
-      @objects = @objects.order(sorts[a].to_i > 0 ? "#{a} desc" : "#{a} asc")
+    sorts.each do |s, index|
+      @objects = @objects.order(sorts[s].to_i > 0 ? "#{s} desc" : "#{s} asc")
     end
     
     records = @objects[perPage*(page-1)..perPage*page].collect{|record| @model_config.as_json(record).merge!(@model_config.actions_link.length > 0 ? {actions: actions_link(record)} : {})}
@@ -70,15 +74,11 @@ class AntsAdmin::AdminsController < AntsAdminController
   end
   
   def select_box
-    if defined?(@model_class.select_box)
-      all = @model_class.select_box(params) rescue @model_class.select_box
-    else
-      all = @model_class.all.collect{|item| {
-              id: item.id,
-              text: represent_text(item)
-            }}
-      all = all.sort_by {|item| item[:text]}
-    end
+    all = load_select_box.collect{|item| {
+            id: item.id,
+            text: represent_text(item)
+          }}
+    all = all.sort_by {|item| item[:text]}
     
     render json: {all: all}
   end
@@ -117,6 +117,12 @@ class AntsAdmin::AdminsController < AntsAdminController
         render template: "/ants_admin/new"
       end
     end
+  end
+  
+  def modify_link(id, action)
+    params[:action] = action
+    params[:id] = id
+    render template: "/ants_admin/#{@model_string.pluralize}/#{action}" rescue render template: "/ants_admin/modify_link"
   end
   
   def edit(id)
@@ -189,6 +195,14 @@ class AntsAdmin::AdminsController < AntsAdminController
       end
       redirect_to "/admin/#{@model_string}"
     end
+  end
+  
+  def load_data
+    @model_class.load_all(@current_user, params) rescue @model_class.load_all(@current_user) rescue @model_class.load_all rescue @model_class.all
+  end
+  
+  def load_select_box
+    @model_class.load_select_box(@current_user, params) rescue @model_class.load_select_box(@current_user) rescue @model_class.load_select_box rescue @model_class.all
   end
   
   private

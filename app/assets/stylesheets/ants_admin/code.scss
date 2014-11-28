@@ -1,0 +1,64 @@
+span.file_name {
+  margin-top: 30px;
+  float:left;
+  margin-left:50px;
+  width:100%;
+}
+code {
+  float:left;
+  margin-top: 5px;
+  margin-left: 50px;
+  background: #eee !important;
+  padding: 10px 10px 10px 7px !important;
+  ul {
+    list-style:none;
+    li {
+      list-style-type: decimal;
+      &.tab0 {
+        padding-left:0px;
+        color:#000;
+      }
+      &.tab1 {
+        padding-left:20px;
+        color:#666;
+      }
+      &.tab2 {
+        padding-left:40px;
+        color:#aaa;
+      }
+      &.tab3 {
+        padding-left:60px;
+        color:#aaa;
+      }
+      &.tab4 {
+        padding-left:80px;
+        color:#aaa;
+      }
+      &.tab5 {
+        padding-left:100px;
+        color:#aaa;
+      }
+      
+      .class, .end, .def {
+        color:#9210BA;
+      }
+      .class_name {
+        color:#0226DB;
+        font-weight:bold;
+      }
+      .def_name {
+        color:#9210BA;
+        font-weight:bold;
+      }
+      .code {
+        color:#333;
+      }
+      .default {
+        color:#5BB205;
+      }
+      .key {
+        color:#D32121;
+      }
+    }
+  }
+}
