@@ -1,0 +1,47 @@
+<%= form.fields_for item do |sub_form| %>  
+  <div class="nested-item">
+    <%= link_to_remove_fields form %>
+
+    <% @sub_model_class.columns.each do |col| %>
+
+      <% if !(['id','created_at','updated_at'] + @sub_model_config.form_input_skip).include?(col.name) \
+              and col.name.to_s.index('_file_name').nil? \
+              and col.name.to_s.index('_content_type').nil? \
+              and col.name.to_s.index('_file_size').nil? \
+              and col.name.to_s.index('_updated_at').nil? %>
+
+        <% case col.type.to_s %>
+        <% when 'string' %>
+          <% if @sub_model_class.respond_to?("#{col.name}_file_name") %>
+            <%= file_input form, col.name %>
+          <% else %>
+            <%= text_input form, col.name %>
+          <% end %>
+        <% when 'text' %>
+          <%= textarea form, col.name %>
+        <% when 'boolean' %>
+          <%= checkbox form, col.name %>
+        <% when 'time' %>
+          <%= time_input form, col.name %>
+        <% when 'integer', 'float', 'decimal' %>
+    
+          <% if col.name[-3,3] == "_id" %>
+            <%= select_input form, col.name %>
+          <% else %>
+            <%= number_input form, col.name %>
+          <% end %>
+      
+        <% when 'date' %>
+          <%= date_input form, col.name %>
+        <% else %>
+          <div class="form-group">
+            <%= form.label col.name.to_sym %>
+            <%= form.text_field col.name.to_sym, class: 'form-control' %>
+          </div>
+        <% end %>
+      
+      <% end %>
+    <% end %>
+    
+  </div>
+<% end %>

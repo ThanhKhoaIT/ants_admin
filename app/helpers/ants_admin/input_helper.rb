@@ -79,6 +79,22 @@ module AntsAdmin
       
     end
 
+    def link_to_add_fields(f, association)
+      new_object = f.object.class.reflect_on_association(association).klass.new
+      fields = f.fields_for(association, new_object, :child_index => "new_#{association}") do |builder|
+        begin
+          render(["/ants_admin",@object.class.name.pluralize.downcase,association.to_s.singularize + "_nested"].join("/"), :form => builder, item: association)
+        rescue
+          render("/ants_admin/nested_form", :form => builder, item: association)
+        end
+      end
+      link_to_function('plus btn-success', "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")")
+    end
+    
+    def link_to_remove_fields(f)
+        f.hidden_field(:_destroy) + link_to_function('times btn-danger', "remove_fields(this)")
+      end
+    
     protected
     
     def file_type(type)
@@ -97,6 +113,16 @@ module AntsAdmin
         'application/x-photoshop'=> 'file-photo-o'
       }
       return types[type] || 'paperclip'
+    end
+    
+    def link_to_function(icon, *args, &block)
+      html_options = args.extract_options!.symbolize_keys
+
+      function = block_given? ? update_page(&block) : args[0] || ''
+      onclick = "#{"#{html_options[:onclick]}; " if html_options[:onclick]}#{function}; return false;"
+      href = html_options[:href] || '#'
+
+      content_tag(:a, "", html_options.merge(:href => href, :onclick => onclick, class: "btn fa fa-#{icon} float-right"))
     end
 
   end

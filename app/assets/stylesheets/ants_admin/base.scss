@@ -815,3 +815,25 @@ img.library_index {
     }
   }
 }
+.nested-form {
+  width:90%;
+  margin:10px 5% 0px 5%;
+  float:left;
+  h2 {
+    border-bottom: 4px solid #ddd;
+  }
+  .nested-item {
+    border-bottom: 1px solid #ddd;
+    float:left;
+    width:100%;
+    padding:3% 5%;
+    background:#fefefe;
+    &:nth-of-type(2n) {
+      background:#efefef;
+    }
+  }
+}
+
+.float-right {
+  float:right;
+}

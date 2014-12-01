@@ -164,6 +164,19 @@ function loadReviewImage(files) {
   reader.readAsDataURL(files[0]);
 }
 
+function remove_fields(link) {
+  $(link).prev("input[type=hidden]").val("1");
+  var nested_item = $(link).closest(".nested-item");
+  var span_new = $("<span/>").insertAfter(nested_item).fadeOut();
+  nested_item.appendTo(span_new);
+}
+
+function add_fields(link, association, content) {
+  var new_id = new Date().getTime();
+  var regexp = new RegExp("new_" + association, "g")
+  $(link).parent().before(content.replace(regexp, new_id));
+}
+
 function checkBackAction() {
   setTimeout(function() {
     var href = $(".breadcrumb li:nth-last-child(2) a").attr("href"),
