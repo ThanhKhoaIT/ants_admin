@@ -41,6 +41,7 @@ class AntsAdmin::AdminsController < AntsAdminController
   def index
     params[:action] = "index"
     layout_index_style = @model_config.layout_index_style
+    @objects = load_data if layout_index_style == "library"
     render template: "/ants_admin/index_styles/#{layout_index_style}"
   end
   
@@ -105,6 +106,13 @@ class AntsAdmin::AdminsController < AntsAdminController
   
   def create
     params[:action] = "create"
+    
+    params_add_form = {}
+    params.each do |param_name, param_value|
+      params_add_form[param_name] = param_value if param_name[-3..-1] == "_id"
+    end
+    
+    
     if @model_config.create_disabled?
       return render :text => "Create function is disabled!"
     else
@@ -112,7 +120,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       if @object.save
         flash[:id] = @object.id
         flash[:notice] = "Create is successful!"
-        redirect_to "/admin/#{@model_class.to_s.downcase}"
+        redirect_to "/admin/#{@model_class.to_s.downcase}?#{params_add_form.to_query}"
       else
         render template: "/ants_admin/new"
       end

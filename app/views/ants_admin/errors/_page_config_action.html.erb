@@ -1,0 +1,32 @@
+<h1>You need add "<%= params[:def] %>" method for "<%= params[:model].classify %>" model (<%= params[:model].downcase %>.rb file)</h1>
+<a href='/'>View solution</a>
+<div class="row">
+  <span class='file_name'>file: <i><%= params[:model].downcase %>.rb</i></span>
+  <code>
+    <ul>
+      <li class='tab0'><span class='class'>class</span> <span class='class_name'><%= params[:model].classify %></span> <span class='default'>< ActiveRecord::Base</span></li>
+        <li class='tab1'>...</li>
+        <li class='tab1'><span class='def'>def</span> <span class='def_name'><%= params[:def] %></span> </li>
+          <li class='tab2'><span class='code'>{</span></li>
+            <li class='tab3'><span class='code'>type: <span class='value'>'button'</span>,</span></li>
+            <li class='tab3'><span class='code'>href: <span class='value'>"/admin/photos/#{id}/view"</span>,</span></li>
+            <li class='tab3'><span class='code'>style: <span class='value'>"info"</span>,</span></li>
+            <li class='tab3'><span class='code'>icon: <span class='value'>"photo"</span>,</span></li>
+            <li class='tab3'><span class='code'>text: <span class='value'>'hinh'</span></span></li>
+          <li class='tab2'><span class='code'>}</span></li>
+        <li class='tab1'><span class='end'>end</span></li>
+        <li class='tab1'>...</li>
+      <li class='tab0'><span class='end'>end</span></li>
+    </ul>
+  </code>
+</div>
+<!--
+  def view_action
+    {
+      type:'button',
+      href: "/admin/photos/?album_id=#{id}",
+      style: 'info',
+      icon: 'photo',
+      text: 'hinh'
+    }
+  end -->

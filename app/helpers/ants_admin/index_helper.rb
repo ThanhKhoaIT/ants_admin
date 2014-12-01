@@ -9,9 +9,19 @@ module AntsAdmin
     private
     
     def table
+     action_content(@model_config.actions_link, "btn-group")
+    end
+    
+    def library
+      action_content(@model_config.actions_link.select{|action| action != 'edit'}, "btn-group tool_library")
+    end
+    
+    protected
+    
+    def action_content(actions_link, class_style)
       actions_html = []
       
-      @model_config.actions_link.each do |action_link|
+      actions_link.each do |action_link|
         case action_link
         when "edit"
           actions_html << add_edit
@@ -20,31 +30,12 @@ module AntsAdmin
         when "remove"
           actions_html << add_remove
         else
-          actions_html << @object.send(action_link) rescue ""
+          actions_html << custom_action(action_link) rescue ""
         end
       end
 
-      return content_tag(:div, actions_html.join().html_safe, class: "btn-group")
+      return content_tag(:div, actions_html.join().html_safe, class: class_style)
     end
-    
-    def library
-      actions_html = []
-      
-      @model_config.actions_link.each do |action_link|
-        case action_link
-        when "active"
-          actions_html << add_active
-        when "remove"
-          actions_html << add_remove
-        else
-          actions_html << @object.send(action_link) rescue ""
-        end
-      end
-
-      return content_tag(:div, actions_html.join().html_safe, class: "btn-group tool_library")
-    end
-    
-    protected
     
     def add_edit
       content_tag(:a, @model_config.html_button_edit,
@@ -56,12 +47,10 @@ module AntsAdmin
     
     def add_remove
       content_tag(:a, @model_config.html_button_delete,
-                    href:   ["/admin",@object.class.name.downcase,@object.id].join("/"),
+                    href:           ["/admin",@object.class.name.downcase,@object.id].join("/"),
                     'data-method'=> 'delete',
-                    class: "btn btn-sm btn-danger",
-                    confirm: "Are you sure?",
-                    'back-href'=> "/admin/#{@object.class.name.downcase}",
-                    'back-level'=> "2")
+                    class:          'btn btn-sm btn-danger',
+                    confirm:        'Are you sure?')
     end
     
     def add_active
@@ -73,5 +62,12 @@ module AntsAdmin
                     class: "active-link btn btn-sm btn-#{@object.active ? "primary actived" : "warning"}")
     end
     
+    def custom_action(action_link)
+      called = @object.send("#{action_link}_action")
+      return "<a href='/admin/errors/config_action?model=#{@object.class.downcase}&def=#{action_link}_action' class='btn btn-sm btn-danger'>#{action_link}</a>" if called.nil?
+      return called if called.is_a?(String)
+      return "<a href='#{called[:href]}' class='btn btn-sm btn-#{called[:style]}'>#{called[:icon] ? "<i class='fa fa-#{called[:icon]}'></i>" : called[:text]}</a>" if called.is_a?(Hash) and called[:type] and called[:type] == "button"
+    end
+
   end
 end

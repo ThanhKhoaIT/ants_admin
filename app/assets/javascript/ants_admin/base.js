@@ -154,7 +154,6 @@ function loadReviewImage(files) {
     var img = $('#review_upload_image img');
     img.attr('src', e.target.result);
     var review = $("#review_upload_image_group");
-    $("#review_upload_image_arrow").css('left',$("#library_image").offset().left + 15)
     if (!review.hasClass('fadeInUp')) {
       review.removeAttr('class');
       setTimeout(function() {
