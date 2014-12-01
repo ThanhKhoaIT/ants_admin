@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2014-11-28"
+  s.date = "2014-12-01"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -350,10 +350,12 @@ Gem::Specification.new do |s|
     "app/views/ants_admin/_dashboard_ants_admin.html.erb",
     "app/views/ants_admin/_form.html.erb",
     "app/views/ants_admin/_form_upload.html.erb",
+    "app/views/ants_admin/_nested_form.html.erb",
     "app/views/ants_admin/add.html.erb",
     "app/views/ants_admin/dashboard.html.erb",
     "app/views/ants_admin/edit.html.erb",
     "app/views/ants_admin/errors.html.erb",
+    "app/views/ants_admin/errors/_page_config_action.html.erb",
     "app/views/ants_admin/errors/_page_not_apply.html.erb",
     "app/views/ants_admin/errors/_page_not_config_current_logined.html.erb",
     "app/views/ants_admin/errors/_page_not_config_sign_out_link.html.erb",
