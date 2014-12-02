@@ -40,7 +40,7 @@
       <% end %>
     <% end %>
     
-    <% @model_config.has_many_list.collect{|item| item[:key][0..-4]}.each do |item| %>
+    <% (@model_config.has_many_list.collect{|item| item[:key][0..-4]} - @model_config.form_input_nested_skip).each do |item| %>
       <div class="nested-form">
         <%
           @sub_model_string = item.singularize

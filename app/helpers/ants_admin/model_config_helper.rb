@@ -22,21 +22,19 @@ module AntsAdmin
     end
     
     def self.table_show_skip
-      config_list = []
-      config_list = @model_string::TABLE_SHOW_SKIP if defined?(@model_string::TABLE_SHOW_SKIP)
-      return [config_list] if !config_list.is_a?(Array)
-      return config_list
+      get_list(@model_string::TABLE_SHOW_SKIP) rescue []
     end
     
     def self.form_input_skip
-      config_list = []
-      config_list = @model_string::FORM_INPUT_SKIP if defined?(@model_string::FORM_INPUT_SKIP)
-      return [config_list] if !config_list.is_a?(Array)
-      return config_list
+      get_list(@model_string::FORM_INPUT_SKIP) rescue []
+    end
+    
+    def self.form_input_nested_skip
+      get_list(@model_string::FORM_INPUT_NESTED_SKIP) rescue []
     end
     
     def self.search_for
-      defined?(@model_string::SEARCH_FOR) ? @model_string::SEARCH_FOR : []
+      get_list(@model_string::SEARCH_FOR) rescue []
     end
     
     def self.actions_link
@@ -221,6 +219,11 @@ module AntsAdmin
     
     def self.attribute_show(obj, attr_name)
       return obj.send("#{attr_name}_show") rescue obj.send(attr_name)
+    end
+    
+    protected
+    def self.get_list(config_list)
+      return config_list.is_a?(Array) ? config_list : [config_list]
     end
 
   end

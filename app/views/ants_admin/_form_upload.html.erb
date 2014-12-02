@@ -1,11 +1,4 @@
-<%
-  params_add_form = {}
-  params.each do |param_name, param_value|
-    params_add_form[param_name] = param_value if param_name[-3..-1] == "_id"
-  end
-%>
-
-<%= form_for @object, :url => @object.new_record? ? "/admin/#{@model_string.downcase}?#{params_add_form.to_query}" : "/admin/#{@model_string.downcase}/#{@object.id}?#{params_add_form.to_query}", :html => {role: "form", class: 'upload_form'} do |form| %>
+<%= form_for @object, :url => @object.new_record? ? "/admin/#{@model_string.downcase}?#{@params_include}" : "/admin/#{@model_string.downcase}/#{@object.id}?#{@params_include}", :html => {role: "form", class: 'upload_form'} do |form| %>
   <% @object.class.columns.each do |col| %>
     <% if !(['id','created_at','updated_at'] + @model_config.form_input_skip).include?(col.name) \
             and col.name.to_s.index('_file_name').nil? \
@@ -13,7 +6,7 @@
             and col.name.to_s.index('_file_size').nil? \
             and col.name.to_s.index('_updated_at').nil? %>
 
-      <% params_add_form.each do |param_name, param_value| %>
+      <% @params_add_form.each do |param_name, param_value| %>
         <%= form.hidden_field param_name, value: param_value if col.name.to_s[-3..-1] == '_id' and col.name == param_name %>
       <% end %>
       

@@ -371,43 +371,44 @@ function loadScripts(){
   })
   
   $(document).delegate(".action_drag_drop_upload", "click", function(event) {
+    var _this = $(event.currentTarget);
     var fd = new FormData();
-    fd.append('file', AntsAdmin.uploadFiles[i]);
-    
-    // var uploadURL ="/admin"; //Upload URL
-//     var extraData ={}; //Extra Data.
-//     var jqXHR=$.ajax({
-//       xhr: function() {
-//         var xhrobj = $.ajaxSettings.xhr();
-//         if (xhrobj.upload) {
-//           xhrobj.upload.addEventListener('progress', function(event) {
-//             var percent = 0;
-//             var position = event.loaded || event.position;
-//             var total = event.total;
-//             if (event.lengthComputable) {
-//               percent = Math.ceil(position / total * 100);
-//             }
-//             //Set progress
-//             status.setProgress(percent);
-//           }, false);
-//         }
-//         return xhrobj;
-//       },
-//       url: uploadURL,
-//       type: "POST",
-//       contentType:false,
-//       processData: false,
-//       cache: false,
-//       data: formData,
-//       success: function(data){
-//         status.setProgress(100);
-//
-//         //$("#status1").append("File upload Done<br>");
-//       }
-//     });
-//
-//     status.setAbort(jqXHR);
-    
+    fd.append('authenticity_token', $("meta[name='csrf-token']").attr('content'));
+    fd.append(_this.attr('model')+"["+_this.attr('image_attribute')+"]", AntsAdmin.uploadFiles[0]);
+    $.each(JSON.parse(_this.attr('extra')), function(key, value) {
+      fd.append(_this.attr('model')+"["+key+"]", value);
+    })
+    var uploadURL = _this.attr('url'); //Upload URL
+
+    var jqXHR=$.ajax({
+      xhr: function() {
+        var xhrobj = $.ajaxSettings.xhr();
+        if (xhrobj.upload) {
+          xhrobj.upload.addEventListener('progress', function(event) {
+            var percent = 0;
+            var position = event.loaded || event.position;
+            var total = event.total;
+            if (event.lengthComputable) {
+              percent = Math.ceil(position / total * 100);
+            }
+            console.log(percent);
+          }, false);
+        }
+        return xhrobj;
+      },
+      url: uploadURL,
+      type: "POST",
+      contentType:false,
+      processData: false,
+      cache: false,
+      data: fd,
+      success: function(data){
+        console.log(100);
+      }
+    });
+
+    console.log(jqXHR);
+
     AntsAdmin.uploadFiles = "";
     return false;
   })

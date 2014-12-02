@@ -4,12 +4,16 @@ class AntsAdmin::AdminsController < AntsAdminController
     begin
       urls = url.split("/")
       @model_string = urls[0].singularize
+      @model_url = @model_string.pluralize
       begin
         @model_class = @model_string.classify.constantize
       rescue
         return redirect_to "/admin/errors/not_model?model=#{@model_string}"
       end
       @model_config = AntsAdmin::ModelConfigHelper.new(@model_class)
+      
+      @params_include = detect_params_include
+      
       params[:controller] = @model_string
       return redirect_to "/admin/errors/not_apply?model=#{@model_string}" if !@model_config.apply_admin?
       if urls.count == 1
@@ -111,7 +115,6 @@ class AntsAdmin::AdminsController < AntsAdminController
     params.each do |param_name, param_value|
       params_add_form[param_name] = param_value if param_name[-3..-1] == "_id"
     end
-    
     
     if @model_config.create_disabled?
       return render :text => "Create function is disabled!"
@@ -217,4 +220,13 @@ class AntsAdmin::AdminsController < AntsAdminController
   def params_permit
     params.require(@model_string).permit!
   end
+  
+  def detect_params_include
+    @params_add_form = {}
+    params.each do |param_name, param_value|
+      @params_add_form[param_name] = param_value if param_name[-3..-1] == "_id"
+    end
+    @params_add_form.to_query
+  end
+
 end

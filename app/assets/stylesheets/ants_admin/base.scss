@@ -837,3 +837,12 @@ img.library_index {
 .float-right {
   float:right;
 }
+
+.percent-upload {
+  width: 300px;
+  margin: 10px auto;
+}
+
+.progress-striped .progress-bar-green, .progress-striped .progress-bar-success {
+  background-repeat:repeat;
+}
