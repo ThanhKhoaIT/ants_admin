@@ -66,7 +66,7 @@ module AntsAdmin
       called = @object.send("#{action_link}_action")
       return "<a href='/admin/errors/config_action?model=#{@object.class.downcase}&def=#{action_link}_action' class='btn btn-sm btn-danger'>#{action_link}</a>" if called.nil?
       return called if called.is_a?(String)
-      return "<a href='#{called[:href]}' class='btn btn-sm btn-#{called[:style]}'>#{called[:icon] ? "<i class='fa fa-#{called[:icon]}'></i>" : called[:text]}</a>" if called.is_a?(Hash) and called[:type] and called[:type] == "button"
+      return "<a href='#{called[:button][:href]}' class='btn btn-sm btn-#{called[:button][:style]}'>#{called[:button][:icon] ? "<i class='fa fa-#{called[:button][:icon]}'></i>" : called[:button][:text]}</a>" if called.is_a?(Hash) and called[:button]
     end
 
   end
