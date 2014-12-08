@@ -372,6 +372,7 @@ function loadScripts(){
   
   $(document).delegate(".action_drag_drop_upload", "click", function(event) {
     var _this = $(event.currentTarget);
+    var upload_processing = $("#upload_processing");
     var fd = new FormData();
     fd.append('authenticity_token', $("meta[name='csrf-token']").attr('content'));
     fd.append(_this.attr('model')+"["+_this.attr('image_attribute')+"]", AntsAdmin.uploadFiles[0]);
@@ -391,7 +392,7 @@ function loadScripts(){
             if (event.lengthComputable) {
               percent = Math.ceil(position / total * 100);
             }
-            console.log(percent);
+            upload_processing.css('width',percent+'%');
           }, false);
         }
         return xhrobj;
@@ -403,17 +404,14 @@ function loadScripts(){
       cache: false,
       data: fd,
       success: function(data){
-        console.log(100);
+        upload_processing.css('width','100%');
+        Turbolinks.visit(window.location.href);
       }
     });
-
-    console.log(jqXHR);
 
     AntsAdmin.uploadFiles = "";
     return false;
   })
-  
-  
 }
 
 
