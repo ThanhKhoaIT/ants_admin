@@ -215,7 +215,6 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/ants_admin/vendors/fancybox/jquery.fancybox-thumbs.css",
     "app/assets/stylesheets/ants_admin/vendors/fancybox/jquery.fancybox.css",
     "app/assets/stylesheets/ants_admin/vendors/font-awesome.css",
-    "app/assets/stylesheets/ants_admin/vendors/font-awesome.min.css",
     "app/assets/stylesheets/ants_admin/vendors/icheck/all.css",
     "app/assets/stylesheets/ants_admin/vendors/icheck/flat/_all.css",
     "app/assets/stylesheets/ants_admin/vendors/icheck/flat/aero.css",

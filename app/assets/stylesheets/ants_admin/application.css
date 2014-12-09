@@ -27,6 +27,10 @@
  *= require ./vendors/animate
  *= require ./vendors/icheck/all
  *= require_tree ./vendors/fancybox/
+
+ *= require_tree ./vendors/froala_editor/themes
+ *= require_tree ./vendors/froala_editor
+
  *= require ./admin_lte
  *= require ./code
 
