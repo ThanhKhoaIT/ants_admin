@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
-    ".DS_Store",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE",
@@ -28,6 +27,7 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
+    "ants_admin.gemspec",
     "app/assets/images/ants_admin/ajax-loader1.gif",
     "app/assets/images/ants_admin/avatar.png",
     "app/assets/images/ants_admin/blur-background09.jpg",
@@ -198,8 +198,6 @@ Gem::Specification.new do |s|
     "app/assets/javascript/ants_admin/vendors/json2.js",
     "app/assets/javascript/ants_admin/vendors/jstorage.js",
     "app/assets/javascript/ants_admin/vendors/queue.js",
-    "app/assets/stylesheets/.DS_Store",
-    "app/assets/stylesheets/ants_admin/.DS_Store",
     "app/assets/stylesheets/ants_admin/admin_lte.scss",
     "app/assets/stylesheets/ants_admin/application.css",
     "app/assets/stylesheets/ants_admin/base.scss",
@@ -346,8 +344,6 @@ Gem::Specification.new do |s|
     "app/helpers/ants_admin/model_config_helper.rb",
     "app/helpers/ants_admin/page_helper.rb",
     "app/mailers/ants_admin/mailer.rb",
-    "app/views/.DS_Store",
-    "app/views/ants_admin/.DS_Store",
     "app/views/ants_admin/_dashboard_ants_admin.html.erb",
     "app/views/ants_admin/_form.html.erb",
     "app/views/ants_admin/_form_upload.html.erb",
@@ -373,7 +369,6 @@ Gem::Specification.new do |s|
     "app/views/layouts/areas/_main_menu.html.erb",
     "app/views/layouts/areas/_search_box.html.erb",
     "config/routes.rb",
-    "lib/ants_admin.gemspec",
     "lib/ants_admin.rb",
     "lib/ants_admin/smart_model.rb",
     "lib/generators/active_record/ants_admin_generator.rb",
