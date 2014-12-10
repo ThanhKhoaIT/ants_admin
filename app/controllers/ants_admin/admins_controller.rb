@@ -204,7 +204,7 @@ class AntsAdmin::AdminsController < AntsAdminController
         @object.destroy
         flash[:notice] = "#{@model_string} is removed!"
       end
-      redirect_to "/admin/#{@model_string}"
+      redirect_to "/admin/#{@model_string}?#{@params_add_form.to_query}"
     end
   end
   

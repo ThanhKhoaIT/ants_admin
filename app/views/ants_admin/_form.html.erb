@@ -41,20 +41,23 @@
     <% end %>
     
     <% (@model_config.has_many_list.collect{|item| item[:key][0..-4]} - @model_config.form_input_nested_skip).each do |item| %>
-      <div class="nested-form">
-        <%
-          @sub_model_string = item.singularize
-          @sub_model_class = @sub_model_string.classify.constantize
-          @sub_model_config = AntsAdmin::ModelConfigHelper.new(@sub_model_class)
-        %>
+			<% begin %>
+	      <div class="nested-form">
+	        <%
+	          @sub_model_string = item.singularize
+	          @sub_model_class = @sub_model_string.classify.constantize
+	          @sub_model_config = AntsAdmin::ModelConfigHelper.new(@sub_model_class)
+	        %>
         
-        <h2><%= @sub_model_config.title %></h2>
-        <%= form.fields_for(item) do |builder| %>
-          <%= render :partial => '/ants_admin/nested_form', locals: {form: builder, item: item} %>
-        <% end %>
-        <p><%= link_to_add_fields form, item %></p>
+	        <h2><%= @sub_model_config.title %></h2>
+	        <%= form.fields_for(item) do |builder| %>
+	          <%= render :partial => '/ants_admin/nested_form', locals: {form: builder, item: item} %>
+	        <% end %>
+	        <p><%= link_to_add_fields form, item %></p>
         
-      </div>
+	      </div>
+			<% rescue %>
+			<% end %>
     <% end %>
   </div>
   <div class="box-footer">

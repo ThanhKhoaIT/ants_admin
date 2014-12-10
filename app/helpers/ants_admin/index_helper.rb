@@ -47,7 +47,7 @@ module AntsAdmin
     
     def add_remove
       content_tag(:a, @model_config.html_button_delete,
-                    href:           ["/admin",@object.class.name.downcase,@object.id].join("/"),
+                    href:           ["/admin",@object.class.name.downcase,"#{@object.id}?#{@params_add_form.to_query}"].join("/"),
                     'data-method'=> 'delete',
                     class:          'btn btn-sm btn-danger',
                     confirm:        'Are you sure?')
