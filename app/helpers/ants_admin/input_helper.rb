@@ -26,7 +26,6 @@ module AntsAdmin
     def file_input_upload_only(form, name)
       content_tag(:div, (form.file_field name.to_sym), class: 'fa fa-cloud-upload action-page', id: 'add_upload')
     end
-
     
     def time_input(form, name)
       id = "id_#{Random.rand(500) + 10}"
@@ -57,7 +56,9 @@ module AntsAdmin
     end
 
     def textarea(form, name)
-      content_tag(:div, [(form.label name.to_sym),(form.text_area name.to_sym, class: 'form-control')].join().html_safe, class: "form-group")
+      id = random_id
+      js_tag = javascript_tag("$('.#{id}').editable({inlineMode: false})")
+      content_tag(:div, [(form.label name.to_sym),(form.text_area name.to_sym, class: "form-control #{id}"), js_tag].join().html_safe, class: "form-group")
     end
     
     def checkbox(form, name)
@@ -92,8 +93,8 @@ module AntsAdmin
     end
     
     def link_to_remove_fields(f)
-        f.hidden_field(:_destroy) + link_to_function('times btn-danger', "remove_fields(this)")
-      end
+      f.hidden_field(:_destroy) + link_to_function('times btn-danger', "remove_fields(this)")
+    end
     
     protected
     
@@ -123,6 +124,10 @@ module AntsAdmin
       href = html_options[:href] || '#'
 
       content_tag(:a, "", html_options.merge(:href => href, :onclick => onclick, class: "btn fa fa-#{icon} float-right"))
+    end
+    
+    def random_id
+      (0...15).map { (65 + rand(26)).chr }.join.downcase
     end
 
   end

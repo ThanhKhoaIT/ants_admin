@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2014-12-01"
+  s.date = "2014-12-09"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -20,7 +20,6 @@ Gem::Specification.new do |s|
     "README.md"
   ]
   s.files = [
-    ".DS_Store",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE",
@@ -81,6 +80,7 @@ Gem::Specification.new do |s|
     "app/assets/javascript/ants_admin/back_action.js",
     "app/assets/javascript/ants_admin/base.js",
     "app/assets/javascript/ants_admin/bpopup.js",
+    "app/assets/javascript/ants_admin/drop_file_upload.js",
     "app/assets/javascript/ants_admin/jquery-ui-1.10.4.js",
     "app/assets/javascript/ants_admin/lte/app.js",
     "app/assets/javascript/ants_admin/lte/bootstrap.js",
@@ -191,14 +191,13 @@ Gem::Specification.new do |s|
     "app/assets/javascript/ants_admin/vendors/fancybox/3_jquery.fancybox-buttons.js",
     "app/assets/javascript/ants_admin/vendors/fancybox/4_jquery.fancybox-media.js",
     "app/assets/javascript/ants_admin/vendors/fancybox/5_jquery.fancybox-thumbs.js",
+    "app/assets/javascript/ants_admin/vendors/imagesloaded.pkgd.js",
     "app/assets/javascript/ants_admin/vendors/isotope.pkgd.js",
     "app/assets/javascript/ants_admin/vendors/jquery.dynatable.js",
     "app/assets/javascript/ants_admin/vendors/jquery.popup.js",
     "app/assets/javascript/ants_admin/vendors/json2.js",
     "app/assets/javascript/ants_admin/vendors/jstorage.js",
     "app/assets/javascript/ants_admin/vendors/queue.js",
-    "app/assets/stylesheets/.DS_Store",
-    "app/assets/stylesheets/ants_admin/.DS_Store",
     "app/assets/stylesheets/ants_admin/admin_lte.scss",
     "app/assets/stylesheets/ants_admin/application.css",
     "app/assets/stylesheets/ants_admin/base.scss",
@@ -216,7 +215,6 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/ants_admin/vendors/fancybox/jquery.fancybox-thumbs.css",
     "app/assets/stylesheets/ants_admin/vendors/fancybox/jquery.fancybox.css",
     "app/assets/stylesheets/ants_admin/vendors/font-awesome.css",
-    "app/assets/stylesheets/ants_admin/vendors/font-awesome.min.css",
     "app/assets/stylesheets/ants_admin/vendors/icheck/all.css",
     "app/assets/stylesheets/ants_admin/vendors/icheck/flat/_all.css",
     "app/assets/stylesheets/ants_admin/vendors/icheck/flat/aero.css",
@@ -345,8 +343,6 @@ Gem::Specification.new do |s|
     "app/helpers/ants_admin/model_config_helper.rb",
     "app/helpers/ants_admin/page_helper.rb",
     "app/mailers/ants_admin/mailer.rb",
-    "app/views/.DS_Store",
-    "app/views/ants_admin/.DS_Store",
     "app/views/ants_admin/_dashboard_ants_admin.html.erb",
     "app/views/ants_admin/_form.html.erb",
     "app/views/ants_admin/_form_upload.html.erb",

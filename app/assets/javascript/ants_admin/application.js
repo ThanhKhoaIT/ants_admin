@@ -35,3 +35,8 @@
 //= require ants_admin/drop_file_upload
 
 //= require_tree ./vendors/fancybox
+
+//= require ./vendors/froala_editor/froala_editor.min
+// require ./vendors/froala_editor/froala_editor_ie8.min
+//= require_tree ./vendors/froala_editor/plugins
+//= require_tree ./vendors/froala_editor/langs
