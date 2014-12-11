@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2014-12-09"
+  s.date = "2014-12-11"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -215,6 +215,17 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/ants_admin/vendors/fancybox/jquery.fancybox-thumbs.css",
     "app/assets/stylesheets/ants_admin/vendors/fancybox/jquery.fancybox.css",
     "app/assets/stylesheets/ants_admin/vendors/font-awesome.css",
+    "app/assets/stylesheets/ants_admin/vendors/froala_editor/froala_content.css",
+    "app/assets/stylesheets/ants_admin/vendors/froala_editor/froala_editor.css",
+    "app/assets/stylesheets/ants_admin/vendors/froala_editor/froala_style.css",
+    "app/assets/stylesheets/ants_admin/vendors/froala_editor/themes/dark.css",
+    "app/assets/stylesheets/ants_admin/vendors/froala_editor/themes/dark.min.css",
+    "app/assets/stylesheets/ants_admin/vendors/froala_editor/themes/gray.css",
+    "app/assets/stylesheets/ants_admin/vendors/froala_editor/themes/gray.min.css",
+    "app/assets/stylesheets/ants_admin/vendors/froala_editor/themes/red.css",
+    "app/assets/stylesheets/ants_admin/vendors/froala_editor/themes/red.min.css",
+    "app/assets/stylesheets/ants_admin/vendors/froala_editor/themes/royal.css",
+    "app/assets/stylesheets/ants_admin/vendors/froala_editor/themes/royal.min.css",
     "app/assets/stylesheets/ants_admin/vendors/icheck/all.css",
     "app/assets/stylesheets/ants_admin/vendors/icheck/flat/_all.css",
     "app/assets/stylesheets/ants_admin/vendors/icheck/flat/aero.css",
@@ -381,7 +392,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "https://antsadmin.wordpress.com"
   s.licenses = ["MIT"]
-  s.rubygems_version = "2.2.2"
+  s.rubygems_version = "2.4.4"
   s.summary = "Admin panel for you"
 
   if s.respond_to? :specification_version then
