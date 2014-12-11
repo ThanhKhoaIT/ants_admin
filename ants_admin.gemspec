@@ -217,6 +217,7 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/ants_admin/vendors/font-awesome.css",
     "app/assets/stylesheets/ants_admin/vendors/froala_editor/froala_content.css",
     "app/assets/stylesheets/ants_admin/vendors/froala_editor/froala_editor.css",
+    "app/assets/stylesheets/ants_admin/vendors/froala_editor/froala_editor.min.css",
     "app/assets/stylesheets/ants_admin/vendors/froala_editor/froala_style.css",
     "app/assets/stylesheets/ants_admin/vendors/froala_editor/themes/dark.css",
     "app/assets/stylesheets/ants_admin/vendors/froala_editor/themes/dark.min.css",
