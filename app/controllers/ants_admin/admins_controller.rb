@@ -59,7 +59,7 @@ class AntsAdmin::AdminsController < AntsAdminController
     sorts = params[:sorts] || []
     
     includes = (@model_config.has_many_list + @model_config.belongs_to_list).collect{|i|i[:label].downcase}
-    
+
     if search
       like_string = []
       @model_config.search_for.each do |attr, index|

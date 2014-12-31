@@ -1,69 +1,79 @@
 <%= form_for @object, :url => @object.new_record? ? "/admin/#{@model_string.downcase}/" : "/admin/#{@model_string.downcase}/#{@object.id}", :html => {role: "form"} do |form| %>
-  <div class="box-body">
-    <% @object.class.columns.each do |col| %>
-      <% if !(['id','created_at','updated_at'] + @model_config.form_input_skip).include?(col.name) \
+	<div class="box-body">
+		<% @object.class.columns.each do |col| %>
+		
+			<% if !(['id','created_at','updated_at'] + @model_config.form_input_skip).include?(col.name) \
               and col.name.to_s.index('_file_name').nil? \
               and col.name.to_s.index('_content_type').nil? \
               and col.name.to_s.index('_file_size').nil? \
               and col.name.to_s.index('_updated_at').nil? %>
+				
+				<% input_config = @object.class.new.send("input_#{col.name}") rescue nil %>
+				
+				<% case col.type.to_s %>
+				<% when 'string' %>
+					<% if @object.respond_to?("#{col.name}_file_name") %>
+						<%= file_input form, col.name %>
+					<% else %>
+						<%= text_input form, col.name %>
+					<% end %>
+				<% when 'text' %>
+					<%= textarea form, col.name %>
+				<% when 'boolean' %>
+					<% if input_config %>
+						<% case input_config[:type] %>
+						<% when 'select' %>
+							<%= select_input_boolean form, col.name %>
+						<% end %>
+					<% else %>
+						<%= checkbox form, col.name %>
+					<% end %>
+				<% when 'time' %>
+					<%= time_input form, col.name %>
+				<% when 'integer', 'float', 'decimal' %>
 
-        <% case col.type.to_s %>
-        <% when 'string' %>
-          <% if @object.respond_to?("#{col.name}_file_name") %>
-            <%= file_input form, col.name %>
-          <% else %>
-            <%= text_input form, col.name %>
-          <% end %>
-        <% when 'text' %>
-          <%= textarea form, col.name %>
-        <% when 'boolean' %>
-          <%= checkbox form, col.name %>
-        <% when 'time' %>
-          <%= time_input form, col.name %>
-        <% when 'integer', 'float', 'decimal' %>
-        
-          <% if col.name[-3,3] == "_id" %>
-            <%= select_input form, col.name %>
-          <% else %>
-            <%= number_input form, col.name %>
-          <% end %>
-          
-        <% when 'date' %>
-          <%= date_input form, col.name %>
-        <% else %>
-          <div class="form-group">
-            <%= form.label col.name.to_sym %>
-            <%= form.text_field col.name.to_sym, class: 'form-control' %>
-          </div>
-        <% end %>
-          
-      <% end %>
-    <% end %>
-    
-    <% if params[:action] != "add" %>
-      <% (@model_config.has_many_list.collect{|item| item[:key][0..-4]} - @model_config.form_input_nested_skip).each do |item| %>
-				<% if item.present? %>
-	        <div class="nested-form">
-	          <%
-	            @sub_model_string = item.singularize
-	            @sub_model_class = @sub_model_string.classify.constantize
-	            @sub_model_config = AntsAdmin::ModelConfigHelper.new(@sub_model_class)
-	          %>
-        
-	          <h2><%= @sub_model_config.title %></h2>
-	          <%= form.fields_for(item) do |builder| %>
-	            <%= render :partial => '/ants_admin/nested_form', locals: {form: builder, item: item} %>
-	          <% end %>
-	          <p><%= link_to_add_fields form, item %></p>
-        
-	        </div>
+					<% if col.name[-3,3] == "_id" %>
+						<%= select_input form, col.name %>
+					<% else %>
+						<%= number_input form, col.name %>
+					<% end %>
+
+				<% when 'date' %>
+					<%= date_input form, col.name %>
+				<% else %>
+					<div class="form-group">
+						<%= form.label col.name.to_sym %>
+						<%= form.text_field col.name.to_sym, class: 'form-control' %>
+					</div>
 				<% end %>
-      <% end %>
-    <% end %>
-  </div>
-  <div class="box-footer">
-    <button class="btn btn-primary" type="submit">Submit</button>
-  </div>
+
+			<% end %>
+		<% end %>
+
+		<% if params[:action] != "add" %>
+			<% (@model_config.has_many_list.collect{|item| item[:key][0..-4]} - @model_config.form_input_nested_skip).each do |item| %>
+				<% if item.present? %>
+					<div class="nested-form">
+						<%
+							@sub_model_string = item.singularize
+							@sub_model_class = @sub_model_string.classify.constantize
+							@sub_model_config = AntsAdmin::ModelConfigHelper.new(@sub_model_class)
+						%>
+
+						<h2><%= @sub_model_config.title %></h2>
+						<%= form.fields_for(item) do |builder| %>
+							<%= render :partial => '/ants_admin/nested_form', locals: {form: builder, item: item} %>
+						<% end %>
+						<p><%= link_to_add_fields form, item %></p>
+
+					</div>
+				<% end %>
+			<% end %>
+		<% end %>
+	</div>
+	<div class="box-footer">
+		<button class="btn btn-primary" type="submit">Submit</button>
+	</div>
 <% end %>
 
 <script>

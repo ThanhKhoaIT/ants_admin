@@ -12,7 +12,7 @@
 
         <% case col.type.to_s %>
         <% when 'string' %>
-          <% if @sub_model_class.respond_to?("#{col.name}_file_name") %>
+          <% if @sub_model_class.new.send(col.name).class.name == 'Paperclip::Attachment' %>
             <%= file_input form, col.name %>
           <% else %>
             <%= text_input form, col.name %>
@@ -24,13 +24,13 @@
         <% when 'time' %>
           <%= time_input form, col.name %>
         <% when 'integer', 'float', 'decimal' %>
-    
+
           <% if col.name[-3,3] == "_id" %>
             <%= select_input form, col.name %>
           <% else %>
             <%= number_input form, col.name %>
           <% end %>
-      
+
         <% when 'date' %>
           <%= date_input form, col.name %>
         <% else %>

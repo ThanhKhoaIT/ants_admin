@@ -76,6 +76,10 @@ module AntsAdmin
       return list
     end
     
+    def self.textarea_only
+      get_list(@model_string::TEXTAREA_ONLY) rescue []
+    end
+    
     # YES - NO
     
     def self.apply_admin?
