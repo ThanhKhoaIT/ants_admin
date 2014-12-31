@@ -123,7 +123,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       if @object.save
         flash[:id] = @object.id
         flash[:notice] = "Create is successful!"
-        redirect_to "/admin/#{@model_class.to_s.downcase}?#{params_add_form.to_query}"
+        redirect_to "/admin/#{@model_class.to_s.tableize}?#{params_add_form.to_query}"
       else
         render template: "/ants_admin/new"
       end
@@ -155,8 +155,15 @@ class AntsAdmin::AdminsController < AntsAdminController
       return render :text => "Active function is not found!"
     else
       @object.active = !@object.active.present?
-      return render json: {success: true, actived: @object.active} if @object.save
-      return render json: {success: false, actived: @object.active}
+      return render json: {
+        success: true,
+        actived: @object.active
+      } if @object.save
+      
+      return render json: {
+        success: false,
+        actived: @object.active
+      }
     end
   end
   
@@ -170,7 +177,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       if @object.update(params_permit)
         flash[:id] = id
         flash[:notice] = "Update is successful!"
-        redirect_to "/admin/#{@model_string}"
+        redirect_to "/admin/#{@model_string.tableize}"
       else
         render template: "/ants_admin/edit"
       end
@@ -181,14 +188,23 @@ class AntsAdmin::AdminsController < AntsAdminController
     params[:action] = "update_belongs_to"
     params[:id] = id
     if @model_config.edit_disabled?
-      return render json: {success: false, messages: "Edit function is disabled!"} 
+      return render json: {
+        success: false,
+        messages: "Edit function is disabled!"
+      }
     else
       @object = @model_class.find id
       @object["#{params[:type]}_id"] = params[:value]
       if @object.save
-        render json: {success: true, messages: "Update is successful!"}
+        render json: {
+          success: true,
+          messages: "Update is successful!"
+        }
       else
-        render json: {success: false, messages: "Update is failed!"}
+        render json: {
+          success: false,
+          messages: "Update is failed!"
+        }
       end
     end
   end

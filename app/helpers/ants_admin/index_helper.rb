@@ -39,15 +39,15 @@ module AntsAdmin
     
     def add_edit
       content_tag(:a, @model_config.html_button_edit,
-                    href: ["/admin",@object.class.name.downcase.pluralize,@object.id,"edit"].join("/"),
+                    href: ["/admin",@object.class.name.tableize,@object.id,"edit"].join("/"),
                     class: "btn btn-sm btn-success",
-                    'back-href'=> "/admin/#{@object.class.name.downcase.pluralize}",
+                    'back-href'=> "/admin/#{@object.class.name.tableize}",
                     'back-level'=> "2")
     end
     
     def add_remove
       content_tag(:a, @model_config.html_button_delete,
-                    href:           ["/admin",@object.class.name.downcase.pluralize,"#{@object.id}?#{@params_add_form.to_query}"].join("/"),
+                    href:           ["/admin",@object.class.name.tableize,"#{@object.id}?#{@params_add_form.to_query}"].join("/"),
                     'data-method'=> 'delete',
                     class:          'btn btn-sm btn-danger',
                     confirm:        'Are you sure?')
@@ -58,7 +58,7 @@ module AntsAdmin
                     [ @model_config.html_button_activated,
                       @model_config.html_button_deactivated,
                       '<i class="fa fa-gear fa-spin"></i>'].join().html_safe,
-                    href: ["/admin",@object.class.name.downcase.pluralize,@object.id,"active"].join("/"),
+                    href: ["/admin",@object.class.name.tableize, @object.id, "active"].join("/"),
                     class: "active-link btn btn-sm btn-#{@object.active ? "primary actived" : "warning"}")
     end
     
