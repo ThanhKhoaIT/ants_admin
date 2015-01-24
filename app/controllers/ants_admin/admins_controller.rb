@@ -133,7 +133,15 @@ class AntsAdmin::AdminsController < AntsAdminController
   def modify_link(id, action)
     params[:action] = action
     params[:id] = id
-    render template: "/ants_admin/#{@model_string.pluralize}/#{action}" rescue render template: "/ants_admin/modify_link"
+    begin
+      render template: "/ants_admin/#{@model_string.pluralize}/#{action}"
+    rescue Exception => exc
+      if exc.to_s.index('Missing template')
+        render template: "/ants_admin/modify_link"
+      else
+        raise exc
+      end
+    end
   end
   
   def edit(id)
