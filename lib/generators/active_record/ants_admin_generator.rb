@@ -37,6 +37,9 @@ module ActiveRecord
       def migration_data
 <<RUBY
       ## Database authenticatable
+      t.attachment :avatar
+      t.string :first_name,         null: false
+      t.string :last_name,          null: false
       t.string :email,              null: false, default: ""
       t.string :username,           null: false, default: ""
       t.string :encrypted_password, null: false, default: ""

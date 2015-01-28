@@ -8,6 +8,7 @@ class AntsAdminController < ApplicationController
   
   before_action :initialize_ants_admin_controller
   before_action :security_controller, except: [:errors]
+  
   # before_action :after_signed!, only: :dashboard
 #   before_action :before_signed!
   

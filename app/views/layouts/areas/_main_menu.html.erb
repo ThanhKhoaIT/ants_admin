@@ -4,12 +4,11 @@
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="/assets/ants_admin/avatar.png" class="img-circle" alt="User Image" />
+                <img src="<%= @current_user.avatar %>" class="img-circle" alt="User Image" />
             </div>
             <div class="pull-left info">
-                <p><%= user_represent_text %></p>
-
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                <p><%= @current_user.full_name %></p>
+                <p><%= @current_user.username %></p>
             </div>
         </div>
         

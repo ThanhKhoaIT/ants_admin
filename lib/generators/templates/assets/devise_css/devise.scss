@@ -1,0 +1,78 @@
+body.devise {
+	min-height:100%;
+	background:#efefef url('/assets/devise/bg-login.svg');
+	background-position: center center;
+	background-repeat:no-repeat;
+	
+	.form-signin {
+		max-width:330px;
+		margin:0 auto;
+		padding:15px;
+		
+		&.reset-password {
+			input {
+				border-radius:3px;
+				margin-bottom:20px;
+			}
+		}
+		
+		.form-signin-heading,
+		.checkbox{margin-bottom:10px;}
+		.checkbox{font-weight:normal;}
+		.form-control{position:relative;font-size:16px;height:auto;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding:10px;}
+		.form-control:focus{z-index:2;}
+		.file-avatar {
+			position:relative;
+			.avatar {
+				position:absolute;
+				font-size:100px;
+				width:100px;
+				height:100px;
+				top:0px;
+				left:50%;
+				margin-left:-50px;
+				opacity:0;
+			}
+		}
+	}
+	
+	.grp-inputs {
+		margin-bottom:10px;
+		input {
+			border-radius:0px !important;
+			margin:0px !important;
+			
+			&:not(:nth-last-child(1)) {
+				border-bottom:none !important;
+			}
+			
+			&:nth-last-child(1) {
+				border-bottom-left-radius:3px !important;
+				border-bottom-right-radius:3px !important;
+			}
+			&:nth-child(1) {
+				border-top-left-radius:3px !important;
+				border-top-right-radius:3px !important;
+			}
+		}
+	}
+	
+	input[type="text"]{margin-bottom:-1px;border-bottom-left-radius:0;border-bottom-right-radius:0;}
+	input[type="password"]{margin-bottom:10px;border-top-left-radius:0;border-top-right-radius:0;}
+	.account-wall{margin-top:20px;background-color:#f7f7f7;-moz-box-shadow:0 2px 2px rgba(0,0,0,0.3);-webkit-box-shadow:0 2px 2px rgba(0,0,0,0.3);box-shadow:0 2px 2px rgba(0,0,0,0.3);padding:40px 0 20px;}
+	.login-title{color:#555;font-size:18px;font-weight:400;display:block;}
+	.profile-img{width:96px;height:96px;display:block;-moz-border-radius:50%;-webkit-border-radius:50%;border-radius:50%;margin:0 auto 10px;}
+	.need-help{margin-top:10px;}
+	.new-account{display:block;margin-top:10px;}
+	
+	.links {
+		margin-top:8px;
+		a {
+			float:right;
+		}
+	}
+	
+	.checkbox.pull-left {
+		margin-left:20px;
+	}
+}
