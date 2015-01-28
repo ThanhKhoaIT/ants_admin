@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2015-01-24"
+  s.date = "2015-01-28"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -431,8 +431,31 @@ Gem::Specification.new do |s|
     "lib/generators/ants_admin/ants_admin_generator.rb",
     "lib/generators/ants_admin/install_generator.rb",
     "lib/generators/ants_admin/orm_helpers.rb",
+    "lib/generators/templates/README",
     "lib/generators/templates/ants_admin.rb",
-    "lib/generators/templates/dashboard.html.erb"
+    "lib/generators/templates/assets/devise.css",
+    "lib/generators/templates/assets/devise.js",
+    "lib/generators/templates/assets/devise_css/bootstrap.min.css",
+    "lib/generators/templates/assets/devise_css/devise.scss",
+    "lib/generators/templates/assets/devise_images/.DS_Store",
+    "lib/generators/templates/assets/devise_images/avatar.png",
+    "lib/generators/templates/assets/devise_images/bg-login.svg",
+    "lib/generators/templates/assets/devise_js/bootstrap.min.js",
+    "lib/generators/templates/dashboard.html.erb",
+    "lib/generators/templates/devise.en.yml",
+    "lib/generators/templates/devise.html.erb",
+    "lib/generators/templates/devise.rb",
+    "lib/generators/templates/devise/confirmations/new.html.erb",
+    "lib/generators/templates/devise/mailer/confirmation_instructions.html.erb",
+    "lib/generators/templates/devise/mailer/reset_password_instructions.html.erb",
+    "lib/generators/templates/devise/mailer/unlock_instructions.html.erb",
+    "lib/generators/templates/devise/passwords/edit.html.erb",
+    "lib/generators/templates/devise/passwords/new.html.erb",
+    "lib/generators/templates/devise/registrations/edit.html.erb",
+    "lib/generators/templates/devise/registrations/new.html.erb",
+    "lib/generators/templates/devise/sessions/new.html.erb",
+    "lib/generators/templates/devise/shared/_links.html.erb",
+    "lib/generators/templates/devise/unlocks/new.html.erb"
   ]
   s.homepage = "https://antsadmin.wordpress.com"
   s.licenses = ["MIT"]
