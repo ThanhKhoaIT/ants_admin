@@ -8,14 +8,14 @@ class AntsAdmin::AdminsController < AntsAdminController
       begin
         @model_class = @model_string.classify.constantize
       rescue
-        return redirect_to "/admin/errors/not_model?model=#{@model_string}"
+        return redirect_to "/#{AntsAdmin.admin_path}/errors/not_model?model=#{@model_string}"
       end
       @model_config = AntsAdmin::ModelConfigHelper.new(@model_class)
       
       @params_include = detect_params_include
       
       params[:controller] = @model_string
-      return redirect_to "/admin/errors/not_apply?model=#{@model_string}" if !@model_config.apply_admin?
+      return redirect_to "/#{AntsAdmin.admin_path}/errors/not_apply?model=#{@model_string}" if !@model_config.apply_admin?
       if urls.count == 1
         return index if request.get?
         return create if request.post?
@@ -123,7 +123,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       if @object.save
         flash[:id] = @object.id
         flash[:notice] = "Create is successful!"
-        redirect_to "/admin/#{@model_class.to_s.tableize}?#{params_add_form.to_query}"
+        redirect_to "/#{AntsAdmin.admin_path}/#{@model_class.to_s.tableize}?#{params_add_form.to_query}"
       else
         render template: "/ants_admin/new"
       end
@@ -185,7 +185,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       if @object.update(params_permit)
         flash[:id] = id
         flash[:notice] = "Update is successful!"
-        redirect_to "/admin/#{@model_string.tableize}"
+        redirect_to "/#{AntsAdmin.admin_path}/#{@model_string.tableize}"
       else
         render template: "/ants_admin/edit"
       end
@@ -228,7 +228,7 @@ class AntsAdmin::AdminsController < AntsAdminController
         @object.destroy
         flash[:notice] = "#{@model_string} is removed!"
       end
-      redirect_to "/admin/#{@model_string}?#{@params_add_form.to_query}"
+      redirect_to "/#{AntsAdmin.admin_path}/#{@model_string}?#{@params_add_form.to_query}"
     end
   end
   

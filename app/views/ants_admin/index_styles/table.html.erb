@@ -1,17 +1,20 @@
 <section class="content-header">
 <h1><%= @model_config.title %></h1>
 <ol class="breadcrumb">
-  <li><a href="/admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+  <li><a href="/<%= AntsAdmin.admin_path %>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
   <li class="active"><%= @model_config.title %></li>
 </ol>
 </section>
 
 <section class="content">
   <div class="row">
-    <% if @model_config.table_show.length == 1 %>
-      <div class="col-lg-3 col-md-2"></div>
-    <% end %>
-    <div class="col-xs-12 col-md-8 col-lg-<%= @model_config.table_show.length == 1 ? 6 : 12 %>">
+<%
+class_name = 'col-xs-12'
+if @model_config.table_show.length == 1 
+  class_name = 'col-lg-6 col-md-8 col-sm-10 col-xs-12  col-lg-offset-3 col-md-offset-2 col-sm-offset-1 col-xs-12'
+end
+%>
+    <div class="<%= class_name %>">
       <div class="box default-hidden">
         <div class="box-body table-responsive">
           
@@ -22,7 +25,7 @@
                   <th data-dynatable-column="<%= column[:key] %>" data-dynatable-no-sort="<%= !column[:sort] %>"><%= column[:label] %></th>
                 <% end %>
                 <% if @model_config.actions_link.length > 0 %>
-                  <th style="min-width:100px" class="actions_column" data-dynatable-no-sort="true">Actions</th>
+                  <th style="min-width:120px; width:120px" class="actions_column" data-dynatable-no-sort="true">Actions</th>
                 <% end %>
               </tr>
             </thead>
@@ -33,7 +36,7 @@
           <% if !@model_config.create_disabled? and @model_class.count == 0 %>
             <div class="add-big-center">
               <div class="btn-box">
-                <a class="fa fa-plus" href="/admin/<%= @model_string %>/new" back-level='2' back-href='/admin/<%= @model_string %>'></a>
+                <a class="fa fa-plus" href="/<%= AntsAdmin.admin_path %>/<%= @model_string %>/new" back-level='2' back-href='/<%= AntsAdmin.admin_path %>/<%= @model_string %>'></a>
               </div>
             </div>
           <% end %>
@@ -56,7 +59,7 @@ $(function() {
     },
     dataset: {
       ajax: true,
-      ajaxUrl: '/admin/<%= @model_string %>/all.json',
+      ajaxUrl: '/<%= AntsAdmin.admin_path %>/<%= @model_string %>/all.json',
       ajaxOnLoad: true,
       records: []
     }

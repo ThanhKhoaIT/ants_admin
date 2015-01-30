@@ -1,4 +1,4 @@
-<%= form_for @object, :url => @object.new_record? ? "/admin/#{@model_string.downcase}?#{@params_include}" : "/admin/#{@model_string.downcase}/#{@object.id}?#{@params_include}", :html => {role: "form", class: 'upload_form'} do |form| %>
+<%= form_for @object, :url => @object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.downcase}?#{@params_include}" : "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/#{@object.id}?#{@params_include}", :html => {role: "form", class: 'upload_form'} do |form| %>
   <% @object.class.columns.each do |col| %>
     <% if !(['id','created_at','updated_at'] + @model_config.form_input_skip).include?(col.name) \
             and col.name.to_s.index('_file_name').nil? \

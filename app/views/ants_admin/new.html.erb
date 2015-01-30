@@ -1,8 +1,8 @@
 <section class="content-header">
   <h1><%= @model_config.title %></h1>
   <ol class="breadcrumb">
-    <li><a href="/admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="/admin/<%= @model_string.pluralize %>"><i class="fa fa-dashboard"></i> <%= @model_config.title %></a></li>
+    <li><a href="/<%= AntsAdmin.admin_path %>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+    <li><a href="/<%= AntsAdmin.admin_path %>/<%= @model_string.pluralize %>"><i class="fa fa-dashboard"></i> <%= @model_config.title %></a></li>
     <li class="active">New</li>
   </ol>
 </section>

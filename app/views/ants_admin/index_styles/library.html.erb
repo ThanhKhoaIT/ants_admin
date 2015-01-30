@@ -1,7 +1,7 @@
 <section class="content-header">
 <h1><%= @model_config.title %></h1>
 <ol class="breadcrumb">
-  <li><a href="/admin"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+  <li><a href="/<%= AntsAdmin.admin_path %>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
   <li class="active"><%= @model_config.title %></li>
 </ol>
 </section>
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="actions_drag_drop">
-      <a href="#" class="action_drag_drop_upload btn btn-success btn-flat" url='/admin/<%= @model_url %>' extra='<%= @params_add_form.to_json %>' model='<%= @model_string %>' image_attribute='<%= image_attribute %>'>Upload</a>
+      <a href="#" class="action_drag_drop_upload btn btn-success btn-flat" url='/<%= AntsAdmin.admin_path %>/<%= @model_url %>' extra='<%= @params_add_form.to_json %>' model='<%= @model_string %>' image_attribute='<%= image_attribute %>'>Upload</a>
       <a href="#" class="action_drag_drop_cancel btn btn-danger btn-flat">Cancel</a>
     </div>
   </div>

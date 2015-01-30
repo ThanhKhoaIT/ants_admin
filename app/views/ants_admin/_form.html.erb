@@ -1,4 +1,4 @@
-<%= form_for @object, :url => @object.new_record? ? "/admin/#{@model_string.downcase}/" : "/admin/#{@model_string.downcase}/#{@object.id}", :html => {role: "form"} do |form| %>
+<%= form_for @object, :url => @object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/" : "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/#{@object.id}", :html => {role: "form"} do |form| %>
 	<div class="box-body">
 		<% @object.class.columns.each do |col| %>
 		

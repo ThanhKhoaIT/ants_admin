@@ -78,7 +78,7 @@ module AntsAdmin
         (form.select name, collection, {}, {class: "form-control with_ajax_add select_#{select_box_class}"}),
         content_tag(:a, '',
           href: '#',
-          iframe_link: "/admin/#{class_model}/add",
+          iframe_link: "/#{AntsAdmin.admin_path}/#{class_model}/add",
           iframe_callback: 'updateSelectBox',
           iframe_params: ".select_#{select_box_class},#{class_model}",
           class: 'fa fa-plus add_btn_ajax_select_box'

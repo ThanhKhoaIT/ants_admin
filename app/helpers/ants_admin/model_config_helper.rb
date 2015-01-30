@@ -159,7 +159,7 @@ module AntsAdmin
           hash[key].each do |item|
             text = defined?(item.represent_text) ? item.represent_text : item.to_s
             model_string = item.class.name.downcase
-            list << "<li><a href='/admin/#{model_string}/#{item.id}/edit' back-href='/admin/#{obj.class.name.downcase}' back-level='2'>#{text}</a></li>"
+            list << "<li><a href='/#{AntsAdmin.admin_path}/#{model_string}/#{item.id}/edit' back-href='/#{AntsAdmin.admin_path}/#{obj.class.name.downcase}' back-level='2'>#{text}</a></li>"
           end
           hash[key] = html_show_list_with_has_many(list)
         else

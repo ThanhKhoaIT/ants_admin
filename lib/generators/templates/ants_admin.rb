@@ -5,6 +5,6 @@ AntsAdmin.setup do |config|
   # Allow for register
   config.registerable = true
   
-  # Allow for forgot password
-  config.recoverable = true
+  # Config Admin path
+  config.admin_path = 'admin'
 end

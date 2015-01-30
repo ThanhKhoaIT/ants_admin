@@ -13,7 +13,7 @@
         <% @object = @model_class.new %>
         <%= render partial: 'ants_admin/form_upload' %>
       <% else %>
-        <a class="fa fa-plus action-page" id="add_action" href="/admin/<%= @model_string %>/new" back-level='2' back-href='/admin/<%= @model_string %>' ></a>
+        <a class="fa fa-plus action-page" id="add_action" href="/<%= AntsAdmin.admin_path %>/<%= @model_string %>/new" back-level='2' back-href='/<%= AntsAdmin.admin_path %>/<%= @model_string %>' ></a>
       <% end %>      
     <% end %>
     <% if @model_config and ['new','edit'].include?(params[:action]) %>

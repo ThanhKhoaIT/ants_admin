@@ -7,6 +7,8 @@ en:
       login: Login
       signup: Sign up
       forgot: Send me reset password
+      update: Update
+      back: Back
     labels:
       remember: Remember me
     links:
@@ -15,6 +17,8 @@ en:
       login: Log In
     inputs:
       password: Password
+      new_password: New password
+      current_password: Current password
       password_confirmation: Password confirmation
       login: Email or Username
       email: Email

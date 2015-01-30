@@ -9,7 +9,7 @@
         <li class='tab1'><span class='def'>def</span> <span class='def_name'><%= params[:def] %></span> </li>
           <li class='tab2'><span class='code'>{</span></li>
             <li class='tab3'><span class='code'>type: <span class='value'>'button'</span>,</span></li>
-            <li class='tab3'><span class='code'>href: <span class='value'>"/admin/photos/#{id}/view"</span>,</span></li>
+            <li class='tab3'><span class='code'>href: <span class='value'>"/<%= AntsAdmin.admin_path %>/photos/#{id}/view"</span>,</span></li>
             <li class='tab3'><span class='code'>style: <span class='value'>"info"</span>,</span></li>
             <li class='tab3'><span class='code'>icon: <span class='value'>"photo"</span>,</span></li>
             <li class='tab3'><span class='code'>text: <span class='value'>'hinh'</span></span></li>
@@ -20,13 +20,3 @@
     </ul>
   </code>
 </div>
-<!--
-  def view_action
-    {
-      type:'button',
-      href: "/admin/photos/?album_id=#{id}",
-      style: 'info',
-      icon: 'photo',
-      text: 'hinh'
-    }
-  end -->
