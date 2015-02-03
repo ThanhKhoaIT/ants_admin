@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2015-01-30"
+  s.date = "2015-02-03"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -455,7 +455,8 @@ Gem::Specification.new do |s|
     "lib/generators/templates/devise/registrations/new.html.erb",
     "lib/generators/templates/devise/sessions/new.html.erb",
     "lib/generators/templates/devise/shared/_links.html.erb",
-    "lib/generators/templates/devise/unlocks/new.html.erb"
+    "lib/generators/templates/devise/unlocks/new.html.erb",
+    "lib/generators/templates/form.yml"
   ]
   s.homepage = "https://antsadmin.wordpress.com"
   s.licenses = ["MIT"]
