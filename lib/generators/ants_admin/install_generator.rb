@@ -13,6 +13,7 @@ module AntsAdmin
         template "devise.rb", "config/initializers/devise.rb"
         template "ants_admin.rb", "config/initializers/ants_admin.rb"
         template "dashboard.html.erb", "app/views/ants_admin/dashboard.html.erb"
+        template "form.yml", "config/ants_admin/form.yml"
         template "devise.en.yml", "config/locales/devise.en.yml"
       end
             

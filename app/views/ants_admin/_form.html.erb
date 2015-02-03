@@ -1,9 +1,24 @@
 <%= form_for @object, :url => @object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/" : "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/#{@object.id}", :html => {role: "form"} do |form| %>
 	<div class="box-body">
-		<% @object.class.columns.each do |col| %>
+		<% 
+			form_input_config = @model_config.form_input
+			if form_input_config.present?
+				columns_show = []
+				@object.class.columns.each do |column|
+					index = form_input_config.index(column.name)
+					index = form_input_config.index(column.name[0..-11]) if !index and column.name[-10..-1] == '_file_name'
+					columns_show[index] = column if index
+				end
+				columns_show = columns_show.select{|col| col.present?}
+			else
+				columns_show = @object.class.columns
+			end
+			@form_text = AntsAdmin::FormHelper.text_for_form(@model_string) || {}
+		%>
+		
+		<% columns_show.each do |col| %>
 		
 			<% if !(['id','created_at','updated_at'] + @model_config.form_input_skip).include?(col.name) \
-              and col.name.to_s.index('_file_name').nil? \
               and col.name.to_s.index('_content_type').nil? \
               and col.name.to_s.index('_file_size').nil? \
               and col.name.to_s.index('_updated_at').nil? %>
@@ -12,9 +27,9 @@
 				
 				<% case col.type.to_s %>
 				<% when 'string' %>
-					<% if @object.respond_to?("#{col.name}_file_name") %>
-						<%= file_input form, col.name %>
-					<% else %>
+					<% if col.name[-10..-1] == '_file_name' %>
+						<%= file_input form, col.name[0..-11] %>
+					<% elsif !@object.respond_to?("#{col.name}_file_name") %>
 						<%= text_input form, col.name %>
 					<% end %>
 				<% when 'text' %>

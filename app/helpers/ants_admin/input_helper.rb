@@ -1,7 +1,7 @@
 module AntsAdmin
   module InputHelper
     def text_input(form, name)
-      content_tag(:div, [(form.label name.to_sym),(form.text_field name.to_sym, class: 'form-control')].join().html_safe, class: "form-group")
+      content_tag(:div, [(form.label @form_text[name] || name.to_sym),(form.text_field name.to_sym, class: 'form-control')].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
     
     def file_input(form, name)
@@ -20,17 +20,17 @@ module AntsAdmin
       
       thumb = type ? content_tag(:div, html.html_safe, class: "thumb") : ""
       
-      content_tag(:div, [(form.label name.to_sym, for: false),thumb,upload_button].join().html_safe, class: "form-group file-upload")
+      content_tag(:div, [(form.label @form_text[name] || name.to_sym, for: false),thumb,upload_button].join().html_safe, class: "form-group file-upload col-md-6 col-md-offset-3")
     end
     
     def file_input_upload_only(form, name)
-      content_tag(:div, (form.file_field name.to_sym), class: 'fa fa-cloud-upload action-page', id: 'add_upload')
+      content_tag(:div, (form.file_field @form_text[name] || name.to_sym), class: 'fa fa-cloud-upload action-page', id: 'add_upload')
     end
     
     def time_input(form, name)
       id = "id_#{Random.rand(500) + 10}"
-      contents = ['<div class="form-group">', 
-        (form.label name),
+      contents = ['<div class="form-group col-md-6 col-md-offset-3">', 
+        (form.label @form_text[name] || name.to_sym),
         '<div class="input-group">',
         (form.text_field name, class: 'form-control timepicker', id: id),
         '<div class="input-group-addon"><i class="fa fa-clock-o"></i></div></div>',
@@ -42,27 +42,27 @@ module AntsAdmin
     def date_input(form, name)
       id = "id_#{Random.rand(500) + 10}"
       contents = [
-        (form.label name),
+        (form.label @form_text[name] || name.to_sym),
         '<div class="input-group"><div class="input-group-addon"><i class="fa fa-calendar"></i></div>',
         (form.text_field name, id: id, class: 'form-control', 'data-inputmask'=>"'alias':'dd/mm/yyyy'",'data-mask'=>""),
         '</div>',
         javascript_tag("$('##{id}').inputmask('dd/mm/yyyy', {placeholder: 'dd/mm/yyyy'})")
       ]
-      content_tag(:div, contents.join().html_safe, class: "form-group")
+      content_tag(:div, contents.join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
 
     def number_input(form, name)
-      content_tag(:div, [(form.label name.to_sym),(form.text_field name.to_sym, class: 'form-control', type: "number")].join().html_safe, class: "form-group")
+      content_tag(:div, [(form.label @form_text[name] || name.to_sym),(form.text_field name.to_sym, class: 'form-control', type: "number")].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
 
     def textarea(form, name)
       id = random_id
       js_tag = javascript_tag("$('.#{id}').editable({inlineMode: false})") if !@model_config.textarea_only.include?(name)
-      content_tag(:div, [(form.label name.to_sym),(form.text_area name.to_sym, class: "form-control #{id}"), js_tag].join().html_safe, class: "form-group")
+      content_tag(:div, [(form.label @form_text[name] || name.to_sym),(form.text_area name.to_sym, class: "form-control #{id}"), js_tag].join().html_safe, class: "form-group")
     end
     
     def checkbox(form, name)
-      content_tag(:div, [(form.label name.to_sym, class: 'label_select'),(form.check_box name.to_sym, class: 'form-control flat-blue')].join().html_safe, class: "form-group")
+      content_tag(:div, [(form.label @form_text[name] || name.to_sym, class: 'label_select'),(form.check_box name.to_sym, class: 'form-control flat-blue')].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
     
     def select_input(form, name)
@@ -74,7 +74,7 @@ module AntsAdmin
       collection = collection.sort_by{|item| item[0]}
 
       content_tag(:div, [
-        (form.label name.to_sym, class: 'label_with_ajax_add'),
+        (form.label @form_text[name] || name.to_sym, class: 'label_with_ajax_add'),
         (form.select name, collection, {}, {class: "form-control with_ajax_add select_#{select_box_class}"}),
         content_tag(:a, '',
           href: '#',
@@ -84,7 +84,7 @@ module AntsAdmin
           class: 'fa fa-plus add_btn_ajax_select_box'
         )
           
-      ].join().html_safe, class: "form-group with_ajax_add")
+      ].join().html_safe, class: "form-group with_ajax_add col-md-6 col-md-offset-3")
     end
     
     def select_input_boolean(form, name)
@@ -94,7 +94,7 @@ module AntsAdmin
         (form.label name.to_sym),
         (form.select name, collection, {}, {class: "form-control"})
           
-      ].join().html_safe, class: "form-group")
+      ].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
 
 

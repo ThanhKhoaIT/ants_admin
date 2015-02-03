@@ -14,7 +14,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       
       @params_include = detect_params_include
       
-      params[:controller] = @model_string
+      params[:controller] = @model_string.pluralize
       return redirect_to "/#{AntsAdmin.admin_path}/errors/not_apply?model=#{@model_string}" if !@model_config.apply_admin?
       if urls.count == 1
         return index if request.get?

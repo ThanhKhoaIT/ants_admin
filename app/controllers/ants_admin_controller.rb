@@ -10,6 +10,7 @@ class AntsAdminController < ApplicationController
   before_action :security_controller, except: [:errors]
 
   def dashboard
+    ants_admin_dashboard if defined?(ants_admin_dashboard)
   end
   
   def errors

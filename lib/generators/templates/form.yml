@@ -1,0 +1,5 @@
+product:
+  name: Tên sản phẩm
+  category_id: Nhóm cây
+  active: Hiển thị
+  image: Hình ảnh đại diện

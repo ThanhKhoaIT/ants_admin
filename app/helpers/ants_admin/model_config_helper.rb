@@ -33,6 +33,10 @@ module AntsAdmin
       get_list(@model_string::FORM_INPUT_NESTED_SKIP) rescue []
     end
     
+    def self.form_input
+      get_list(@model_string::FORM_INPUT) rescue []
+    end
+    
     def self.search_for
       get_list(@model_string::SEARCH_FOR) rescue []
     end

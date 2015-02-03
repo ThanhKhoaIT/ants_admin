@@ -9,8 +9,7 @@
 
 <section class="content">
   <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
+    <div class="col-md-12">
       <div class="box box-primary">
         <%= render :partial => "/ants_admin/#{@model_string.downcase.pluralize}/form" rescue render :partial => "/ants_admin/form" %>
       </div>

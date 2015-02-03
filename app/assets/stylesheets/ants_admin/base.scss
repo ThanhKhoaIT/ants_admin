@@ -446,7 +446,7 @@ div.add-big-center {
   .add_btn_ajax_select_box {
     position:absolute;
     font-size: 14px;
-    right:0px; 
+    right:15px; 
     width:32px;
     height:34px;
     top:24px;
@@ -461,10 +461,9 @@ div.add-big-center {
   }
   select.with_ajax_add {
     position:absolute;
-    left:0px;
-    right:32px;
+    left:15px;
     top:24px;
-    width:-moz-available;
+    width:calc(100% - 62px);
   }
 }
 
@@ -587,7 +586,7 @@ form .form-group.file-upload {
     position:absolute;
     left:140px;
     bottom:0px;
-    right:0px;
+    right:15px;
   }
 }
 
@@ -853,4 +852,27 @@ img.library_index {
 
 td img.thumb {
 	width: 120px;
+}
+
+.fa.action-page {
+	&.fa-plus {
+		&:hover {
+			color:#40CE4E;
+		}
+	}
+	&.fa-save {
+		&:hover {
+			color:#3E7DB7;
+		}
+	}
+	&.fa-arrow-left {
+		&:hover {
+			color:#AD4848;
+		}
+	}
+	&.fa-tachometer {
+		&:hover {
+			color:#5BD8CC;
+		}
+	}
 }
