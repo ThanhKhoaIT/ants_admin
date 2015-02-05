@@ -44,9 +44,9 @@ module AntsAdmin
       contents = [
         (form.label @form_text[name] || name.to_sym),
         '<div class="input-group"><div class="input-group-addon"><i class="fa fa-calendar"></i></div>',
-        (form.text_field name, id: id, class: 'form-control', 'data-inputmask'=>"'alias':'dd/mm/yyyy'",'data-mask'=>""),
+        (form.text_field name, id: id, class: 'form-control', 'data-inputmask'=>"'alias':'yyyy/mm/dd'",'data-mask'=>""),
         '</div>',
-        javascript_tag("$('##{id}').inputmask('dd/mm/yyyy', {placeholder: 'dd/mm/yyyy'})")
+        javascript_tag("$('##{id}').inputmask('yyyy/mm/dd', {placeholder: 'yyyy/mm/dd'})")
       ]
       content_tag(:div, contents.join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
@@ -68,6 +68,7 @@ module AntsAdmin
     def select_input(form, name)
       select_box_class = (0...8).map{(65+rand(26)).chr}.join
       class_model = name[0..-4]
+      return text_input(form, name) if defined?(class_model.singularize.classify) != 'constant'
       model_class = class_model.singularize.classify.constantize
       all = model_class.load_select_box rescue model_class.all
       collection = all.collect{|item| [represent_text(item) , item.id]}
@@ -87,17 +88,15 @@ module AntsAdmin
       ].join().html_safe, class: "form-group with_ajax_add col-md-6 col-md-offset-3")
     end
     
-    def select_input_boolean(form, name)
-      input_config = form.object.send("input_#{name}") rescue nil
-      collection = input_config[:collection]
+    def select_input_config(form, name)
+      collection = @input_config[:collection]
       content_tag(:div, [
-        (form.label name.to_sym),
+        (form.label @form_text[name] || name.to_sym),
         (form.select name, collection, {}, {class: "form-control"})
           
       ].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
-
-
+    
     def link_to_add_fields(f, association)
       new_object = association.classify.constantize.new
       fields = f.fields_for(association, new_object, :child_index => "new_#{association}") do |builder|

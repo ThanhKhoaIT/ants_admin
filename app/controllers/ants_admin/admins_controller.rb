@@ -94,6 +94,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       return render :text => "Create function is disabled!"
     else
       @object = @model_class.new
+      load_config_for_form
       render template: "/ants_admin/new"
     end
   end
@@ -104,6 +105,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       return render :text => "Create function is disabled!"
     else
       @object = @model_class.new
+      load_config_for_form
       render template: "/ants_admin/add", layout: false
     end
   end
@@ -151,6 +153,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       return render :text => "Edit function is disabled!"
     else
       @object = @model_class.find id
+      load_config_for_form
       render template: "/ants_admin/edit"
     end
   end
@@ -241,6 +244,23 @@ class AntsAdmin::AdminsController < AntsAdminController
   end
   
   private
+  def load_config_for_form
+		form_input_config = @model_config.form_input
+		if form_input_config.present?
+			columns_show = []
+			@object.class.columns.each do |column|
+				index = form_input_config.index(column.name)
+				index = form_input_config.index(column.name[0..-11]) if !index and column.name[-10..-1] == '_file_name'
+				columns_show[index] = column if index
+			end
+			@columns_show = columns_show.select{|col| col.present?}
+		else
+			@columns_show = @object.class.columns
+		end
+		@form_text = AntsAdmin::FormHelper.text_for_form(@model_string) || {}
+  end
+
+  
   def params_permit
     params.require(@model_string).permit!
   end

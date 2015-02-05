@@ -1,80 +1,68 @@
 <%= form_for @object, :url => @object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/" : "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/#{@object.id}", :html => {role: "form"} do |form| %>
 	<div class="box-body">
-		<% 
-			form_input_config = @model_config.form_input
-			if form_input_config.present?
-				columns_show = []
-				@object.class.columns.each do |column|
-					index = form_input_config.index(column.name)
-					index = form_input_config.index(column.name[0..-11]) if !index and column.name[-10..-1] == '_file_name'
-					columns_show[index] = column if index
-				end
-				columns_show = columns_show.select{|col| col.present?}
-			else
-				columns_show = @object.class.columns
-			end
-			@form_text = AntsAdmin::FormHelper.text_for_form(@model_string) || {}
-		%>
 		
-		<% columns_show.each do |col| %>
+		<% @columns_show.each do |col| %>
 		
 			<% if !(['id','created_at','updated_at'] + @model_config.form_input_skip).include?(col.name) \
-              and col.name.to_s.index('_content_type').nil? \
-              and col.name.to_s.index('_file_size').nil? \
-              and col.name.to_s.index('_updated_at').nil? %>
+							and col.name.to_s.index('_content_type').nil? \
+							and col.name.to_s.index('_file_size').nil? \
+							and col.name.to_s.index('_updated_at').nil? %>
 				
-				<% input_config = @object.class.new.send("input_#{col.name}") rescue nil %>
+				<% @input_config = @object.send("input_#{col.name}") rescue nil %>
 				
-				<% case col.type.to_s %>
-				<% when 'string' %>
-					<% if col.name[-10..-1] == '_file_name' %>
-						<%= file_input form, col.name[0..-11] %>
-					<% elsif !@object.respond_to?("#{col.name}_file_name") %>
-						<%= text_input form, col.name %>
+				<% if @input_config %>
+					<% case @input_config[:type] %>
+					<% when 'select' %>
+						<%= select_input_config form, col.name %>
 					<% end %>
-				<% when 'text' %>
-					<%= textarea form, col.name %>
-				<% when 'boolean' %>
-					<% if input_config %>
-						<% case input_config[:type] %>
-						<% when 'select' %>
-							<%= select_input_boolean form, col.name %>
-						<% end %>
-					<% else %>
-						<%= checkbox form, col.name %>
-					<% end %>
-				<% when 'time' %>
-					<%= time_input form, col.name %>
-				<% when 'integer', 'float', 'decimal' %>
-
-					<% if col.name[-3,3] == "_id" %>
-						<%= select_input form, col.name %>
-					<% else %>
-						<%= number_input form, col.name %>
-					<% end %>
-
-				<% when 'date' %>
-					<%= date_input form, col.name %>
 				<% else %>
-					<div class="form-group">
-						<%= form.label col.name.to_sym %>
-						<%= form.text_field col.name.to_sym, class: 'form-control' %>
-					</div>
-				<% end %>
+				
+					<% case col.type.to_s %>
+					<% when 'string' %>
+						<% if col.name[-10..-1] == '_file_name' %>
+							<%= file_input form, col.name[0..-11] %>
+						<% elsif !@object.respond_to?("#{col.name}_file_name") %>
+							<%= text_input form, col.name %>
+						<% end %>
+					<% when 'text' %>
+						<%= textarea form, col.name %>
+					<% when 'boolean' %>
+						<%= checkbox form, col.name %>
+					<% when 'time' %>
+						<%= time_input form, col.name %>
+					<% when 'integer', 'float', 'decimal' %>
 
+						<% if col.name[-3,3] == "_id" %>
+							<%= select_input form, col.name %>
+						<% else %>
+							<%= number_input form, col.name %>
+						<% end %>
+
+					<% when 'date' %>
+						<%= date_input form, col.name %>
+					<% else %>
+						<div class="form-group col-md-6 col-md-offset-3">
+							<%= form.label col.name.to_sym %>
+							<%= form.text_field col.name.to_sym, class: 'form-control' %>
+						</div>
+					<% end %>
+					
+				<% end %>
+				
 			<% end %>
 		<% end %>
 
 		<% if params[:action] != "add" %>
 			<% (@model_config.has_many_list.collect{|item| item[:key][0..-4]} - @model_config.form_input_nested_skip).each do |item| %>
 				<% if item.present? %>
+					<%
+						@sub_model_string = item.singularize
+						break if defined?(@sub_model_string.classify) != 'constant'
+						@sub_model_class = @sub_model_string.classify.constantize
+						@sub_model_config = AntsAdmin::ModelConfigHelper.new(@sub_model_class)
+					%>
+					
 					<div class="nested-form">
-						<%
-							@sub_model_string = item.singularize
-							@sub_model_class = @sub_model_string.classify.constantize
-							@sub_model_config = AntsAdmin::ModelConfigHelper.new(@sub_model_class)
-						%>
-
 						<h2><%= @sub_model_config.title %></h2>
 						<%= form.fields_for(item) do |builder| %>
 							<%= render :partial => '/ants_admin/nested_form', locals: {form: builder, item: item} %>

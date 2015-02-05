@@ -25,7 +25,7 @@ end
                   <th data-dynatable-column="<%= column[:key] %>" data-dynatable-no-sort="<%= !column[:sort] %>"><%= column[:label] %></th>
                 <% end %>
                 <% if @model_config.actions_link.length > 0 %>
-                  <th style="min-width:120px; width:120px" class="actions_column" data-dynatable-no-sort="true">Actions</th>
+                  <th style="min-width:120px; max-width:200px" class="actions_column" data-dynatable-no-sort="true">Actions</th>
                 <% end %>
               </tr>
             </thead>

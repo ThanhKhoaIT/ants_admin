@@ -783,9 +783,13 @@ body > .header .logo .icon {
   padding: 5px 5px 5px 15px;
   font-size: 14px;
   line-height: 1;
+  width:150px;
 }
 .user-panel > .info > p {
   margin-bottom: 9px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 }
 .user-panel > .info > a {
   text-decoration: none;
