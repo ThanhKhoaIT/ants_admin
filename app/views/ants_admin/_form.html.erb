@@ -1,4 +1,12 @@
-<%= form_for @object, :url => @object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/" : "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/#{@object.id}", :html => {role: "form"} do |form| %>
+<%= form_for @object, :url => @object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.downcase}?#{@model_config.add_link(params)}" : "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/#{@object.id}?#{@model_config.add_link(params)}", :html => {role: "form"} do |form| %>
+
+	<div class="hidden">
+		<% params.each do |param| %>
+			<% if param[0][-3..-1] == '_id' %>
+				<%= form.hidden_field param[0].to_s, value: param[1] %>
+			<% end %>
+		<% end %>
+	</div>
 	<div class="box-body">
 		
 		<% @columns_show.each do |col| %>
@@ -13,6 +21,7 @@
 				<% if @input_config %>
 					<% case @input_config[:type] %>
 					<% when 'select' %>
+						
 						<%= select_input_config form, col.name %>
 					<% end %>
 				<% else %>
@@ -31,7 +40,6 @@
 					<% when 'time' %>
 						<%= time_input form, col.name %>
 					<% when 'integer', 'float', 'decimal' %>
-
 						<% if col.name[-3,3] == "_id" %>
 							<%= select_input form, col.name %>
 						<% else %>

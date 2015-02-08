@@ -9,7 +9,7 @@ module AntsAdmin
     # LIST
     def self.table_show
       titles = defined?(@model_string::TABLE_SHOW) ? @model_string::TABLE_SHOW : @model_string.new.attributes.select{|attr_name, value| !(["created_at","updated_at","active"]).include?(attr_name) and attr_name[-3,3] != "_id"}.collect{|attr_name, value| attr_name}
-      titles = [titles] if titles.is_a?(String)
+      titles = [titles] if !titles.is_a?(Array)
       titles += belongs_to_list + has_many_list
       titles = titles.collect{|title| title.is_a?(Hash) ? {sort:true}.merge(title) : {
         key: title,
@@ -67,7 +67,7 @@ module AntsAdmin
       end
       return list
     end
-       
+    
     def self.has_many_list
       list = []
       @model_string.reflections.select do |assoc_name, ref|
@@ -141,6 +141,15 @@ module AntsAdmin
       defined?(@model_string::IMAGE_STYLE_MEDIUM) ? @model_string::IMAGE_STYLE_MEDIUM : 'original'
     end
     
+    def self.add_link(params)
+      hash = {}
+      params.each do |param|
+        key = param[0].gsub('/', '') 
+        hash[key] = param[1] if param[0].last(3) == "_id"
+      end
+      hash.to_query
+    end
+    
     # HASH
     
     def self.as_json(obj)
@@ -154,7 +163,7 @@ module AntsAdmin
           hash[key] = self.json_with_file(obj, key) rescue attribute_show(obj, key)
         else
           add_update_tool = true
-          hash[key] = obj.send(value.downcase)
+          hash[key] = obj.send(key.downcase) rescue "#"
         end
         
         if hash[key].class.to_s.index("ActiveRecord_Associations_CollectionProxy")
@@ -167,15 +176,25 @@ module AntsAdmin
           end
           hash[key] = html_show_list_with_has_many(list)
         else
+          add_update_tool = false
           hash[key] = defined?(hash[key].represent_text) ? hash[key].represent_text : hash[key].to_s
         end
+
         if add_update_tool
-          hash[key] = ["<div class='select_edit'>","<span>#{hash[key]}</span>","<a class='fa fa-cog' href='#'></a>","<data type='#{key[0..-4]}' value='#{obj.send(value.downcase).id}' obj-id='#{obj.id}' model='#{obj.class.name.downcase}'/>","</div>"].join
+          sub_table = obj.send(value.downcase) rescue false
+          if sub_table
+            hash[key] = [
+              "<div class='select_edit'>",
+              "<span>#{hash[key]}</span>",
+              "<a class='fa fa-cog' href='#'></a>",
+              "<data type='#{key[0..-4]}' value='#{sub_table.id}' obj-id='#{obj.id}' model='#{obj.class.name.downcase}'/>",
+              "</div>"].join
+          end
         end
       end
       return hash
     end
-
+    
     # Skins
     
     ## Buttons HTML

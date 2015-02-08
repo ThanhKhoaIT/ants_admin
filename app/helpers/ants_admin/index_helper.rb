@@ -20,7 +20,6 @@ module AntsAdmin
     
     def action_content(actions_link, class_style)
       actions_html = []
-      
       actions_link.each do |action_link|
         case action_link
         when "edit"
@@ -33,13 +32,12 @@ module AntsAdmin
           actions_html << custom_action(action_link) rescue ""
         end
       end
-
       return content_tag(:div, actions_html.join().html_safe, class: class_style)
     end
     
     def add_edit
       content_tag(:a, @model_config.html_button_edit,
-                    href: ["/#{AntsAdmin.admin_path}",@object.class.name.tableize,@object.id,"edit"].join("/"),
+                    href: ["/#{AntsAdmin.admin_path}",@object.class.name.tableize,@object.id,"edit?#{@model_config.add_link(params)}"].join("/"),
                     class: "btn btn-sm btn-success",
                     'back-href'=> "/#{AntsAdmin.admin_path}/#{@object.class.name.tableize}",
                     'back-level'=> "2")
@@ -47,7 +45,7 @@ module AntsAdmin
     
     def add_remove
       content_tag(:a, @model_config.html_button_delete,
-                    href:           ["/#{AntsAdmin.admin_path}",@object.class.name.tableize,"#{@object.id}?#{@params_add_form.to_query}"].join("/"),
+                    href:           ["/#{AntsAdmin.admin_path}",@object.class.name.tableize,"#{@object.id}?#{@model_config.add_link(params)}"].join("/"),
                     'data-method'=> 'delete',
                     class:          'btn btn-sm btn-danger',
                     confirm:        'Are you sure?')

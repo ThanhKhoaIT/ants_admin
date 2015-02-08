@@ -2,7 +2,7 @@
   <h1><%= @model_config.title %></h1>
   <ol class="breadcrumb">
     <li><a href="/<%= AntsAdmin.admin_path %>"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-    <li><a href="/<%= AntsAdmin.admin_path %>/<%= @model_string.pluralize %>"><i class="fa fa-dashboard"></i> <%= @model_config.title %></a></li>
+    <li><a href="/<%= AntsAdmin.admin_path %>/<%= @model_string.pluralize %>?<%= @model_config.add_link(params) %>"><i class="fa fa-dashboard"></i> <%= @model_config.title %></a></li>
     <li class="active"><%= represent_text(@object) %></li>
   </ol>
 </section>

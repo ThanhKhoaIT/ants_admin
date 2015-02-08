@@ -12,8 +12,6 @@ class AntsAdmin::AdminsController < AntsAdminController
       end
       @model_config = AntsAdmin::ModelConfigHelper.new(@model_class)
       
-      @params_include = detect_params_include
-      
       params[:controller] = @model_string.pluralize
       return redirect_to "/#{AntsAdmin.admin_path}/errors/not_apply?model=#{@model_string}" if !@model_config.apply_admin?
       if urls.count == 1
@@ -74,7 +72,11 @@ class AntsAdmin::AdminsController < AntsAdminController
       @objects = @objects.order(sorts[s].to_i > 0 ? "#{s} desc" : "#{s} asc")
     end
     
-    records = @objects[perPage*(page-1)..perPage*page].collect{|record| @model_config.as_json(record).merge!(@model_config.actions_link.length > 0 ? {actions: actions_link(record)} : {})}
+    records = @objects[perPage*(page-1)..perPage*page].collect do |record|
+      actions_link = @model_config.actions_link.length > 0 ? {actions: actions_link(record)} : {}
+      @model_config.as_json(record).merge!(actions_link)
+    end
+
     render json: {records: records, queryRecordCount: @objects.count, totalRecordCount: @objects.count}
   end
   
@@ -112,12 +114,6 @@ class AntsAdmin::AdminsController < AntsAdminController
   
   def create
     params[:action] = "create"
-    
-    params_add_form = {}
-    params.each do |param_name, param_value|
-      params_add_form[param_name] = param_value if param_name[-3..-1] == "_id"
-    end
-    
     if @model_config.create_disabled?
       return render :text => "Create function is disabled!"
     else
@@ -125,7 +121,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       if @object.save
         flash[:id] = @object.id
         flash[:notice] = "Create is successful!"
-        redirect_to "/#{AntsAdmin.admin_path}/#{@model_class.to_s.tableize}?#{params_add_form.to_query}"
+        redirect_to "/#{AntsAdmin.admin_path}/#{@model_class.to_s.tableize}?#{@model_config.add_link(params)}"
       else
         render template: "/ants_admin/new"
       end
@@ -188,7 +184,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       if @object.update(params_permit)
         flash[:id] = id
         flash[:notice] = "Update is successful!"
-        redirect_to "/#{AntsAdmin.admin_path}/#{@model_string.tableize}"
+        redirect_to "/#{AntsAdmin.admin_path}/#{@model_string.tableize}?#{@model_config.add_link(params)}"
       else
         render template: "/ants_admin/edit"
       end
@@ -231,7 +227,7 @@ class AntsAdmin::AdminsController < AntsAdminController
         @object.destroy
         flash[:notice] = "#{@model_string} is removed!"
       end
-      redirect_to "/#{AntsAdmin.admin_path}/#{@model_string}?#{@params_add_form.to_query}"
+      redirect_to "/#{AntsAdmin.admin_path}/#{@model_string}?#{@model_config.add_link(params)}"
     end
   end
   
@@ -264,13 +260,4 @@ class AntsAdmin::AdminsController < AntsAdminController
   def params_permit
     params.require(@model_string).permit!
   end
-  
-  def detect_params_include
-    @params_add_form = {}
-    params.each do |param_name, param_value|
-      @params_add_form[param_name] = param_value if param_name[-3..-1] == "_id"
-    end
-    @params_add_form.to_query
-  end
-
 end

@@ -11,7 +11,7 @@
 <%
 class_name = 'col-xs-12'
 if @model_config.table_show.length == 1 
-  class_name = 'col-lg-6 col-md-8 col-sm-10 col-xs-12  col-lg-offset-3 col-md-offset-2 col-sm-offset-1 col-xs-12'
+  class_name = 'col-lg-6 col-md-8 col-sm-10 col-xs-12 col-lg-offset-3 col-md-offset-2 col-sm-offset-1 col-xs-12'
 end
 %>
     <div class="<%= class_name %>">
@@ -36,7 +36,7 @@ end
           <% if !@model_config.create_disabled? and @model_class.count == 0 %>
             <div class="add-big-center">
               <div class="btn-box">
-                <a class="fa fa-plus" href="/<%= AntsAdmin.admin_path %>/<%= @model_string %>/new" back-level='2' back-href='/<%= AntsAdmin.admin_path %>/<%= @model_string %>'></a>
+                <a class="fa fa-plus" href="/<%= AntsAdmin.admin_path %>/<%= @model_string %>/new?<%= @model_config.add_link(params) %>" back-level='2' back-href='/<%= AntsAdmin.admin_path %>/<%= @model_string %>'></a>
               </div>
             </div>
           <% end %>
@@ -59,7 +59,7 @@ $(function() {
     },
     dataset: {
       ajax: true,
-      ajaxUrl: '/<%= AntsAdmin.admin_path %>/<%= @model_string %>/all.json',
+      ajaxUrl: '/<%= AntsAdmin.admin_path %>/<%= @model_string %>/all.json?<%= @model_config.add_link(params) %>',
       ajaxOnLoad: true,
       records: []
     }

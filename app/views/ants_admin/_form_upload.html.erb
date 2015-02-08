@@ -6,9 +6,11 @@
             and col.name.to_s.index('_file_size').nil? \
             and col.name.to_s.index('_updated_at').nil? %>
 
-      <% @params_add_form.each do |param_name, param_value| %>
-        <%= form.hidden_field param_name, value: param_value if col.name.to_s[-3..-1] == '_id' and col.name == param_name %>
-      <% end %>
+			<div class="hidden">
+				<% params.each do |param| %>
+					<%= form.hidden_field param[0].to_sym, value: param[1] if param[0][-3..-1] == '_id' %>
+				<% end %>
+			</div>
       
       <% if col.type.to_s == 'string' and @object.respond_to?("#{col.name}_file_name") %>
         <%= file_input_upload_only form, col.name %>

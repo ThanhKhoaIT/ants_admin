@@ -68,7 +68,7 @@ module AntsAdmin
     def select_input(form, name)
       select_box_class = (0...8).map{(65+rand(26)).chr}.join
       class_model = name[0..-4]
-      return text_input(form, name) if defined?(class_model.singularize.classify) != 'constant'
+      return text_input(form, name) if defined?(class_model.singularize.classify) != 'method'
       model_class = class_model.singularize.classify.constantize
       all = model_class.load_select_box rescue model_class.all
       collection = all.collect{|item| [represent_text(item) , item.id]}
