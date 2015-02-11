@@ -1,7 +1,6 @@
-<%= form_for @object, :url => @object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.downcase}?#{@params_include}" : "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/#{@object.id}?#{@params_include}", :html => {role: "form", class: 'upload_form'} do |form| %>
-  <% @object.class.columns.each do |col| %>
+<%= form_for object, :url => object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.downcase}?#{@model_config.add_link(params)}" : "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/#{object.id}?#{@model_config.add_link(params)}", :html => {role: "form", class: 'upload_form'} do |form| %>
+  <% object.class.columns.each do |col| %>
     <% if !(['id','created_at','updated_at'] + @model_config.form_input_skip).include?(col.name) \
-            and col.name.to_s.index('_file_name').nil? \
             and col.name.to_s.index('_content_type').nil? \
             and col.name.to_s.index('_file_size').nil? \
             and col.name.to_s.index('_updated_at').nil? %>
@@ -12,8 +11,8 @@
 				<% end %>
 			</div>
       
-      <% if col.type.to_s == 'string' and @object.respond_to?("#{col.name}_file_name") %>
-        <%= file_input_upload_only form, col.name %>
+      <% if col.type.to_s == 'string' and col.name[-9..-1] == 'file_name' %>
+        <%= file_input_upload_only form, col.name[0..-11] %>
         
         <div id="review_upload_image_group">
           <div id='review_upload_image'>
@@ -27,7 +26,7 @@
         </div>
         
         <script>
-          $("#<%= @model_string.downcase %>_<%= col.name %>").change(function(event) {loadReviewImage(this.files)});
+          $("#<%= @model_string.downcase %>_<%= col.name[0..-11] %>").change(function(event) {loadReviewImage(this.files)});
         </script>
       <% end %>
     <% end %>

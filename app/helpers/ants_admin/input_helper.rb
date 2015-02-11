@@ -24,7 +24,7 @@ module AntsAdmin
     end
     
     def file_input_upload_only(form, name)
-      content_tag(:div, (form.file_field @form_text[name] || name.to_sym), class: 'fa fa-cloud-upload action-page', id: 'add_upload')
+      content_tag(:div, (form.file_field name.to_sym), class: 'fa fa-cloud-upload action-page', id: 'add_upload')
     end
     
     def time_input(form, name)

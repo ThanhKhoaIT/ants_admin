@@ -2,13 +2,13 @@ module AntsAdmin
   module ModelConfigHelper
         
     def self.new(model_string)
-      @model_string = model_string
+      @model_class = model_string.classify.constantize
       self
     end
     
     # LIST
     def self.table_show
-      titles = defined?(@model_string::TABLE_SHOW) ? @model_string::TABLE_SHOW : @model_string.new.attributes.select{|attr_name, value| !(["created_at","updated_at","active"]).include?(attr_name) and attr_name[-3,3] != "_id"}.collect{|attr_name, value| attr_name}
+      titles = defined?(@model_class::TABLE_SHOW) ? @model_class::TABLE_SHOW : @model_class.new.attributes.select{|attr_name, value| !(["created_at","updated_at","active"]).include?(attr_name) and attr_name[-3,3] != "_id"}.collect{|attr_name, value| attr_name}
       titles = [titles] if !titles.is_a?(Array)
       titles += belongs_to_list + has_many_list
       titles = titles.collect{|title| title.is_a?(Hash) ? {sort:true}.merge(title) : {
@@ -22,30 +22,30 @@ module AntsAdmin
     end
     
     def self.table_show_skip
-      get_list(@model_string::TABLE_SHOW_SKIP) rescue []
+      get_list(@model_class::TABLE_SHOW_SKIP) rescue []
     end
     
     def self.form_input_skip
-      get_list(@model_string::FORM_INPUT_SKIP) rescue []
+      get_list(@model_class::FORM_INPUT_SKIP) rescue []
     end
     
     def self.form_input_nested_skip
-      get_list(@model_string::FORM_INPUT_NESTED_SKIP) rescue []
+      get_list(@model_class::FORM_INPUT_NESTED_SKIP) rescue []
     end
     
     def self.form_input
-      get_list(@model_string::FORM_INPUT) rescue []
+      get_list(@model_class::FORM_INPUT) rescue []
     end
     
     def self.search_for
-      get_list(@model_string::SEARCH_FOR) rescue []
+      get_list(@model_class::SEARCH_FOR) rescue []
     end
     
     def self.actions_link
       defaults = ['edit','active','remove']
-      if defined?(@model_string::ACTIONS_LINK)
-        return [] if @model_string::ACTIONS_LINK.is_a?(FalseClass)
-        actions = @model_string::ACTIONS_LINK.is_a?(TrueClass) ? defaults : @model_string::ACTIONS_LINK
+      if defined?(@model_class::ACTIONS_LINK)
+        return [] if @model_class::ACTIONS_LINK.is_a?(FalseClass)
+        actions = @model_class::ACTIONS_LINK.is_a?(TrueClass) ? defaults : @model_class::ACTIONS_LINK
       else
         actions = defaults
       end
@@ -58,7 +58,7 @@ module AntsAdmin
     
     def self.belongs_to_list
       list = []
-      @model_string.reflections.select do |assoc_name, ref|
+      @model_class.reflections.select do |assoc_name, ref|
         list << {
           key: "#{assoc_name.to_s}_id",
           label: [assoc_name.to_s.slice(0, 1).capitalize, assoc_name.to_s.slice(1..-1)].join(),
@@ -70,7 +70,7 @@ module AntsAdmin
     
     def self.has_many_list
       list = []
-      @model_string.reflections.select do |assoc_name, ref|
+      @model_class.reflections.select do |assoc_name, ref|
         list << {
           key: "#{assoc_name.to_s}_id",
           label: [assoc_name.to_s.pluralize.slice(0, 1).capitalize, assoc_name.to_s.pluralize.slice(1..-1)].join(),
@@ -81,76 +81,80 @@ module AntsAdmin
     end
     
     def self.textarea_only
-      get_list(@model_string::TEXTAREA_ONLY) rescue []
+      get_list(@model_class::TEXTAREA_ONLY) rescue []
     end
     
     # YES - NO
     
     def self.apply_admin?
-      defined?(@model_string::APPLY_ADMIN) and @model_string::APPLY_ADMIN
+      defined?(@model_class::APPLY_ADMIN) and @model_class::APPLY_ADMIN
     end
     
     def self.create_disabled?
-      defined?(@model_string::CREATE_DISABLED) and @model_string::CREATE_DISABLED
+      defined?(@model_class::CREATE_DISABLED) and @model_class::CREATE_DISABLED
     end
 
     def self.delete_disabled?
-      defined?(@model_string::DELETE_DISABLED) and @model_string::DELETE_DISABLED
+      defined?(@model_class::DELETE_DISABLED) and @model_class::DELETE_DISABLED
     end
 
     def self.edit_disabled?
-      defined?(@model_string::EDIT_DISABLED) and @model_string::EDIT_DISABLED
+      defined?(@model_class::EDIT_DISABLED) and @model_class::EDIT_DISABLED
     end
     
     def self.active_disabled?
-      (defined?(@model_string::ACTIVE_DISABLED) and @model_string::ACTIVE_DISABLED) or defined?(@model_string.new.active).nil?
+      (defined?(@model_class::ACTIVE_DISABLED) and @model_class::ACTIVE_DISABLED) or defined?(@model_class.new.active).nil?
     end
     
     # TEXT
     def self.title
-      defined?(@model_string::TITLE) ? @model_string::TITLE : @model_string.to_s.pluralize
+      defined?(@model_class::TITLE) ? @model_class::TITLE : @model_class.to_s.pluralize
     end
     
     def self.layout_index_style
       default = model_style
-      style = defined?(@model_string::LAYOUT_INDEX_STYLE) ? @model_string::LAYOUT_INDEX_STYLE : default
+      style = defined?(@model_class::LAYOUT_INDEX_STYLE) ? @model_class::LAYOUT_INDEX_STYLE : default
       ['table','library'].include?(style) ? style : default
     end
     
     def self.model_style
       default = 'table'
-      style = defined?(@model_string::MODEL_STYLE) ? @model_string::MODEL_STYLE : default
+      style = defined?(@model_class::MODEL_STYLE) ? @model_class::MODEL_STYLE : default
       [default,'library'].include?(style) ? style : default
     end
 
     def self.image_attribute
-      config = defined?(@model_string::IMAGE_ATTRIBUTE) ? @model_string::IMAGE_ATTRIBUTE : nil
+      config = defined?(@model_class::IMAGE_ATTRIBUTE) ? @model_class::IMAGE_ATTRIBUTE : nil
       if config.nil?
-        @model_string.new.attributes.each do |attr, value|
-          return attr[0..-11] if attr[-9..-1] == 'file_name'
+        @model_class.columns.each do |column|
+          return column.name[0..-11] if column.name[-9..-1] == 'file_name'
         end
       end
       return config
     end
     
     def self.image_style_thumb
-      defined?(@model_string::IMAGE_STYLE_THUMB) ? @model_string::IMAGE_STYLE_THUMB : 'original'
+      defined?(@model_class::IMAGE_STYLE_THUMB) ? @model_class::IMAGE_STYLE_THUMB : 'original'
     end
       
     def self.image_style_medium
-      defined?(@model_string::IMAGE_STYLE_MEDIUM) ? @model_string::IMAGE_STYLE_MEDIUM : 'original'
+      defined?(@model_class::IMAGE_STYLE_MEDIUM) ? @model_class::IMAGE_STYLE_MEDIUM : 'original'
     end
     
     def self.add_link(params)
+      add_link_hash(params).to_query
+    end
+    
+    # HASH
+    
+    def self.add_link_hash(params)
       hash = {}
       params.each do |param|
         key = param[0].gsub('/', '') 
         hash[key] = param[1] if param[0].last(3) == "_id"
       end
-      hash.to_query
+      hash
     end
-    
-    # HASH
     
     def self.as_json(obj)
       hash = {}
@@ -200,19 +204,19 @@ module AntsAdmin
     ## Buttons HTML
     
     def self.html_button_delete
-      (defined?(@model_string::HTML_BUTTON_DELETE) ? @model_string::HTML_BUTTON_DELETE : '<i class="fa fa-trash-o"></i>').html_safe
+      (defined?(@model_class::HTML_BUTTON_DELETE) ? @model_class::HTML_BUTTON_DELETE : '<i class="fa fa-trash-o"></i>').html_safe
     end
     
     def self.html_button_edit
-      (defined?(@model_string::HTML_BUTTON_EDIT) ? @model_string::HTML_BUTTON_EDIT : '<i class="fa fa-pencil-square-o"></i>').html_safe
+      (defined?(@model_class::HTML_BUTTON_EDIT) ? @model_class::HTML_BUTTON_EDIT : '<i class="fa fa-pencil-square-o"></i>').html_safe
     end
     
     def self.html_button_activated
-      (defined?(@model_string::HTML_BUTTON_ACTIVATED) ? @model_string::HTML_BUTTON_ACTIVATED : '<i class="fa fa-unlock"></i>').html_safe
+      (defined?(@model_class::HTML_BUTTON_ACTIVATED) ? @model_class::HTML_BUTTON_ACTIVATED : '<i class="fa fa-unlock"></i>').html_safe
     end
     
     def self.html_button_deactivated
-      (defined?(@model_string::HTML_BUTTON_DEACTIVATED) ? @model_string::HTML_BUTTON_DEACTIVATED : '<i class="fa fa-lock"></i>').html_safe
+      (defined?(@model_class::HTML_BUTTON_DEACTIVATED) ? @model_class::HTML_BUTTON_DEACTIVATED : '<i class="fa fa-lock"></i>').html_safe
     end
     
     private

@@ -10,7 +10,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       rescue
         return redirect_to "/#{AntsAdmin.admin_path}/errors/not_model?model=#{@model_string}"
       end
-      @model_config = AntsAdmin::ModelConfigHelper.new(@model_class)
+      @model_config = AntsAdmin::ModelConfigHelper.new(@model_string)
       
       params[:controller] = @model_string.pluralize
       return redirect_to "/#{AntsAdmin.admin_path}/errors/not_apply?model=#{@model_string}" if !@model_config.apply_admin?
