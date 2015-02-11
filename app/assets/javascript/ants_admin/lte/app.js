@@ -124,10 +124,10 @@ $(function() {
 	* iCheck plugin in.
 	* You can find the documentation at http://fronteed.com/iCheck/
 	*/
-	$("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
-		checkboxClass: 'icheckbox_flat-blue',
-		radioClass: 'iradio_flat-blue'
-	});
+	// $("input[type='checkbox']:not(.simple), input[type='radio']:not(.simple)").iCheck({
+// 		checkboxClass: 'icheckbox_flat-blue',
+// 		radioClass: 'iradio_flat-blue'
+// 	});
 
 });
 function fix_sidebar() {

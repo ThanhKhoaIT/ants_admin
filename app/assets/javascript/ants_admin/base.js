@@ -1,5 +1,16 @@
 window.AntsAdmin = window.AntsAdmin || {};
 
+window.AntsAdmin.selectBoxDefaults = {
+    color          : '#41b7f1'
+  , secondaryColor : '#aaa'
+  , jackColor      : '#fff'
+  , className      : 'switchery'
+  , disabled       : false
+  , disabledOpacity: 0.5
+  , speed          : '0.4s'
+  , size           : 'default'
+};
+
 function setRlangCookie(cname, cvalue, days) {
   var d = new Date();
   if (typeof(days) == "undefined") {

@@ -62,7 +62,13 @@ module AntsAdmin
     end
     
     def checkbox(form, name)
-      content_tag(:div, [(form.label @form_text[name] || name.to_sym, class: 'label_select'),(form.check_box name.to_sym, class: 'form-control flat-blue')].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
+      rd = Random.rand(1000000000);
+      content_tag(:div, [
+          (form.check_box name.to_sym, class: 'form-control flat-blue js-switch', id: "check_#{rd}"),
+          (form.label @form_text[name] || name.to_sym, class: 'label_select', for: "check_#{rd}")
+        ].join().html_safe,
+        class: "form-group col-md-6 col-md-offset-3"
+      )
     end
     
     def select_input(form, name)
@@ -73,7 +79,6 @@ module AntsAdmin
       all = model_class.load_select_box rescue model_class.all
       collection = all.collect{|item| [represent_text(item) , item.id]}
       collection = collection.sort_by{|item| item[0]}
-
       content_tag(:div, [
         (form.label @form_text[name] || name.to_sym, class: 'label_with_ajax_add'),
         (form.select name, collection, {}, {class: "form-control with_ajax_add select_#{select_box_class}"}),

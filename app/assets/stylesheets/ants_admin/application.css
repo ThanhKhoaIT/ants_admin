@@ -25,6 +25,7 @@
  *= require ./vendors/jquery.dynatable
  *= require ./vendors/jquery.popup
  *= require ./vendors/animate
+ *= require ./vendors/switchery
  *= require ./vendors/icheck/all
  *= require_tree ./vendors/fancybox/
 
