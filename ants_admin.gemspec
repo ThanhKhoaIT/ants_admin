@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2015-02-11"
+  s.date = "2015-03-02"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -242,6 +242,7 @@ Gem::Specification.new do |s|
     "app/assets/javascript/ants_admin/vendors/json2.js",
     "app/assets/javascript/ants_admin/vendors/jstorage.js",
     "app/assets/javascript/ants_admin/vendors/queue.js",
+    "app/assets/javascript/ants_admin/vendors/sweet-alert.js",
     "app/assets/javascript/ants_admin/vendors/switchery.js",
     "app/assets/stylesheets/ants_admin/admin_lte.scss",
     "app/assets/stylesheets/ants_admin/application.css",
@@ -390,7 +391,9 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/ants_admin/vendors/jquery-ui-1.10.4.css",
     "app/assets/stylesheets/ants_admin/vendors/jquery.dynatable.css",
     "app/assets/stylesheets/ants_admin/vendors/jquery.popup.scss",
+    "app/assets/stylesheets/ants_admin/vendors/loading.css",
     "app/assets/stylesheets/ants_admin/vendors/morris.css",
+    "app/assets/stylesheets/ants_admin/vendors/sweet-alert.scss",
     "app/assets/stylesheets/ants_admin/vendors/switchery.css",
     "app/controllers/ants_admin/admins_controller.rb",
     "app/controllers/ants_admin_controller.rb",
@@ -417,6 +420,8 @@ Gem::Specification.new do |s|
     "app/views/ants_admin/index_styles/table.html.erb",
     "app/views/ants_admin/modify_link.html.erb",
     "app/views/ants_admin/new.html.erb",
+    "app/views/ants_admin/shares/_loading.html.erb",
+    "app/views/ants_admin/shares/_upload_photo.html.erb",
     "app/views/layouts/ants_admin.html.erb",
     "app/views/layouts/ants_admin_blank.html.erb",
     "app/views/layouts/ants_admin_login.html.erb",
@@ -431,10 +436,12 @@ Gem::Specification.new do |s|
     "lib/generators/active_record/templates/migration.rb",
     "lib/generators/active_record/templates/migration_existing.rb",
     "lib/generators/ants_admin/ants_admin_generator.rb",
+    "lib/generators/ants_admin/ants_admin_libraries/orm_helpers.rb",
     "lib/generators/ants_admin/install_generator.rb",
     "lib/generators/ants_admin/orm_helpers.rb",
     "lib/generators/templates/README",
     "lib/generators/templates/ants_admin.rb",
+    "lib/generators/templates/ants_admin_libraries/migration.rb",
     "lib/generators/templates/assets/devise.css",
     "lib/generators/templates/assets/devise.js",
     "lib/generators/templates/assets/devise_css/bootstrap.min.css",
@@ -462,7 +469,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "https://antsadmin.wordpress.com"
   s.licenses = ["MIT"]
-  s.rubygems_version = "2.4.4"
+  s.rubygems_version = "2.2.2"
   s.summary = "Admin panel for you"
 
   if s.respond_to? :specification_version then
