@@ -1,0 +1,57 @@
+<div class='files-select layer_5'>
+  <a class='fa fa-remove close b-close' href='#'></a>
+  <div class='files-content'>
+    <div class='row'>
+      <ul class='files-tab'>
+        <li class='active'>
+          <a href='#files-content-upload' class='fa fa-upload'></a>
+        </li>
+        <li>
+          <a href='#files-content-list' class='fa fa-image'></a>
+        </li>
+      </ul>
+      <div class='content-show'>
+        <div id='files-content-upload'>
+          <%= render partial: 'ants_admin/shares/loading' %>
+          <form action="/ants_admin/libraries" method="post" target="iframe_upload" id='form_upload_photo' enctype="multipart/form-data" accept-charset='UTF-8'>
+            <input name='csrf-param' value='authenticity_token' type='hidden'>
+            <input name='authenticity_token' value='' type='hidden'>
+            <a class='btn btn-success'>
+              Select file
+              <input name='files[]' multiple='true' type="file" id='select_file' accept="image/*"/>
+            </a>
+            <span class='btn-label'>Select file to upload.<br>
+              <i>File type: png, jpg, jpeg.</i>
+            </span>
+          </form>
+          <iframe name="iframe_upload" src="" class='hidden'></iframe>
+        </div>
+        <div id='files-content-list'></div>
+      </div>
+      <div class='files-footer'>
+        <a href='#' class='btn btn-success insert-images'>Insert</a>
+        <a href='#' class='btn btn-warning b-close'>Cancel</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  loadLibrariesUploaded();
+  $("input[name='authenticity_token']").val($("meta[name='csrf-token']").attr('content'));
+  
+  $('#select_file').change(function(event) {
+    $('#files-content-upload').addClass('loading');
+    $('#form_upload_photo').submit();
+    $('[name="iframe_upload"]').unbind('load').load(function(event) {
+      var response = $(this).contents()[0].body.innerHTML;
+      var json = $(response).html();
+      var jsonResponse = JSON.parse(json);
+      $('#files-content-upload').removeClass('loading');
+      window.waiting(false);
+      loadLibrariesUploaded(jsonResponse.files, jsonResponse.ids_uploaded);
+      swal("Success!", jsonResponse.ids_uploaded.length + " files uploaded.")
+      return false;
+    })
+  })
+</script>

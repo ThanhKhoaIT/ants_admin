@@ -26,7 +26,9 @@
  *= require ./vendors/jquery.popup
  *= require ./vendors/animate
  *= require ./vendors/switchery
+ *= require ./vendors/loading
  *= require ./vendors/icheck/all
+ *= require ./vendors/sweet-alert
  *= require_tree ./vendors/fancybox/
 
  *= require_tree ./vendors/froala_editor/themes

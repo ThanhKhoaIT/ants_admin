@@ -38,7 +38,7 @@ module AntsAdmin
       ]
       content_tag(:div, contents.join().html_safe, class: "bootstrap-timepicker")
     end
-
+    
     def date_input(form, name)
       id = "id_#{Random.rand(500) + 10}"
       contents = [
@@ -50,15 +50,19 @@ module AntsAdmin
       ]
       content_tag(:div, contents.join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
-
+    
     def number_input(form, name)
       content_tag(:div, [(form.label @form_text[name] || name.to_sym),(form.text_field name.to_sym, class: 'form-control', type: "number")].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
-
+    
     def textarea(form, name)
       id = random_id
-      js_tag = javascript_tag("$('.#{id}').editable({inlineMode: false})") if !@model_config.textarea_only.include?(name)
-      content_tag(:div, [(form.label @form_text[name] || name.to_sym),(form.text_area name.to_sym, class: "form-control #{id}"), js_tag].join().html_safe, class: "form-group")
+      js_tag = javascript_tag("var #{id} = $('.#{id}').editable({inlineMode: false, imageButtons: ['floatImageLeft','floatImageNone','floatImageRight','linkImage','removeImage']})") if !@model_config.textarea_only.include?(name)
+      content_tag(:div, [
+        (form.label @form_text[name] || name.to_sym),
+        (form.text_area name.to_sym, class: "form-control editor #{id}", 'data-editor-id' => id),
+        js_tag
+      ].join().html_safe, class: "form-group")
     end
     
     def checkbox(form, name)
@@ -140,17 +144,17 @@ module AntsAdmin
     
     def link_to_function(icon, *args, &block)
       html_options = args.extract_options!.symbolize_keys
-
+      
       function = block_given? ? update_page(&block) : args[0] || ''
       onclick = "#{"#{html_options[:onclick]}; " if html_options[:onclick]}#{function}; return false;"
       href = html_options[:href] || '#'
-
+      
       content_tag(:a, "", html_options.merge(:href => href, :onclick => onclick, class: "btn fa fa-#{icon} float-right"))
     end
     
     def random_id
       (0...15).map { (65 + rand(26)).chr }.join.downcase
     end
-
+    
   end
 end

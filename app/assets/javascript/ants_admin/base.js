@@ -1,5 +1,15 @@
 window.AntsAdmin = window.AntsAdmin || {};
 
+Array.prototype.destroy = function (value) {
+  for (i = this.length - 1; i >= 0; i--) {
+    if (this[i] == value) {
+      this.splice(i, 1);
+    }
+  }
+  return this;
+}
+
+
 window.AntsAdmin.selectBoxDefaults = {
     color          : '#41b7f1'
   , secondaryColor : '#aaa'
@@ -230,7 +240,7 @@ function loadScripts(){
       cursorPosition.x = event.pageX;
       cursorPosition.y = event.pageY;
   });
-
+  
   $(document).delegate("td .show-btn-list", "click", function(event) {
     $(event.currentTarget).parents("td").addClass("show_list");
     return false;
@@ -239,7 +249,17 @@ function loadScripts(){
     $(event.currentTarget).parents("td").removeClass("show_list");
     return false;
   });
-
+  
+  $(document).delegate(".files-tab li a", "click", function(event) {
+    var currentTarget = $(event.currentTarget);
+    var filesTab = currentTarget.parents('.files-tab');
+    filesTab.find('li').removeClass('active');
+    currentTarget.parents('li').addClass('active');
+    $('#files-content-upload, #files-content-list').hide();
+    $(currentTarget.attr('href')).fadeIn();
+    return false;
+  })
+  
   $(document).delegate("a.active-link", "click", function(event) {
     var statusShow = function(status) {
       _this.removeClass("btn-primary btn-warning actived waiting");
@@ -423,9 +443,137 @@ function loadScripts(){
     AntsAdmin.uploadFiles = "";
     return false;
   })
+  
+  $(document).delegate('[data-cmd="insertImage"]', 'click', function (event) {
+    $('.froala-editor.f-inline.right-side').hide();
+    var currentTarget = $(event.currentTarget).parents('.froala-box');
+    var editorId = currentTarget.next('.editor').data('editor-id');
+    $(".files-select").bPopup({
+      onOpen: function () {
+        $('.insert-images').unbind('click').click(function(event) {
+          $.each(window.AntsAdmin.filesSelected, function(index, image) {
+            var imageUrl = window.AntsAdmin.filesPath[image];
+            window[editorId].editable("insertHTML", '<img src="' + imageUrl + '"/>', true);
+          });
+          window.AntsAdmin.filesSelected = [];
+          $(".files-select").bPopup().close();
+        })
+      }
+    });
+    
+    return false;
+  });
+  
 }
-
 
 $(document).ready(reloadEvents);
 $(document).ready(loadScripts);
-$(document).on("page:receive",reloadEvents);
+$(document).on("page:receive", reloadEvents);
+
+window.AntsAdmin.filesSelected = [];
+window.AntsAdmin.filesPath = {};
+
+function checkFooterSelectFile() {
+  if (window.AntsAdmin.filesSelected.length > 0) {
+    $('.files-select').addClass('footer-showed');
+  } else {
+    $('.files-select').removeClass('footer-showed');
+  }
+}
+
+function loadLibrariesUploaded(files, idsUploaded) {
+  var filesContentList = $("#files-content-list");
+  
+  if (idsUploaded) {
+    window.AntsAdmin.filesSelected = window.AntsAdmin.filesSelected.concat(idsUploaded);
+    checkFooterSelectFile();
+  }
+  
+  var loadImages = function (files) {
+    filesContentList.html('');
+    window.AntsAdmin.filesPath = {};
+    
+    $.each(files, function(index, file) {
+      window.AntsAdmin.filesPath[file.id] = file.url;
+      var img = $('<img/>', {
+        src: file.medium,
+        title: file.title,
+        'data-toggle':'tooltip',
+        'data-placement':'bottom'
+      });
+      //<a href="#" class="info fa fa-info"></a>
+      var tool = $('<div class="tool"><a href="#" class="remove fa fa-trash-o"></a></div>');
+      
+      var info = tool.find('.info'),
+          insert = tool.find('.insert'),
+          remove = tool.find('.remove');
+          
+      info.click(function(event) {
+        return false;
+      })
+      insert.click(function(event) {
+        return false;
+      })
+      remove.click(function(event) {
+        swal({
+          title: "Are you sure?",
+          text: "You will not be able to recover this imaginary file!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, delete it!",
+          cancelButtonText: "No, cancel plx!",
+          closeOnConfirm: false
+        },
+        function(isConfirm){
+          if (isConfirm) {
+            $.ajax({
+              type: 'delete',
+              url: '/ants_admin/libraries',
+              data: {id: file.id},
+              success: function (data) {
+                loadImages(data.files);
+                swal("Deleted!", "Your imaginary file has been deleted.", "success");
+              }
+            })
+          } else {
+            swal("Cancelled", "Your imaginary file is safe :)", "error");
+          }
+        });
+        
+        return false;
+      })
+      
+      var imgItem = $('<div/>').addClass('col-xs-6 col-sm-4 col-md-3 col-lg-2 photo-item').append(img).append(tool);
+      
+      if (window.AntsAdmin.filesSelected.indexOf(file.id) >= 0) {
+        imgItem.addClass('active');
+      }
+      
+      imgItem.click(function() {
+        imgItem.toggleClass('active');
+        if (imgItem.hasClass('active')) {
+          window.AntsAdmin.filesSelected.push(file.id);
+        } else {
+          window.AntsAdmin.filesSelected.destroy(file.id);
+        }
+        checkFooterSelectFile();
+      })
+      
+      filesContentList.append(imgItem);
+    })
+    
+    $('[data-toggle="tooltip"]').tooltip();
+  }
+  
+  if (files) {
+    loadImages(files);
+  } else {
+    $.ajax({
+      url: '/ants_admin/libraries.json',
+      success: function (data) {
+        loadImages(data.files);
+      }
+    })
+  }
+}
