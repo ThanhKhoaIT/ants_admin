@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2015-03-02"
+  s.date = "2015-03-28"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -31,6 +31,8 @@ Gem::Specification.new do |s|
     "app/assets/images/ants_admin/ajax-loader1.gif",
     "app/assets/images/ants_admin/avatar.png",
     "app/assets/images/ants_admin/blur-background09.jpg",
+    "app/assets/images/ants_admin/chosen/chosen-sprite.png",
+    "app/assets/images/ants_admin/chosen/chosen-sprite@2x.png",
     "app/assets/images/ants_admin/fancybox/blank.gif",
     "app/assets/images/ants_admin/fancybox/fancybox_buttons.png",
     "app/assets/images/ants_admin/fancybox/fancybox_loading.gif",
@@ -186,6 +188,8 @@ Gem::Specification.new do |s|
     "app/assets/javascript/ants_admin/lte/plugins/slimScroll/slimScroll.jquery.json",
     "app/assets/javascript/ants_admin/lte/plugins/sparkline/jquery.sparkline.js",
     "app/assets/javascript/ants_admin/lte/plugins/timepicker/bootstrap-timepicker.js",
+    "app/assets/javascript/ants_admin/vendors/chosen.jquery.js",
+    "app/assets/javascript/ants_admin/vendors/chosen.proto.js",
     "app/assets/javascript/ants_admin/vendors/fancybox/1_jquery.mousewheel-3.0.6.pack.js",
     "app/assets/javascript/ants_admin/vendors/fancybox/2_jquery.fancybox.js",
     "app/assets/javascript/ants_admin/vendors/fancybox/3_jquery.fancybox-buttons.js",
@@ -255,6 +259,7 @@ Gem::Specification.new do |s|
     "app/assets/stylesheets/ants_admin/vendors/bootstrap-timepicker.css",
     "app/assets/stylesheets/ants_admin/vendors/bootstrap.min.css",
     "app/assets/stylesheets/ants_admin/vendors/bootstrap3-wysihtml5.min.css",
+    "app/assets/stylesheets/ants_admin/vendors/chosen.css",
     "app/assets/stylesheets/ants_admin/vendors/datepicker3.css",
     "app/assets/stylesheets/ants_admin/vendors/daterangepicker-bs3.css",
     "app/assets/stylesheets/ants_admin/vendors/fancybox/jquery.fancybox-buttons.css",
