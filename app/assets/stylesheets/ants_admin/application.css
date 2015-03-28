@@ -29,6 +29,7 @@
  *= require ./vendors/loading
  *= require ./vendors/icheck/all
  *= require ./vendors/sweet-alert
+ *= require ./vendors/chosen
  *= require_tree ./vendors/fancybox/
 
  *= require_tree ./vendors/froala_editor/themes

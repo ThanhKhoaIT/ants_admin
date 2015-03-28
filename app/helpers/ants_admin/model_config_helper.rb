@@ -37,6 +37,10 @@ module AntsAdmin
       get_list(@model_class::FORM_INPUT) rescue []
     end
     
+    def self.has_many_input
+      get_list(@model_class::HAS_MANY_INPUT) rescue []
+    end
+    
     def self.search_for
       get_list(@model_class::SEARCH_FOR) rescue []
     end

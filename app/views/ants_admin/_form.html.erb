@@ -1,90 +1,94 @@
-<%= form_for @object, :url => @object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.downcase}?#{@model_config.add_link(params)}" : "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/#{@object.id}?#{@model_config.add_link(params)}", :html => {role: "form"} do |form| %>
+<%= form_for @object, :url => @object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.pluralize.downcase}?#{@model_config.add_link(params)}" : "/#{AntsAdmin.admin_path}/#{@model_string.pluralize.downcase}/#{@object.id}?#{@model_config.add_link(params)}", :html => {role: "form"} do |form| %>
 
-	<div class="hidden">
-		<% params.each do |param| %>
-			<% if param[0][-3..-1] == '_id' %>
-				<%= form.hidden_field param[0].to_s, value: param[1] %>
-			<% end %>
-		<% end %>
-	</div>
-	<div class="box-body">
-		
-		<% @columns_show.each do |col| %>
-		
-			<% if !(['id','created_at','updated_at'] + @model_config.form_input_skip).include?(col.name) \
-							and col.name.to_s.index('_content_type').nil? \
-							and col.name.to_s.index('_file_size').nil? \
-							and col.name.to_s.index('_updated_at').nil? %>
-				
-				<% @input_config = @object.send("input_#{col.name}") rescue nil %>
-				
-				<% if @input_config %>
-					<% case @input_config[:type] %>
-					<% when 'select' %>
-						
-						<%= select_input_config form, col.name %>
-					<% end %>
-				<% else %>
-				
-					<% case col.type.to_s %>
-					<% when 'string' %>
-						<% if col.name[-10..-1] == '_file_name' %>
-							<%= file_input form, col.name[0..-11] %>
-						<% elsif !@object.respond_to?("#{col.name}_file_name") %>
-							<%= text_input form, col.name %>
-						<% end %>
-					<% when 'text' %>
-						<%= textarea form, col.name %>
-					<% when 'boolean' %>
-						<%= checkbox form, col.name %>
-					<% when 'time' %>
-						<%= time_input form, col.name %>
-					<% when 'integer', 'float', 'decimal' %>
-						<% if col.name[-3,3] == "_id" %>
-							<%= select_input form, col.name %>
-						<% else %>
-							<%= number_input form, col.name %>
-						<% end %>
+  <div class="hidden">
+    <% params.each do |param| %>
+      <% if param[0][-3..-1] == '_id' %>
+        <%= form.hidden_field param[0].to_s, value: param[1] %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="box-body">
+    
+    <% @columns_show.each do |col| %>
+      
+      <% name = col.is_a?(String) ? col : col.name.to_s %>
+      
+      <% if !(['id','created_at','updated_at'] + @model_config.form_input_skip).include?(name) \
+              and name.index('_content_type').nil? \
+              and name.index('_file_size').nil? \
+              and name.index('_updated_at').nil? %>
+        
+        <% @input_config = @object.send("input_#{name}") rescue nil %>
+        <% if @input_config %>
+          <% case @input_config[:type] %>
+          <% when 'select' %>
+            <%= select_input_config form, name %>
+          <% when 'chosen' %>
+            <%= chosen_input_config form, name %>
+          <% when 'many_model' %>
+            <%= has_many_chosen_config form, name %>
+          <% end %>
+        <% else %>
+        
+          <% case col.type.to_s %>
+          <% when 'string' %>
+            <% if name[-10..-1] == '_file_name' %>
+              <%= file_input form, name[0..-11] %>
+            <% elsif !@object.respond_to?("#{name}_file_name") %>
+              <%= text_input form, name %>
+            <% end %>
+          <% when 'text' %>
+            <%= textarea form, name %>
+          <% when 'boolean' %>
+            <%= checkbox form, name %>
+          <% when 'time' %>
+            <%= time_input form, name %>
+          <% when 'integer', 'float', 'decimal' %>
+            <% if name[-3,3] == "_id" %>
+              <%= select_input form, name %>
+            <% else %>
+              <%= number_input form, name %>
+            <% end %>
 
-					<% when 'date' %>
-						<%= date_input form, col.name %>
-					<% else %>
-						<div class="form-group col-md-6 col-md-offset-3">
-							<%= form.label col.name.to_sym %>
-							<%= form.text_field col.name.to_sym, class: 'form-control' %>
-						</div>
-					<% end %>
-					
-				<% end %>
-				
-			<% end %>
-		<% end %>
+          <% when 'date' %>
+            <%= date_input form, name %>
+          <% else %>
+            <div class="form-group col-md-6 col-md-offset-3">
+              <%= form.label name.to_sym %>
+              <%= form.text_field name.to_sym, class: 'form-control' %>
+            </div>
+          <% end %>
+          
+        <% end %>
+        
+      <% end %>
+    <% end %>
 
-		<% if params[:action] != "add" %>
-			<% (@model_config.has_many_list.collect{|item| item[:key][0..-4]} - @model_config.form_input_nested_skip).each do |item| %>
-				<% if item.present? %>
-					<%
-						@sub_model_string = item.singularize
-						break if defined?(@sub_model_string.classify) != 'constant'
-						@sub_model_class = @sub_model_string.classify.constantize
-						@sub_model_config = AntsAdmin::ModelConfigHelper.new(@sub_model_class)
-					%>
-					
-					<div class="nested-form">
-						<h2><%= @sub_model_config.title %></h2>
-						<%= form.fields_for(item) do |builder| %>
-							<%= render :partial => '/ants_admin/nested_form', locals: {form: builder, item: item} %>
-						<% end %>
-						<p><%= link_to_add_fields form, item %></p>
+    <% if params[:action] != "add" %>
+      <% (@model_config.has_many_list.collect{|item| item[:key][0..-4]} - @model_config.form_input_nested_skip).each do |item| %>
+        <% if item.present? %>
+          <%
+            @sub_model_string = item.singularize
+            break if defined?(@sub_model_string.classify) != 'constant'
+            @sub_model_class = @sub_model_string.classify.constantize
+            @sub_model_config = AntsAdmin::ModelConfigHelper.new(@sub_model_class)
+          %>
+          
+          <div class="nested-form">
+            <h2><%= @sub_model_config.title %></h2>
+            <%= form.fields_for(item) do |builder| %>
+              <%= render :partial => '/ants_admin/nested_form', locals: {form: builder, item: item} %>
+            <% end %>
+            <p><%= link_to_add_fields form, item %></p>
 
-					</div>
-				<% end %>
-			<% end %>
-		<% end %>
-	</div>
-	<div class="box-footer">
-		<button class="btn btn-primary" type="submit">Submit</button>
-	</div>
+          </div>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="box-footer">
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </div>
 <% end %>
 
 <script>
@@ -98,13 +102,13 @@
     
     $(".review_image").fancybox({
       parent: "body",
-    	openEffect	: 'elastic',
-    	closeEffect	: 'elastic',
-    	helpers : {
-    		title : {
-    			type : 'inside'
-    		}
-    	}
+      openEffect  : 'elastic',
+      closeEffect  : 'elastic',
+      helpers : {
+        title : {
+          type : 'inside'
+        }
+      }
     });
   }
 </script>

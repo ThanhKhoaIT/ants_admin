@@ -12,7 +12,7 @@
       <% if @model_config.model_style == "library" %>
         <%= render partial: 'ants_admin/form_upload', locals: {object: @model_class.new} %>
       <% else %>
-        <a class="fa fa-plus action-page" id="add_action" href="/<%= AntsAdmin.admin_path %>/<%= @model_string %>/new?<%= @model_config.add_link(params) %>" back-level='2' back-href='/<%= AntsAdmin.admin_path %>/<%= @model_string %>' ></a>
+        <a class="fa fa-plus action-page" id="add_action" href="/<%= AntsAdmin.admin_path %>/<%= @model_string.pluralize %>/new?<%= @model_config.add_link(params) %>" back-level='2' back-href='/<%= AntsAdmin.admin_path %>/<%= @model_string.pluralize %>' ></a>
       <% end %>      
     <% end %>
     <% if @model_config and ['new','edit'].include?(params[:action]) %>

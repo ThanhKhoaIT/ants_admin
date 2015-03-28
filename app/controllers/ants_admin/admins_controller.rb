@@ -123,6 +123,7 @@ class AntsAdmin::AdminsController < AntsAdminController
         flash[:notice] = "Create is successful!"
         redirect_to "/#{AntsAdmin.admin_path}/#{@model_class.to_s.tableize}?#{@model_config.add_link(params)}"
       else
+        load_config_for_form
         render template: "/ants_admin/new"
       end
     end
@@ -241,19 +242,22 @@ class AntsAdmin::AdminsController < AntsAdminController
   
   private
   def load_config_for_form
-		form_input_config = @model_config.form_input
-		if form_input_config.present?
-			columns_show = []
-			@object.class.columns.each do |column|
-				index = form_input_config.index(column.name)
-				index = form_input_config.index(column.name[0..-11]) if !index and column.name[-10..-1] == '_file_name'
-				columns_show[index] = column if index
-			end
-			@columns_show = columns_show.select{|col| col.present?}
-		else
-			@columns_show = @object.class.columns
-		end
-		@form_text = AntsAdmin::FormHelper.text_for_form(@model_string) || {}
+    form_input_config = @model_config.form_input
+    if form_input_config.present?
+      columns_show = []
+      @object.class.columns.each do |column|
+        index = form_input_config.index(column.name)
+        index = form_input_config.index(column.name[0..-11]) if !index and column.name[-10..-1] == '_file_name'
+        columns_show[index] = column if index
+      end
+      @columns_show = columns_show.select{|col| col.present?}
+    else
+      @columns_show = @object.class.columns
+    end
+    
+    @columns_show += @model_config.has_many_input
+    
+    @form_text = AntsAdmin::FormHelper.text_for_form(@model_string) || {}
   end
 
   

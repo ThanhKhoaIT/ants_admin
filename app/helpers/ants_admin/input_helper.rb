@@ -106,6 +106,26 @@ module AntsAdmin
       ].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
     
+    def chosen_input_config(form, name)
+      collection = @input_config[:collection]
+      class_rd = (0..20).map { ('a'..'z').to_a[rand(26)] }.join
+      content_tag(:div, [
+        (form.label @form_text[name] || name.to_sym),
+        (form.select name, collection, {}, {class: "form-control #{class_rd}", multiple: (@input_config[:multiple] == true) }),
+        javascript_tag("$('.#{class_rd}').chosen(); ")
+      ].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
+    end
+    
+    def has_many_chosen_config(form, name)
+      collection = @input_config[:collection]
+      class_rd = (0..20).map { ('a'..'z').to_a[rand(26)] }.join
+      content_tag(:div, [
+        (form.label @form_text[name] || name.to_sym),
+        (form.select "#{name.singularize}_ids", collection, {}, {class: "form-control #{class_rd}", multiple: (@input_config[:multiple] == true), 'data-placeholder' => @input_config[:placeholder] || 'Select options' }),
+        javascript_tag("$('.#{class_rd}').chosen(); ")
+      ].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
+    end
+    
     def link_to_add_fields(f, association)
       new_object = association.classify.constantize.new
       fields = f.fields_for(association, new_object, :child_index => "new_#{association}") do |builder|

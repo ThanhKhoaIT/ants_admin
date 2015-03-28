@@ -32,6 +32,8 @@
 //= require ants_admin/vendors/imagesloaded.pkgd
 //= require ants_admin/vendors/switchery
 //= require ants_admin/vendors/sweet-alert
+//= require ants_admin/vendors/chosen.proto
+//= require ants_admin/vendors/chosen.jquery
 //= require ants_admin/back_action
 //= require ants_admin/drop_file_upload
 
