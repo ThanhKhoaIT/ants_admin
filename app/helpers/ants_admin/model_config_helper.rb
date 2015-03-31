@@ -175,14 +175,17 @@ module AntsAdmin
         
         if is_belongs_to
           sub_obj = obj.send(key[0..-4].downcase)
-          sub_obj_show = defined?(sub_obj.represent_text) ? sub_obj.represent_text : sub_obj.to_s
-          hash[key] = [
-            "<div class='select_edit'>",
-            "<span>#{sub_obj_show}</span>",
-            "<a class='fa fa-cog' href='#'></a>",
-            "<data type='#{key[0..-4]}' value='#{sub_obj.id}' obj-id='#{obj.id}' model='#{obj.class.name.downcase}'/>",
-            "</div>"].join
-            
+          if sub_obj
+            sub_obj_show = defined?(sub_obj.represent_text) ? sub_obj.represent_text : sub_obj.to_s
+            hash[key] = [
+              "<div class='select_edit'>",
+              "<span>#{sub_obj_show}</span>",
+              "<a class='fa fa-cog' href='#'></a>",
+              "<data type='#{key[0..-4]}' value='#{sub_obj.id}' obj-id='#{obj.id}' model='#{obj.class.name.downcase}'/>",
+              "</div>"].join
+            else
+              hash[key] = '#'
+            end
         elsif is_has_many
           list = []
           obj.send(key.downcase).each do |item|

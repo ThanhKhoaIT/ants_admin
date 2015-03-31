@@ -44,13 +44,9 @@
     $('#files-content-upload').addClass('loading');
     $('#form_upload_photo').submit();
     $('[name="iframe_upload"]').unbind('load').load(function(event) {
-      var response = $(this).contents()[0].body.innerHTML;
-      var json = $(response).html();
-      var jsonResponse = JSON.parse(json);
       $('#files-content-upload').removeClass('loading');
       window.waiting(false);
-      loadLibrariesUploaded(jsonResponse.files, jsonResponse.ids_uploaded);
-      swal("Success!", jsonResponse.ids_uploaded.length + " files uploaded.")
+      loadLibrariesUploaded();
       return false;
     })
   })
