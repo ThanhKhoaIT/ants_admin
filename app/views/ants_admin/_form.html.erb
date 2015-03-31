@@ -1,5 +1,12 @@
-<%= form_for @object, :url => @object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.pluralize.downcase}?#{@model_config.add_link(params)}" : "/#{AntsAdmin.admin_path}/#{@model_string.pluralize.downcase}/#{@object.id}?#{@model_config.add_link(params)}", :html => {role: "form"} do |form| %>
+<% if @object.errors.present? %>
+  <div class="alert alert-danger alert-dismissable">
+    <i class="fa fa-ban"></i>
+    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+    <%= @object.errors.full_messages.join('</br>') %>
+  </div>
+<% end %>
 
+<%= form_for @object, :url => @object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.pluralize.downcase}?#{@model_config.add_link(params)}" : "/#{AntsAdmin.admin_path}/#{@model_string.pluralize.downcase}/#{@object.id}?#{@model_config.add_link(params)}", :html => {role: "form"} do |form| %>
   <div class="hidden">
     <% params.each do |param| %>
       <% if param[0][-3..-1] == '_id' %>
