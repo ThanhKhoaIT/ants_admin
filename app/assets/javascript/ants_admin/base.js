@@ -155,7 +155,7 @@ function updateSelectBox(link, arr) {
       close_iframe.remove();
       window.waiting(false);
       $.ajax({
-        url: ['/admin',model,"select_box.json"].join("/"),
+        url: ['/' + window.admin_path, model,"select_box.json"].join("/"),
         success: function (data) {
           $(el + " option").remove();
           $.each(data.all, function(index, item) {
@@ -206,9 +206,9 @@ function checkBackAction() {
     
       if (typeof(href) == "undefined") {    
         $("#back_action").addClass("fa-refresh");
-        back_action.attr("href", "/admin");
+        back_action.attr("href", "/" + window.admin_path);
       } else {
-        if (href == "/admin") {
+        if (href == ("/" + window.admin_path)) {
           $("#back_action").addClass("fa-tachometer");
         } else {
           $("#back_action").addClass("fa-arrow-left");
@@ -326,7 +326,7 @@ function loadScripts(){
     }    
     
     $.ajax({
-      url: ["/admin",type,"select_box.json"].join("/"),
+      url: ["/" + window.admin_path, type, "select_box.json"].join("/"),
       success: function (data) {
         text_show.hide();
         $.each(data.all, function(index, item) {
@@ -344,7 +344,7 @@ function loadScripts(){
         close_link.click(function(event) {cancel()});
         done.click(function(event) {
           $.ajax({
-            url: ["","admin",model,id,"select"].join("/"),
+            url: ["", window.admin_path, model, id, "select"].join("/"),
             type: 'POST',
             data: {
               type: type,

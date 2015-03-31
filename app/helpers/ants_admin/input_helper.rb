@@ -111,7 +111,7 @@ module AntsAdmin
       class_rd = (0..20).map { ('a'..'z').to_a[rand(26)] }.join
       content_tag(:div, [
         (form.label @form_text[name] || name.to_sym),
-        (form.select name, collection, {}, {class: "form-control #{class_rd}", multiple: (@input_config[:multiple] == true) }),
+        (form.select name, collection, {}, {class: "form-control #{class_rd}", multiple: (@input_config[:multiple] == true), 'data-placeholder' => @input_config[:placeholder] || 'Select options' }),
         javascript_tag("$('.#{class_rd}').chosen(); ")
       ].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end

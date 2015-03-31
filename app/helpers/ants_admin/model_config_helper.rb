@@ -73,15 +73,21 @@ module AntsAdmin
     end
     
     def self.has_many_list
+      black_list = []
       list = []
       @model_class.reflections.select do |assoc_name, ref|
-        list << {
-          key: "#{assoc_name.to_s}_id",
-          label: [assoc_name.to_s.pluralize.slice(0, 1).capitalize, assoc_name.to_s.pluralize.slice(1..-1)].join(),
-          sort: true
-        } if ref.macro.to_s == "has_many"
+        if ref.options[:through].present?
+          black_list << ref.options[:through].to_s
+        else
+          list << {
+            key: "#{assoc_name.to_s}",
+            label: [assoc_name.to_s.pluralize.slice(0, 1).capitalize, assoc_name.to_s.pluralize.slice(1..-1)].join(),
+            sort: true
+          } if ref.macro.to_s == "has_many"
+        end
       end
-      return list
+      
+      return list.select{|item| !black_list.include?(item[:key])}
     end
     
     def self.textarea_only
@@ -164,40 +170,30 @@ module AntsAdmin
       hash = {}
       table_show.each do |title|
         key = title[:key]
-        value = title[:label]
-        add_update_tool = false
+        is_belongs_to = (belongs_to_list.select{|attr| attr[:key] == key}.length > 0)
+        is_has_many = (has_many_list.select{|attr| attr[:key] == key}.length > 0)
         
-        if key[-3,3] != "_id"
-          hash[key] = self.json_with_file(obj, key) rescue attribute_show(obj, key)
-        else
-          add_update_tool = true
-          hash[key] = obj.send(key.downcase) rescue "#"
-        end
-        
-        if hash[key].class.to_s.index("ActiveRecord_Associations_CollectionProxy")
-          add_update_tool = false
+        if is_belongs_to
+          sub_obj = obj.send(key[0..-4].downcase)
+          sub_obj_show = defined?(sub_obj.represent_text) ? sub_obj.represent_text : sub_obj.to_s
+          hash[key] = [
+            "<div class='select_edit'>",
+            "<span>#{sub_obj_show}</span>",
+            "<a class='fa fa-cog' href='#'></a>",
+            "<data type='#{key[0..-4]}' value='#{sub_obj.id}' obj-id='#{obj.id}' model='#{obj.class.name.downcase}'/>",
+            "</div>"].join
+            
+        elsif is_has_many
           list = []
-          hash[key].each do |item|
+          obj.send(key.downcase).each do |item|
             text = defined?(item.represent_text) ? item.represent_text : item.to_s
             model_string = item.class.name.downcase
-            list << "<li><a href='/#{AntsAdmin.admin_path}/#{model_string}/#{item.id}/edit' back-href='/#{AntsAdmin.admin_path}/#{obj.class.name.downcase}' back-level='2'>#{text}</a></li>"
+            list << "<li><a href='/#{AntsAdmin.admin_path}/#{model_string}/#{item.id}/edit?#{obj.class.name.downcase}_id=#{obj.id}' back-href='/#{AntsAdmin.admin_path}/#{obj.class.name.downcase}' back-level='2'>#{text}</a></li>"
           end
           hash[key] = html_show_list_with_has_many(list)
+          
         else
-          add_update_tool = false
-          hash[key] = defined?(hash[key].represent_text) ? hash[key].represent_text : hash[key].to_s
-        end
-
-        if add_update_tool
-          sub_table = obj.send(value.downcase) rescue false
-          if sub_table
-            hash[key] = [
-              "<div class='select_edit'>",
-              "<span>#{hash[key]}</span>",
-              "<a class='fa fa-cog' href='#'></a>",
-              "<data type='#{key[0..-4]}' value='#{sub_table.id}' obj-id='#{obj.id}' model='#{obj.class.name.downcase}'/>",
-              "</div>"].join
-          end
+          hash[key] = self.json_with_file(obj, key) rescue attribute_show(obj, key)
         end
       end
       return hash
@@ -237,6 +233,7 @@ module AntsAdmin
       file_types = {
         'image/jpeg'=> 'image',
         'image/png'=> 'image',
+        'image/svg+xml' => 'image',
         'application/pdf'=> 'file-pdf-o',
         'text/plain'=> 'file-text',
         'text/csv'=> 'file-text-o',

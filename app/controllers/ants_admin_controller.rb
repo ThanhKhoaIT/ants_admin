@@ -14,7 +14,11 @@ class AntsAdminController < ApplicationController
   end
   
   def errors
-    render layout: "ants_admin_blank"
+    if params[:code] == 'not_apply' and AntsAdmin::ModelConfigHelper.new(params[:model].singularize).apply_admin?
+      redirect_to ['',AntsAdmin.admin_path, params[:model].pluralize].join('/')
+    else
+      render layout: "ants_admin_blank"
+    end
   end
   
   def upload_photo_all

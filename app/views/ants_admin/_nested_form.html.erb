@@ -1,14 +1,14 @@
 <%= form.fields_for item do |sub_form| %>  
   <div class="nested-item">
     <%= link_to_remove_fields form %>
-
     <% @sub_model_class.columns.each do |col| %>
 
       <% if !(['id','created_at','updated_at'] + @sub_model_config.form_input_skip).include?(col.name) \
               and col.name.to_s.index('_file_name').nil? \
               and col.name.to_s.index('_content_type').nil? \
               and col.name.to_s.index('_file_size').nil? \
-              and col.name.to_s.index('_updated_at').nil? %>
+              and col.name.to_s.index('_updated_at').nil? \
+              and col.name.to_s[0..-4] != @model_string %>
 
         <% case col.type.to_s %>
         <% when 'string' %>
