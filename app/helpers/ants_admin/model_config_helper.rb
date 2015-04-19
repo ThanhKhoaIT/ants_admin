@@ -86,7 +86,6 @@ module AntsAdmin
           } if ref.macro.to_s == "has_many"
         end
       end
-      
       return list.select{|item| !black_list.include?(item[:key])}
     end
     

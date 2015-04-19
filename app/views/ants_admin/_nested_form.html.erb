@@ -1,4 +1,4 @@
-<%= form.fields_for item do |sub_form| %>  
+<%= form.fields_for item do |sub_form| %>
   <div class="nested-item">
     <%= link_to_remove_fields form %>
     <% @sub_model_class.columns.each do |col| %>

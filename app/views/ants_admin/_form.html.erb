@@ -15,7 +15,6 @@
     <% end %>
   </div>
   <div class="box-body">
-    
     <% @columns_show.each do |col| %>
       
       <% name = col.is_a?(String) ? col : col.name.to_s %>
@@ -69,7 +68,7 @@
         <% end %>
         
       <% end %>
-    <% end %>
+    <% end if @columns_show%>
 
     <% if params[:action] != "add" %>
       <% (@model_config.has_many_list.collect{|item| item[:key]} - @model_config.form_input_nested_skip).each do |item| %>
