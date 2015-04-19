@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2015-03-31"
+  s.date = "2015-04-19"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -249,6 +249,7 @@ Gem::Specification.new do |s|
     "app/assets/javascript/ants_admin/vendors/sweet-alert.js",
     "app/assets/javascript/ants_admin/vendors/switchery.js",
     "app/assets/stylesheets/ants_admin/admin_lte.scss",
+    "app/assets/stylesheets/ants_admin/ants_admin.scss",
     "app/assets/stylesheets/ants_admin/application.css",
     "app/assets/stylesheets/ants_admin/base.scss",
     "app/assets/stylesheets/ants_admin/blur.svg",
