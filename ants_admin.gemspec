@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["KarlNguyen"]
-  s.date = "2015-04-19"
+  s.date = "2016-01-13"
   s.description = "Admin panel for you"
   s.email = "thanhkhoait@gmail.com"
   s.extra_rdoc_files = [
@@ -475,7 +475,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "https://antsadmin.wordpress.com"
   s.licenses = ["MIT"]
-  s.rubygems_version = "2.2.2"
+  s.rubygems_version = "2.4.6"
   s.summary = "Admin panel for you"
 
   if s.respond_to? :specification_version then
