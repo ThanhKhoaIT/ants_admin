@@ -99,9 +99,9 @@ function waiting(is_waiting) {
   blur(is_waiting);
   if (is_waiting) {
     var html = '<div class="waiting_spinner"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>';
-    
+
     if ($(".waiting_spinner").length == 0) $("body").append(html);//'<div class="waiting_spinner layer_4"></div>');
-    
+
   } else {
     $(".waiting_spinner").remove();
   }
@@ -110,7 +110,7 @@ function waiting(is_waiting) {
 function updateSelectBox(link, arr) {
   var el    = arr[0];
   var model = arr[1];
-  
+
   var right_side = $(".right-side");
   window.blur(true);
   var iframe = $("<iframe/>").attr('src', link).addClass('add_ajax layer_4').appendTo("body").hide();
@@ -119,7 +119,7 @@ function updateSelectBox(link, arr) {
     iframe.show().addClass('flipInX animated');
     close_iframe.fadeIn(1000);
   }, 300);
-  
+
   close_iframe.click(function() {
     window.blur(false);
     iframe.remove();
@@ -129,10 +129,10 @@ function updateSelectBox(link, arr) {
     iframe.contents().find('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
       checkboxClass: 'icheckbox_flat-blue',
       radioClass: 'iradio_flat-blue'
-    }); 
-    
+    });
+
     var form = iframe.contents().find("form");
-    if (form.length > 0) {   
+    if (form.length > 0) {
       if (form.height() < 500) {
         iframe.height(form.height() + 81);
         iframe.contents().find('.add_popup').height(form.height() + 80);
@@ -141,7 +141,7 @@ function updateSelectBox(link, arr) {
       }
       iframe.css('margin-top', -(iframe.height()/2))
       close_iframe.css('margin-top', -(iframe.height()/2) - 20)
-      
+
       form.submit(function(event) {
         window.waiting(true);
         iframe.addClass('layer_2 blur_content');
@@ -203,8 +203,8 @@ function checkBackAction() {
     var href = $(".breadcrumb li:nth-last-child(2) a").attr("href"),
         back_action = $("#back_action");
     back_action.removeClass("fa-refresh fa-tachometer fa-arrow-left");
-    
-      if (typeof(href) == "undefined") {    
+
+      if (typeof(href) == "undefined") {
         $("#back_action").addClass("fa-refresh");
         back_action.attr("href", "/" + window.admin_path);
       } else {
@@ -218,7 +218,7 @@ function checkBackAction() {
     // var level = parseInt($.jStorage.get('back_level', '1'));
 //     if (level > 1) $("#back_action").fadeIn();
 //     if ($.jStorage.get('back_'+level+'_href') == window.location.pathname) $("#back_action").hide();
-    
+
 
   }, 100);
 };
@@ -240,7 +240,7 @@ function loadScripts(){
       cursorPosition.x = event.pageX;
       cursorPosition.y = event.pageY;
   });
-  
+
   $(document).delegate("td .show-btn-list", "click", function(event) {
     $(event.currentTarget).parents("td").addClass("show_list");
     return false;
@@ -249,7 +249,7 @@ function loadScripts(){
     $(event.currentTarget).parents("td").removeClass("show_list");
     return false;
   });
-  
+
   $(document).delegate(".files-tab li a", "click", function(event) {
     var currentTarget = $(event.currentTarget);
     var filesTab = currentTarget.parents('.files-tab');
@@ -259,7 +259,7 @@ function loadScripts(){
     $(currentTarget.attr('href')).fadeIn();
     return false;
   })
-  
+
   $(document).delegate("a.active-link", "click", function(event) {
     var statusShow = function(status) {
       _this.removeClass("btn-primary btn-warning actived waiting");
@@ -301,7 +301,7 @@ function loadScripts(){
     executeFunctionByName(call, window, link, params.split(','));
     return false;
   })
-  
+
   $(document).delegate("td .select_edit a.fa.fa-cog", "click", function(event) {
     var _this = $(event.currentTarget).parents("td"),
         data = _this.find('data'),
@@ -311,20 +311,20 @@ function loadScripts(){
         id = data.attr('obj-id'),
         value = data.attr('value'),
         model = data.attr('model');
-    
+
     _this.addClass("update_select");
     var selectbox = $("<select/>").appendTo(select_edit);
     var done = $("<a/>").addClass("fa fa-check btn btn-default disabled").appendTo(select_edit);
     var close_link = $("<a/>").addClass("fa fa-times").attr("href","#").appendTo(select_edit);
-    
+
     var cancel = function () {
       selectbox.remove();
       done.remove();
       close_link.remove();
       text_show.show();
       _this.removeClass("update_select");
-    }    
-    
+    }
+
     $.ajax({
       url: ["/" + window.admin_path, type, "select_box.json"].join("/"),
       success: function (data) {
@@ -332,7 +332,7 @@ function loadScripts(){
         $.each(data.all, function(index, item) {
           selectbox.append($("<option/>").attr("value", item.id).html(item.text));
         })
-        
+
         selectbox.val(value);
         selectbox.change(function(event) {
           if (selectbox.val() == value) {
@@ -362,45 +362,45 @@ function loadScripts(){
     })
     return false;
   })
-  
+
   $(document).delegate("table.table tr", "click", function(event) {
     $('table.table tr').removeAttr('class');
     $(event.currentTarget).addClass('focus');
   })
-  
+
   $(document).delegate(".blur-bg", "click", function(event) {
     $(".add_ajax.layer_4").removeClass("pulse animated flipInX");
-    
+
     setTimeout(function() {
       $(".add_ajax.layer_4").addClass("pulse animated");
     }, 50);
   })
-  
+
   $(document).delegate("#save_action", "click", function(event) {
     $(".content form").submit();
     return false;
   })
-  
+
   $(document).delegate("#review_upload_image .btn-sm.btn-danger", "click", function(event) {
     $("#review_upload_image_group").removeClass("fadeInUp").addClass('fadeOutDown');
     return false;
   })
-  
+
   $(document).delegate("#review_upload_image .btn-sm.btn-success", "click", function(event) {
     $("#review_upload_image_group").hide().parents("form").submit();
     window.waiting(true);
     return false;
   })
-  
+
   $(document).delegate(".btn.btn-sm.btn-danger[data-method='delete']", "click", function(event) {
     window.waiting(true);
   })
-  
+
   $(document).delegate(".action_drag_drop_cancel", "click", function(event) {
     $("#drop_files.content.drag").removeClass("drag");
     return false;
   })
-  
+
   $(document).delegate(".action_drag_drop_upload", "click", function(event) {
     var _this = $(event.currentTarget);
     var upload_processing = $("#upload_processing");
@@ -443,7 +443,7 @@ function loadScripts(){
     AntsAdmin.uploadFiles = "";
     return false;
   })
-  
+
   $(document).delegate('[data-cmd="insertImage"]', 'click', function (event) {
     $('.froala-editor.f-inline.right-side').hide();
     var currentTarget = $(event.currentTarget).parents('.froala-box');
@@ -460,10 +460,10 @@ function loadScripts(){
         })
       }
     });
-    
+
     return false;
   });
-  
+
 }
 
 $(document).ready(reloadEvents);
@@ -483,16 +483,16 @@ function checkFooterSelectFile() {
 
 function loadLibrariesUploaded(files, idsUploaded) {
   var filesContentList = $("#files-content-list");
-  
+
   if (idsUploaded) {
     window.AntsAdmin.filesSelected = window.AntsAdmin.filesSelected.concat(idsUploaded);
     checkFooterSelectFile();
   }
-  
+
   var loadImages = function (files) {
     filesContentList.html('');
     window.AntsAdmin.filesPath = {};
-    
+
     $.each(files, function(index, file) {
       window.AntsAdmin.filesPath[file.id] = file.url;
       var img = $('<img/>', {
@@ -503,11 +503,11 @@ function loadLibrariesUploaded(files, idsUploaded) {
       });
       //<a href="#" class="info fa fa-info"></a>
       var tool = $('<div class="tool"><a href="#" class="remove fa fa-trash-o"></a></div>');
-      
+
       var info = tool.find('.info'),
           insert = tool.find('.insert'),
           remove = tool.find('.remove');
-          
+
       info.click(function(event) {
         return false;
       })
@@ -540,16 +540,16 @@ function loadLibrariesUploaded(files, idsUploaded) {
             swal("Cancelled", "Your imaginary file is safe :)", "error");
           }
         });
-        
+
         return false;
       })
-      
+
       var imgItem = $('<div/>').addClass('col-xs-6 col-sm-4 col-md-3 col-lg-2 photo-item').append(img).append(tool);
-      
+
       if (window.AntsAdmin.filesSelected.indexOf(file.id) >= 0) {
         imgItem.addClass('active');
       }
-      
+
       imgItem.click(function() {
         imgItem.toggleClass('active');
         if (imgItem.hasClass('active')) {
@@ -559,13 +559,13 @@ function loadLibrariesUploaded(files, idsUploaded) {
         }
         checkFooterSelectFile();
       })
-      
+
       filesContentList.append(imgItem);
     })
-    
+
     $('[data-toggle="tooltip"]').tooltip();
   }
-  
+
   if (files) {
     loadImages(files);
   } else {

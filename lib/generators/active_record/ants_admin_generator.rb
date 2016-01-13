@@ -7,7 +7,7 @@ module ActiveRecord
       argument :attributes, type: :array, default: [], banner: "field:type field:type"
 
       include AntsAdmin::Generators::OrmHelpers
-      
+
       source_root File.expand_path("../templates", __FILE__)
 
       def copy_ants_admin_migration
@@ -54,7 +54,7 @@ module ActiveRecord
       t.datetime :last_sign_in_at
       t.string   :current_sign_in_ip
       t.string   :last_sign_in_ip
-      
+
       t.text     :tokens
       t.boolean  :only_device,      null: false, default: false
       t.boolean  :locked,           null: false, default: false

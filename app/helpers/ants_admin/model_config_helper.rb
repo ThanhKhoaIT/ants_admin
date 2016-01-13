@@ -1,11 +1,11 @@
 module AntsAdmin
   module ModelConfigHelper
-        
+
     def self.new(model_string)
       @model_class = model_string.classify.constantize
       self
     end
-    
+
     # LIST
     def self.table_show
       titles = defined?(@model_class::TABLE_SHOW) ? @model_class::TABLE_SHOW : @model_class.new.attributes.select{|attr_name, value| !(["created_at","updated_at","active"]).include?(attr_name) and attr_name[-3,3] != "_id"}.collect{|attr_name, value| attr_name}
@@ -20,31 +20,31 @@ module AntsAdmin
       titles = titles.select{|title| !table_show_skip.include?(title[:label])}
       return titles
     end
-    
+
     def self.table_show_skip
       get_list(@model_class::TABLE_SHOW_SKIP) rescue []
     end
-    
+
     def self.form_input_skip
       get_list(@model_class::FORM_INPUT_SKIP) rescue []
     end
-    
+
     def self.form_input_nested_skip
       get_list(@model_class::FORM_INPUT_NESTED_SKIP) rescue []
     end
-    
+
     def self.form_input
       get_list(@model_class::FORM_INPUT) rescue []
     end
-    
+
     def self.has_many_input
       get_list(@model_class::HAS_MANY_INPUT) rescue []
     end
-    
+
     def self.search_for
       get_list(@model_class::SEARCH_FOR) rescue []
     end
-    
+
     def self.actions_link
       defaults = ['edit','active','remove']
       if defined?(@model_class::ACTIONS_LINK)
@@ -59,7 +59,7 @@ module AntsAdmin
       actions -= ['remove']   if delete_disabled?
       return actions
     end
-    
+
     def self.belongs_to_list
       list = []
       @model_class.reflections.select do |assoc_name, ref|
@@ -71,7 +71,7 @@ module AntsAdmin
       end
       return list
     end
-    
+
     def self.has_many_list
       black_list = []
       list = []
@@ -88,17 +88,17 @@ module AntsAdmin
       end
       return list.select{|item| !black_list.include?(item[:key])}
     end
-    
+
     def self.textarea_only
       get_list(@model_class::TEXTAREA_ONLY) rescue []
     end
-    
+
     # YES - NO
-    
+
     def self.apply_admin?
       defined?(@model_class::APPLY_ADMIN) and @model_class::APPLY_ADMIN
     end
-    
+
     def self.create_disabled?
       defined?(@model_class::CREATE_DISABLED) and @model_class::CREATE_DISABLED
     end
@@ -110,22 +110,22 @@ module AntsAdmin
     def self.edit_disabled?
       defined?(@model_class::EDIT_DISABLED) and @model_class::EDIT_DISABLED
     end
-    
+
     def self.active_disabled?
       (defined?(@model_class::ACTIVE_DISABLED) and @model_class::ACTIVE_DISABLED) or defined?(@model_class.new.active).nil?
     end
-    
+
     # TEXT
     def self.title
       defined?(@model_class::TITLE) ? @model_class::TITLE : @model_class.to_s.pluralize
     end
-    
+
     def self.layout_index_style
       default = model_style
       style = defined?(@model_class::LAYOUT_INDEX_STYLE) ? @model_class::LAYOUT_INDEX_STYLE : default
       ['table','library'].include?(style) ? style : default
     end
-    
+
     def self.model_style
       default = 'table'
       style = defined?(@model_class::MODEL_STYLE) ? @model_class::MODEL_STYLE : default
@@ -141,37 +141,37 @@ module AntsAdmin
       end
       return config
     end
-    
+
     def self.image_style_thumb
       defined?(@model_class::IMAGE_STYLE_THUMB) ? @model_class::IMAGE_STYLE_THUMB : 'original'
     end
-      
+
     def self.image_style_medium
       defined?(@model_class::IMAGE_STYLE_MEDIUM) ? @model_class::IMAGE_STYLE_MEDIUM : 'original'
     end
-    
+
     def self.add_link(params)
       add_link_hash(params).to_query
     end
-    
+
     # HASH
-    
+
     def self.add_link_hash(params)
       hash = {}
       params.each do |param|
-        key = param[0].gsub('/', '') 
-        hash[key] = param[1] if param[0].last(3) == "_id"
+        key = param[0].gsub('/', '')
+        hash[key] = param[1] if param[0].last(3) == "_id" || param[0].last(5) == "_type"
       end
       hash
     end
-    
+
     def self.as_json(obj)
       hash = {}
       table_show.each do |title|
         key = title[:key]
         is_belongs_to = (belongs_to_list.select{|attr| attr[:key] == key}.length > 0)
         is_has_many = (has_many_list.select{|attr| attr[:key] == key}.length > 0)
-        
+
         if is_belongs_to
           sub_obj = obj.send(key[0..-4].downcase)
           if sub_obj
@@ -193,40 +193,40 @@ module AntsAdmin
             list << "<li><a href='/#{AntsAdmin.admin_path}/#{model_string}/#{item.id}/edit?#{obj.class.name.downcase}_id=#{obj.id}' back-href='/#{AntsAdmin.admin_path}/#{obj.class.name.downcase}' back-level='2'>#{text}</a></li>"
           end
           hash[key] = html_show_list_with_has_many(list)
-          
+
         else
           hash[key] = self.json_with_file(obj, key) rescue attribute_show(obj, key)
         end
       end
       return hash
     end
-    
+
     # Skins
-    
+
     ## Buttons HTML
-    
+
     def self.html_button_delete
       (defined?(@model_class::HTML_BUTTON_DELETE) ? @model_class::HTML_BUTTON_DELETE : '<i class="fa fa-trash-o"></i>').html_safe
     end
-    
+
     def self.html_button_edit
       (defined?(@model_class::HTML_BUTTON_EDIT) ? @model_class::HTML_BUTTON_EDIT : '<i class="fa fa-pencil-square-o"></i>').html_safe
     end
-    
+
     def self.html_button_activated
       (defined?(@model_class::HTML_BUTTON_ACTIVATED) ? @model_class::HTML_BUTTON_ACTIVATED : '<i class="fa fa-unlock"></i>').html_safe
     end
-    
+
     def self.html_button_deactivated
       (defined?(@model_class::HTML_BUTTON_DEACTIVATED) ? @model_class::HTML_BUTTON_DEACTIVATED : '<i class="fa fa-lock"></i>').html_safe
     end
-    
+
     private
-    
+
     def self.html_show_list_with_has_many(list)
       html = list.length > 0 ? "<a class='fa fa-list show-btn-list btn btn-sm btn-default' href='#'></a><ul class='btn-list'>#{list.join}<a class='close_list fa fa-times'></a></ul>" : ""
     end
-    
+
     def self.json_with_file(obj, key)
       type = obj.send("#{key}_content_type")
       style = obj.send(key).styles.present? ? image_style_thumb : 'original'
@@ -250,11 +250,11 @@ module AntsAdmin
       icon = file_types[type] || 'paperclip'
       return  type ? (icon == 'image' ? "<a href='#{obj.send(key).url}' class='review_image'><img src='#{url}' class='cover file' title='#{file_name}'/></a>" : "<a href='#{obj.send("#{key}").url}' target='_blank' class='btn btn-default file fa fa-#{icon}' title='#{file_name}'></a>") : ""
     end
-    
+
     def self.attribute_show(obj, attr_name)
       return obj.send("#{attr_name}_show") rescue obj.send(attr_name)
     end
-    
+
     protected
     def self.get_list(config_list)
       return config_list.is_a?(Array) ? config_list : [config_list]

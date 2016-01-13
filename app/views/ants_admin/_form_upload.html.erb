@@ -1,19 +1,20 @@
 <%= form_for object, :url => object.new_record? ? "/#{AntsAdmin.admin_path}/#{@model_string.downcase}?#{@model_config.add_link(params)}" : "/#{AntsAdmin.admin_path}/#{@model_string.downcase}/#{object.id}?#{@model_config.add_link(params)}", :html => {role: "form", class: 'upload_form'} do |form| %>
   <% object.class.columns.each do |col| %>
     <% if !(['id','created_at','updated_at'] + @model_config.form_input_skip).include?(col.name) \
-            and col.name.to_s.index('_content_type').nil? \
-            and col.name.to_s.index('_file_size').nil? \
-            and col.name.to_s.index('_updated_at').nil? %>
+        and col.name.to_s.index('_content_type').nil? \
+        and col.name.to_s.index('_file_size').nil? \
+        and col.name.to_s.index('_updated_at').nil? %>
 
-			<div class="hidden">
-				<% params.each do |param| %>
-					<%= form.hidden_field param[0].to_sym, value: param[1] if param[0][-3..-1] == '_id' %>
-				<% end %>
-			</div>
-      
+      <div class="hidden">
+        <% params.each do |param| %>
+          <%= form.hidden_field param[0].to_sym, value: param[1] if param[0][-3..-1] == '_id' %>
+          <%= form.hidden_field param[0].to_sym, value: param[1] if param[0][-5..-1] == '_type' %>
+        <% end %>
+      </div>
+
       <% if col.type.to_s == 'string' and col.name[-9..-1] == 'file_name' %>
         <%= file_input_upload_only form, col.name[0..-11] %>
-        
+
         <div id="review_upload_image_group">
           <div id='review_upload_image'>
             <img src="">
@@ -24,9 +25,9 @@
           </div>
           <div id='review_upload_image_arrow'></div>
         </div>
-        
+
         <script>
-          $("#<%= @model_string.downcase %>_<%= col.name[0..-11] %>").change(function(event) {loadReviewImage(this.files)});
+$("#<%= @model_string.downcase %>_<%= col.name[0..-11] %>").change(function(event) {loadReviewImage(this.files)});
         </script>
       <% end %>
     <% end %>

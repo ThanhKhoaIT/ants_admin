@@ -3,13 +3,13 @@ module AntsAdmin
     module OrmHelpers
       def model_contents
         buffer = <<-CONTENT
-        
+
   devise :database_authenticatable, :registerable,
          :recoverable, :trackable, :validatable
-         
+
   has_attached_file :avatar, :styles => { :medium => "300x300#", :thumb => "100x100>" }, :default_url => "/assets/devise/avatar.png"
   validates_attachment_content_type :avatar, :content_type => \/\\Aimage\\\/.*\\Z\/
-  
+
   require "digest/md5"
 
   def full_name
@@ -24,7 +24,7 @@ module AntsAdmin
       "http://www.gravatar.com/avatar.php?" + options.to_query
     end
   end
-         
+
   def login=(login)
     @login = login
   end
@@ -51,7 +51,7 @@ module AntsAdmin
 	    where(conditions).first
 	  end
 	end
-    
+
 CONTENT
         buffer += <<-CONTENT if needs_attr_accessible?
   # Setup accessible (or protected) attributes for your model

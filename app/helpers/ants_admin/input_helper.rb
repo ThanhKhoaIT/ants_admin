@@ -3,7 +3,7 @@ module AntsAdmin
     def text_input(form, name)
       content_tag(:div, [(form.label @form_text[name] || name.to_sym),(form.text_field name.to_sym, class: 'form-control')].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
-    
+
     def file_input(form, name)
       type = form.object["#{name}_content_type"] rescue ""
       type = file_type(type) if type
@@ -13,23 +13,23 @@ module AntsAdmin
       else
         html = content_tag(:i, "", class: "cover-file-form fa fa-#{type}")
       end
-      
+
       html += content_tag(:span, form.object.send("#{name}_file_name")) rescue "not file"
-      
+
       upload_button = content_tag(:span, ["<i class='fa fa-cloud-upload'></i>", (form.file_field name.to_sym)].join.html_safe, class: 'btn btn-default btn-file')
-      
+
       thumb = type ? content_tag(:div, html.html_safe, class: "thumb") : ""
-      
+
       content_tag(:div, [(form.label @form_text[name] || name.to_sym, for: false),thumb,upload_button].join().html_safe, class: "form-group file-upload col-md-6 col-md-offset-3")
     end
-    
+
     def file_input_upload_only(form, name)
       content_tag(:div, (form.file_field name.to_sym), class: 'fa fa-cloud-upload action-page', id: 'add_upload')
     end
-    
+
     def time_input(form, name)
       id = "id_#{Random.rand(500) + 10}"
-      contents = ['<div class="form-group col-md-6 col-md-offset-3">', 
+      contents = ['<div class="form-group col-md-6 col-md-offset-3">',
         (form.label @form_text[name] || name.to_sym),
         '<div class="input-group">',
         (form.text_field name, class: 'form-control timepicker', id: id),
@@ -38,7 +38,7 @@ module AntsAdmin
       ]
       content_tag(:div, contents.join().html_safe, class: "bootstrap-timepicker")
     end
-    
+
     def date_input(form, name)
       id = "id_#{Random.rand(500) + 10}"
       contents = [
@@ -50,11 +50,11 @@ module AntsAdmin
       ]
       content_tag(:div, contents.join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
-    
+
     def number_input(form, name)
       content_tag(:div, [(form.label @form_text[name] || name.to_sym),(form.text_field name.to_sym, class: 'form-control', type: "number")].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
-    
+
     def textarea(form, name)
       id = random_id
       js_tag = javascript_tag("var #{id} = $('.#{id}').editable({inlineMode: false, imageButtons: ['floatImageLeft','floatImageNone','floatImageRight','linkImage','removeImage']})") if !@model_config.textarea_only.include?(name)
@@ -64,7 +64,7 @@ module AntsAdmin
         js_tag
       ].join().html_safe, class: "form-group")
     end
-    
+
     def checkbox(form, name)
       rd = Random.rand(1000000000);
       content_tag(:div, [
@@ -74,7 +74,7 @@ module AntsAdmin
         class: "form-group col-md-6 col-md-offset-3"
       )
     end
-    
+
     def select_input(form, name)
       select_box_class = (0...8).map{(65+rand(26)).chr}.join
       class_model = name[0..-4]
@@ -93,19 +93,18 @@ module AntsAdmin
           iframe_params: ".select_#{select_box_class},#{class_model}",
           class: 'fa fa-plus add_btn_ajax_select_box'
         )
-          
+
       ].join().html_safe, class: "form-group with_ajax_add col-md-6 col-md-offset-3")
     end
-    
+
     def select_input_config(form, name)
       collection = @input_config[:collection]
       content_tag(:div, [
         (form.label @form_text[name] || name.to_sym),
         (form.select name, collection, {}, {class: "form-control"})
-          
       ].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
-    
+
     def chosen_input_config(form, name)
       collection = @input_config[:collection]
       class_rd = (0..20).map { ('a'..'z').to_a[rand(26)] }.join
@@ -115,7 +114,7 @@ module AntsAdmin
         javascript_tag("$('.#{class_rd}').chosen(); ")
       ].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
-    
+
     def has_many_chosen_config(form, name)
       collection = @input_config[:collection]
       class_rd = (0..20).map { ('a'..'z').to_a[rand(26)] }.join
@@ -125,7 +124,7 @@ module AntsAdmin
         javascript_tag("$('.#{class_rd}').chosen(); ")
       ].join().html_safe, class: "form-group col-md-6 col-md-offset-3")
     end
-    
+
     def link_to_add_fields(f, association)
       new_object = association.classify.constantize.new
       fields = f.fields_for(association, new_object, :child_index => "new_#{association}") do |builder|
@@ -137,13 +136,13 @@ module AntsAdmin
       end
       link_to_function('plus btn-success', "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")")
     end
-    
+
     def link_to_remove_fields(f)
       f.hidden_field(:_destroy) + link_to_function('times btn-danger', "remove_fields(this)")
     end
-    
+
     protected
-    
+
     def file_type(type)
       types = {
         'image/jpeg'=> 'image',
@@ -161,20 +160,20 @@ module AntsAdmin
       }
       return types[type] || 'paperclip'
     end
-    
+
     def link_to_function(icon, *args, &block)
       html_options = args.extract_options!.symbolize_keys
-      
+
       function = block_given? ? update_page(&block) : args[0] || ''
       onclick = "#{"#{html_options[:onclick]}; " if html_options[:onclick]}#{function}; return false;"
       href = html_options[:href] || '#'
-      
+
       content_tag(:a, "", html_options.merge(:href => href, :onclick => onclick, class: "btn fa fa-#{icon} float-right"))
     end
-    
+
     def random_id
       (0...15).map { (65 + rand(26)).chr }.join.downcase
     end
-    
+
   end
 end

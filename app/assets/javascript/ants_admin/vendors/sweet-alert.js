@@ -211,7 +211,7 @@
    * Global sweetAlert function
    */
   var sweetAlert, swal;
-  
+
   sweetAlert = swal = function() {
     var customizations = arguments[0];
 

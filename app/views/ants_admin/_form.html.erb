@@ -16,14 +16,14 @@
   </div>
   <div class="box-body">
     <% @columns_show.each do |col| %>
-      
+
       <% name = col.is_a?(String) ? col : col.name.to_s %>
-      
+
       <% if !(['id','created_at','updated_at'] + @model_config.form_input_skip).include?(name) \
               and name.index('_content_type').nil? \
               and name.index('_file_size').nil? \
               and name.index('_updated_at').nil? %>
-        
+
         <% @input_config = @object.send("input_#{name}") rescue nil %>
         <% if @input_config %>
           <% case @input_config[:type] %>
@@ -35,7 +35,7 @@
             <%= has_many_chosen_config form, name %>
           <% end %>
         <% else %>
-        
+
           <% case col.type.to_s %>
           <% when 'string' %>
             <% if name[-10..-1] == '_file_name' %>
@@ -64,9 +64,9 @@
               <%= form.text_field name.to_sym, class: 'form-control' %>
             </div>
           <% end %>
-          
+
         <% end %>
-        
+
       <% end %>
     <% end if @columns_show%>
 
@@ -104,7 +104,7 @@
      elems.forEach(function(html) {
        var switchery = new Switchery(html, window.AntsAdmin.selectBoxDefaults);
      });
-    
+
     $(".review_image").fancybox({
       parent: "body",
       openEffect  : 'elastic',

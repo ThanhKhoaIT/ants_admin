@@ -546,7 +546,7 @@
                                     + (deltaX>0 || deltaY>0 ? s.o.step : deltaX<0 || deltaY<0 ? -s.o.step : 0);
 
                             v = max(min(v, s.o.max), s.o.min);
-                            
+
                             s.val(v);
 
                             if(s.rH) {

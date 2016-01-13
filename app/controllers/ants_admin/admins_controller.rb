@@ -11,7 +11,7 @@ class AntsAdmin::AdminsController < AntsAdminController
         return redirect_to "/#{AntsAdmin.admin_path}/errors/not_model?model=#{@model_string}"
       end
       @model_config = AntsAdmin::ModelConfigHelper.new(@model_string)
-      
+
       params[:controller] = @model_string.pluralize
       return redirect_to "/#{AntsAdmin.admin_path}/errors/not_apply?model=#{@model_string}" if !@model_config.apply_admin?
       if urls.count == 1
@@ -39,14 +39,14 @@ class AntsAdmin::AdminsController < AntsAdminController
       raise e
     end
   end
- 
+
   def index
     params[:action] = "index"
     layout_index_style = @model_config.layout_index_style
     @objects = load_data if layout_index_style == "library"
     render template: "/ants_admin/index_styles/#{layout_index_style}"
   end
-  
+
   def json
     params[:action] = "json"
     page = (params[:page] || 1).to_i
@@ -55,7 +55,7 @@ class AntsAdmin::AdminsController < AntsAdminController
     perPage = perPage > 0 ? perPage : 1
     search = params[:queries] ? params[:queries][:search] : nil
     sorts = params[:sorts] || []
-    
+
     includes = (@model_config.has_many_list + @model_config.belongs_to_list).collect{|i|i[:label].downcase}
 
     if search
@@ -67,11 +67,11 @@ class AntsAdmin::AdminsController < AntsAdminController
     else
       @objects = load_data.includes(includes)
     end
-    
+
     sorts.each do |s, index|
       @objects = @objects.order(sorts[s].to_i > 0 ? "#{s} desc" : "#{s} asc")
     end
-    
+
     records = @objects[perPage*(page-1)..perPage*page].collect do |record|
       actions_link = @model_config.actions_link.length > 0 ? {actions: actions_link(record)} : {}
       @model_config.as_json(record).merge!(actions_link)
@@ -79,14 +79,14 @@ class AntsAdmin::AdminsController < AntsAdminController
 
     render json: {records: records, queryRecordCount: @objects.count, totalRecordCount: @objects.count}
   end
-  
+
   def select_box
     all = load_select_box.collect{|item| {
             id: item.id,
             text: represent_text(item)
           }}
     all = all.sort_by {|item| item[:text]}
-    
+
     render json: {all: all}
   end
 
@@ -100,7 +100,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       render template: "/ants_admin/new"
     end
   end
-  
+
   def add
     params[:action] = "add"
     if @model_config.create_disabled?
@@ -111,7 +111,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       render template: "/ants_admin/add", layout: false
     end
   end
-  
+
   def create
     params[:action] = "create"
     if @model_config.create_disabled?
@@ -128,7 +128,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       end
     end
   end
-  
+
   def modify_link(id, action)
     params[:action] = action
     params[:id] = id
@@ -142,7 +142,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       end
     end
   end
-  
+
   def edit(id)
     params[:action] = "edit"
     params[:id] = id
@@ -154,7 +154,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       render template: "/ants_admin/edit"
     end
   end
-  
+
   def active(id)
     params[:action] = "active"
     params[:id] = id
@@ -167,14 +167,14 @@ class AntsAdmin::AdminsController < AntsAdminController
         success: true,
         actived: @object.active
       } if @object.save
-      
+
       return render json: {
         success: false,
         actived: @object.active
       }
     end
   end
-  
+
   def update(id)
     params[:action] = "update"
     params[:id] = id
@@ -191,7 +191,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       end
     end
   end
-  
+
   def update_belongs_to(id)
     params[:action] = "update_belongs_to"
     params[:id] = id
@@ -202,7 +202,9 @@ class AntsAdmin::AdminsController < AntsAdminController
       }
     else
       @object = @model_class.find id
-      @object["#{params[:type]}_id"] = params[:value]
+      type = params[:type]
+      @object["#{type}_id"] = params[:value]
+      @object["#{type}_type"] = params["#{type}_type"] if params["#{type}_type"]
       if @object.save
         render json: {
           success: true,
@@ -216,7 +218,7 @@ class AntsAdmin::AdminsController < AntsAdminController
       end
     end
   end
-  
+
   def delete(id)
     params[:action] = "delete"
     params[:id] = id
@@ -231,15 +233,15 @@ class AntsAdmin::AdminsController < AntsAdminController
       redirect_to "/#{AntsAdmin.admin_path}/#{@model_string}?#{@model_config.add_link(params)}"
     end
   end
-  
+
   def load_data
     @model_class.load_all(@current_user, params) rescue @model_class.load_all(@current_user) rescue @model_class.load_all rescue @model_class.all
   end
-  
+
   def load_select_box
     @model_class.load_select_box(@current_user, params) rescue @model_class.load_select_box(@current_user) rescue @model_class.load_select_box rescue @model_class.all
   end
-  
+
   private
   def load_config_for_form
     form_input_config = @model_config.form_input
@@ -254,13 +256,13 @@ class AntsAdmin::AdminsController < AntsAdminController
     else
       @columns_show = @object.class.columns
     end
-    
+
     @columns_show += @model_config.has_many_input
-    
+
     @form_text = AntsAdmin::FormHelper.text_for_form(@model_string) || {}
   end
 
-  
+
   def params_permit
     params.require(@model_string).permit!
   end

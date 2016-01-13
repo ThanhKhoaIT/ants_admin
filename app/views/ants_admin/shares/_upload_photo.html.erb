@@ -39,7 +39,7 @@
 <script>
   loadLibrariesUploaded();
   $("input[name='authenticity_token']").val($("meta[name='csrf-token']").attr('content'));
-  
+
   $('#select_file').change(function(event) {
     $('#files-content-upload').addClass('loading');
     $('#form_upload_photo').submit();

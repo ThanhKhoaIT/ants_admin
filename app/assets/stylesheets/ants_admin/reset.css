@@ -4,7 +4,7 @@ html, body, div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, code,
 del, dfn, em, img, q, dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend, 
+fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td {
   margin: 0;
   padding: 0;
@@ -99,7 +99,7 @@ html[xmlns] .clearfix {
 /* @end */
 
 .hidden {display: none !important;}
-  
+
 * {outline: none;}
 
 button::-moz-focus-inner,

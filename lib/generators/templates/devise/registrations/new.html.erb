@@ -12,22 +12,22 @@
 					<%= f.text_field :username, autofocus: true, class: "form-control", placeholder: t('devise.inputs.username'), required:'', autofocus:'' %>
 					<%= f.email_field :email, autofocus: true, class: "form-control", placeholder: t('devise.inputs.email'), required:'', autofocus:'' %>
 				</div>
-				
+
 				<div class='grp-inputs'>
 					<%= f.text_field :first_name, class: "form-control", placeholder: t('devise.inputs.first_name'), required:'' %>
 					<%= f.text_field :last_name, class: "form-control", placeholder: t('devise.inputs.last_name'), required:'' %>
 				</div>
-				
+
 				<div class='grp-inputs'>
 					<%= f.password_field :password, autocomplete: "off", class: "form-control", placeholder: t('devise.inputs.password'), required:'' %>
 					<%= f.password_field :password_confirmation, autocomplete: "off", class: "form-control", placeholder: t('devise.inputs.password_confirmation'), required:'' %>
 				</div>
-				
+
 				<%= f.submit t('devise.buttons.signup'), class: 'btn btn-lg btn-primary btn-block' %>
 
 				<%= render "devise/shared/links" %>
 				<% end %>
-					
+
 			</div>
 		</div>
 	</div>

@@ -3,7 +3,7 @@ class AntsAdminCreateAntsAdminLibraries < ActiveRecord::Migration
     create_table :ants_admin_libraries do |t|
       t.string :title
       t.attachment :photo
-      
+
       t.timestamps
     end
   end

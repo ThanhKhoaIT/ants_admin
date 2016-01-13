@@ -8,7 +8,7 @@ $(document).ready(function() {
 window.waiting(true);
 
   })
-  
+
   $(document).delegate("form", "submit", function(event) {
     window.waiting(true);
   })

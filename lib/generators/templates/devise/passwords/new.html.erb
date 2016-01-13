@@ -6,10 +6,10 @@
 				<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: {method: :post, class: "form-signin reset-password"}) do |f| %>
 				<%= f.text_field :email, autofocus: true, class: "form-control", placeholder: t('devise.inputs.email'), required:'', autofocus:'' %>
 				<%= f.submit t('devise.buttons.forgot'), class: 'btn btn-lg btn-primary btn-block' %>
-				
+
 				<%= render "devise/shared/links" %>
 				<% end %>
-					
+
 			</div>
 		</div>
 	</div>

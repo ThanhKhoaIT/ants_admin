@@ -4,22 +4,22 @@ module AntsAdmin
   module Generators
     class AntsAdminGenerator < Rails::Generators::Base
       include Rails::Generators::ResourceHelpers
-      
+
       namespace "ants_admin"
       source_root File.expand_path("../templates", __FILE__)
       argument :params, type: :array, default: [], banner: "field:type field:type"
       hook_for :orm
-      
+
       def name
         @name = params.present? ? params[0] : "user"
       end
-      
+
       class_option :routes, desc: "Generate routes", type: :boolean, default: true
-      
+
       def add_ants_admin_routes
         route "devise_for :#{@name.pluralize}"
       end
-      
+
       def seed_data
         File.open("db/seeds.rb", "a+"){|f| f << "if !#{@name.classify}.find_by_username('superadmin')
   #{@name.classify}.new({
@@ -32,7 +32,7 @@ module AntsAdmin
 end
         " }
       end
-      
+
       def append_to_application_controller
         inject_into_file 'app/controllers/application_controller.rb', after: "class ApplicationController < ActionController::Base\n" do
 
@@ -64,8 +64,8 @@ end
   end"
 
 end
-  
-      end      
+
+      end
     end
   end
 end
