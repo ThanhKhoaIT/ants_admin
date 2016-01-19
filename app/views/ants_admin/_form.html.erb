@@ -2,7 +2,7 @@
   <div class="alert alert-danger alert-dismissable">
     <i class="fa fa-ban"></i>
     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-    <%= @object.errors.full_messages.join('</br>') %>
+    <%= @object.errors.full_messages.join('</br>').html_safe %>
   </div>
 <% end %>
 
