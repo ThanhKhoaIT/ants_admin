@@ -77,6 +77,18 @@ class AntsAdmin::AdminsController < AntsAdminController
       @model_config.as_json(record).merge!(actions_link)
     end
 
+    records.map do |record|
+      item = {}
+      record.each do |key, val|
+        if val.is_a?(String)
+          item["#{key}"] = val.gsub!("script", "")
+        else
+          item["#{key}"] = val
+        end
+      end
+      item
+    end
+
     render json: {records: records, queryRecordCount: @objects.count, totalRecordCount: @objects.count}
   end
 
